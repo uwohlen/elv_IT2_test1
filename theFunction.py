@@ -1,7 +1,9 @@
 
 def theReverse(list=[]):
     """tar en liste og reverser det tilbake """
-    
+
+    if list is None:
+        list = []
     resList=[]
     for i in range(0,len(list)):
         ind=len(list)-i-1
