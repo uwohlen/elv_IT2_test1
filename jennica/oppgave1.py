@@ -29,7 +29,7 @@ for navn in ord_liste:
     print(navn)
     if navn == "jennicas":
         break
-print("the end")
+print("theend")
 
 #i = 1
 #while i < 5:
