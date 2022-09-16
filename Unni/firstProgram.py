@@ -14,3 +14,5 @@ salg1.price()
 
 print("fredag")
 print("snart helg")
+
+print('yyy')
