@@ -16,3 +16,5 @@ elif batteri < lavt:
 
 else:
     print("Batteriet er høyt")
+
+print("Hei")
