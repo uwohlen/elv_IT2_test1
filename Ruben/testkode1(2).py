@@ -18,3 +18,4 @@ else:
     print("Batteriet er høyt")
 
 print("Hei")
+print("nei")
