@@ -6,7 +6,7 @@ def navn_verdi(navn):
     maks = len(rekkefolge) * 2
     for bokstav in navn:
         indeks = rekkefolge.index(bokstav.lower())
-        verdi = indeks * 2 + (1 if bokstav.islower else 0)
+        verdi = indeks * 2 + (1 if bokstav.islower() else 0)
         total_verdi += verdi / (maks**i)
         i += 1
     return total_verdi
