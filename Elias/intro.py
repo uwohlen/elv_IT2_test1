@@ -24,3 +24,4 @@ for i in personer:
     else:
         annet+=i.items()
         
+print("hei")
