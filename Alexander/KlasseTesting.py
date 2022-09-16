@@ -18,6 +18,21 @@ class mangekant:
             tmp += self.lengder[x]
         return tmp
 
-s1 = mangekant(4) 
-s1.input()
-print(s1)         
+class rektangel(mangekant):
+                
+    def __init__(self):
+        super().__init__(4)
+    
+    def __str__(self):
+        return f"Rektangel med side lengder: {str(self.lengder)}\nOmkrets: {self.omkrets()}"
+        
+    def input(self):
+        w = float(input("Bredden av rektangelen: "))
+        h = float(input("Høyden av rektangelen: "))
+        self.lengder[0] = self.lengder[2] = w
+        self.lengder[1] = self.lengder[3] = h
+        
+    
+r1 = rektangel()
+r1.input()
+print(r1)
