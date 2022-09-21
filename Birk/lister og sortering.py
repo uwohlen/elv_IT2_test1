@@ -19,4 +19,5 @@ else:
 liste.insert(3,3)
 
 liste.extend(liste2)
-  
+
+print("1")
