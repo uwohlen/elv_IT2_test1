@@ -1,4 +1,3 @@
-
 mars={
     "navn":"Mars",
     "solavstand": 227.9,
@@ -6,7 +5,7 @@ mars={
 }
 
 def rad(planet):
-    print(mars["radius"])
+    print(planet["radius"])
 
 rad(mars)
 
