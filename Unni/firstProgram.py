@@ -12,7 +12,3 @@ print(b)
 salg1 = fbib.GrapesApples(2,3)
 salg1.price()
 
-print("fredag")
-print("snart helg")
-
-print('yyy')
