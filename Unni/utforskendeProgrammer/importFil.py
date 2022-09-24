@@ -1,8 +1,8 @@
 """
-Today's updates
+Tester at man kan importere filer som ligger i samme mappe
 Created by: Unni Wohlen
 """
-import funksjonsbibliotek as fbib
+import funksjonerOgKlasser as fbib
 help(fbib.leggSammen)
 
 a = ["a","b","c"]
