@@ -1,5 +1,5 @@
 """
-Viser import av felles fil med klasser
+Viser import av felles fil med klasser, relativ adresse opp og ned i mapper
 UW
 """
 
