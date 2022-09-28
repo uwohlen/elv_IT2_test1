@@ -3,7 +3,7 @@ import os
 import sys, time
 
 def slow_type(t):
-    typing_speed = 15000 #wpm
+    typing_speed = 150 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
