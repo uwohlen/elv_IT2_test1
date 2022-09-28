@@ -76,6 +76,23 @@ class hero(monster):
                                     time.sleep(0.5)
                                     slow_type("Du jukser")
                                     jukseSpm = True
+                                    print("")
+                                    slow_type("Hacker epic games...")
+                                    print("")
+                                    time.sleep(0.5)
+                                    slow_type("Infiltrerer fortnite_server...")
+                                    time.sleep(0.5)
+                                    print("")
+                                    slow_type("Sletter ninja.png...")
+                                    time.sleep(1)
+                                    print("")
+                                    slow_type("Error. Trenger bankID-innlogging")
+                                    time.sleep(1)
+                                    print("")
+                                    input("fødeslsnummer")
+                                    input("eget_passord")
+                                    print("")
+
 
                                 if a == "n":
                                     print("Du jukser ikke")
