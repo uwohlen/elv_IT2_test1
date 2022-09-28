@@ -15,12 +15,3 @@ class Spiller:
         self.iq = iq
     
     def visInfo(self):
-        
-
-
-
-arne = Spiller("Arne", 140,0)
-per = Spiller("Per", 110,1)
-
-karakter = input(print(f'Velg hvilken karakter du vil ha: ')
-         
