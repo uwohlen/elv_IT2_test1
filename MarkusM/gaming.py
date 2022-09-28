@@ -1,5 +1,6 @@
 import random as r
 import sys, time
+import os
 
 def slow_type(t):
     typing_speed = 15000 #wpm
@@ -8,7 +9,17 @@ def slow_type(t):
         sys.stdout.flush()
         time.sleep(r.random()*10.0/typing_speed)
 
+def slower_type(t,speed):
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+        time.sleep(r.random()*10.0/speed)
 
+def clear():
+    if os.name == 'nt':
+        os.system('CLS')
+    if os.name == 'posix':
+        os.system('clear')
 
 class monster: #konstruktør for monster
     def __init__(self,hp,lv,dmg,wk,xp,name):
@@ -65,7 +76,7 @@ class hero(monster):
                         if self.hp == 1:
                             if jukseSpm == False:
                                 print("Ninja: Siden du har ett hp igjen lar jeg deg slå meg en gang til, for morro skyld.")
-
+                                time.sleep(2)
                                 slow_type("Vil du jukse?")
                                 time.sleep(1)
                                 print("")
@@ -77,6 +88,7 @@ class hero(monster):
                                     slow_type("Du jukser")
                                     jukseSpm = True
                                     print("")
+                                    time.sleep(0.9)
                                     slow_type("Hacker epic games...")
                                     print("")
                                     time.sleep(0.5)
@@ -90,8 +102,30 @@ class hero(monster):
                                     time.sleep(1)
                                     print("")
                                     input("fødeslsnummer")
-                                    input("eget_passord")
+                                    input("passord")
+                                    clear()
+                                    slower_type("...",150)
+                                    time.sleep(1)
+                                    clear()
+                                    slower_type("...",100)
+                                    time.sleep(1)
+                                    clear()
+                                    slower_type("...",50)
+                                    time.sleep(1)
+                                    clear()
+                                    slower_type("...",20)
+                                    time.sleep(1)
+                                    clear()
+                                    
+                                    slow_type("suksess!")
+                                    time.sleep(0.5)
                                     print("")
+                                    slow_type('"Tyler_Fortnite_Ninja_blevins.hp" = 0 ')
+                                    slower_type("...",10)
+                                    print("")
+
+
+
 
 
                                 if a == "n":
@@ -193,6 +227,7 @@ class hero(monster):
     def itemOptions(self,itemIndex):
         
         print("")
+        time.sleep(0.5)
         print('trykk "s" for å se stats')
         print('trykk "k" for å kaste')
         print('trykk en annen for å gå tilbake')
@@ -268,6 +303,7 @@ class hero(monster):
         a = input("hva vil du gjøre?")
     def eAction(self):
         print("")
+        time.sleep(0.5)
         print('trykk "f" for å sloss')
         print('trykk "c" for å sjekke stats til personen du møtte')
         print('trykk "s" for å se dine stats')
@@ -287,6 +323,7 @@ class hero(monster):
             hero.invOpen()
 
     def combatAction(self):
+        time.sleep(1)
         print('trykk "f" for å sloss')
         print('trykk "r" for å stikke av')
         print('trykk "s" for å se stats')
