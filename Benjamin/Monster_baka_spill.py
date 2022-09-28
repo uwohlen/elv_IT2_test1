@@ -10,8 +10,17 @@ class Monster:
 
 
 class Spiller:
-    def __init__(self,navn,iq,):
+    def __init__(self,navn,iq,flaks):
         self.navn = navn
         self.iq = iq
+        self.flaks = flaks
     
-    def visInfo(self):
+    def __str__(self):
+        return(f'Karakteren {self.navn} har en iq på hele {self.iq}!')
+    
+arne = Spiller("Arne", 140,0)
+per = Spiller("Per", 110,1)
+
+print(arne)
+print(f'{per}, men Per har til gjengjeld super mye flaks!')
+karakter = input(print(f'Velg hvilken karakter du vil ha: For Arne trykk 1, og for Per trykk 2 '))
