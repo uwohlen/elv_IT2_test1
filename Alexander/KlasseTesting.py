@@ -1,4 +1,4 @@
-
+import math
 
 class mangekant:
     def __init__(self, kanter):
@@ -32,7 +32,16 @@ class rektangel(mangekant):
         self.lengder[0] = self.lengder[2] = w
         self.lengder[1] = self.lengder[3] = h
         
+class trekant(mangekant):
     
-r1 = rektangel()
-r1.input()
-print(r1)
+    def __init__(self):
+        super().__init__(3)
+        
+    def areal(self):
+        s = self.omkrets() / 2
+        return round(math.sqrt(s * (s - self.lengder[0]) * (s - self.lengder[1]) * (s - self.lengder[2])), 2)
+        
+    
+t1 = trekant()
+t1.input()
+print("Areal: ", t1.areal())
