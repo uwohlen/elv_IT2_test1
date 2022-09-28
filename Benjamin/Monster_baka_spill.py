@@ -3,7 +3,7 @@ import os
 import sys, time, random
 
 def slow_type(t):
-    typing_speed = 1500 #wpm
+    typing_speed = 15000 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
@@ -48,15 +48,19 @@ elif karakter := 2:
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
 def deal(deck):
-    hand = [0,0,0,0,0,0]
+    hand = []
     for i in range(2):
         random.shuffle(deck)
         kort = deck.pop()
-        if kort == 11:kort = "J"
-        if kort == 12:kort = "Q"
-        if kort == 13:kort = "K"
-        if kort == 14:kort = "A"
-        hand[1] = kort
+        if kort == 11:
+            kort = "J"
+        if kort == 12:
+            kort = "Q"
+        if kort == 13:
+            kort = "K"
+        if kort == 14:
+            kort = "A"
+        hand.append(kort)
     return hand
 
 def play_again():
@@ -70,47 +74,38 @@ def play_again():
         print("Bye!")
         exit()
 
+
 def total(hand):
     total = 0
-    if hand[0] == "J" or hand[0] == "Q" or hand[0] == "K":
-        total = total + 10
-    elif hand[0] == "A":
-            total = total + 11
-    elif hand[1]== "J" or hand[1] == "Q" or hand[1] == "K":
-        total = total + 10
-    elif hand[1] == "A":
-        if total >= 11:
+    for kort in range(len(deck)):
+        if kort == "J":
+            total = total + 10
+        elif kort == "Q":
+            total = total + 10
+        elif kort == "K":
+            total = total + 10
+        elif kort == "A":
+            if total >= 11:
                 total = total + 1
-        elif total < 11: 
-                total = total + 11
-    elif hand[2]== "J" or hand[2] == "Q" or hand[2] == "K":
-        total = total + 10
-    elif hand[2] == "A":
-        if total >= 11:
-                total = total + 1
-        elif total < 11: 
-                total = total + 11
-    elif hand[3]== "J" or hand[3] == "Q" or hand[3] == "K":
-        total = total + 10
-    elif hand[3] == "A":
-        if total >= 11:
-                total = total + 1
-        elif total < 11: 
-                total = total + 11
-    else:
-        total = hand[0] + hand[1]
-    return total
-
+            else:
+                total = total+ 11
+        elif kort != "J" or kort != "Q" or kort != "K" or kort != "A":
+                total = total + int(kort)
+        return total
 
 def hit(hand):
-	kort = deck.pop()
-	if kort == 11:kort = "J"
-	if kort == 12:kort = "Q"
-	if kort == 13:kort = "K"
-	if kort == 14:kort = "A"
-	if "0" in hand:
-        
-	return hand
+    random.shuffle(deck)
+    kort = deck.pop()
+    if kort == 11:
+        kort = "J"
+    if kort == 12:
+        kort = "Q"
+    if kort == 13:
+        kort = "K"
+    if kort == 14:
+        kort = "A"
+    hand.append(kort)
+    return hand
 
 def clear():
 	if os.name == 'nt':
@@ -152,37 +147,33 @@ def score(dealer_hand, player_hand):
 	elif total(player_hand) > total(dealer_hand):
 		print_results(dealer_hand, player_hand)			   
 		print ("Congratulations. Your score is higher than the dealer. You win\n")
+    
 
 def game():
     choice = 0
     clear()
-    print ("VELKOMMEN TIL BLACKJACK!\n")
+    print("WELCOME TO BLACKJACK!\n")
     dealer_hand = deal(deck)
     player_hand = deal(deck)
-    print ("The dealer is showing a " + str(dealer_hand[0]))
-    print ("You have a " + str(player_hand) + " for a total of " + str(total(player_hand)))
-    blackjack(dealer_hand, player_hand)
-    quit=False
-    while not quit:
-        choice = input("Vil du: [H]it, [S]tand, eller [Q]uit: ").lower()
-        if choice == 'h':
+    while choice != "q":
+        print("The dealer is showing a " + str(dealer_hand[0]))
+        print("You have" + str(player_hand) + " for a total of " + str(total(player_hand)))
+        blackjack(dealer_hand, player_hand)
+        choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
+        clear()
+        if choice == "h":
             hit(player_hand)
-            print(player_hand)
-            if total(player_hand)>21:
-                print('You busted')
-                play_again()
-        elif choice=='s':
-            while total(dealer_hand)<17:
+            if total(dealer_hand) < 17:
                 hit(dealer_hand)
-                print(dealer_hand)
-                if total(dealer_hand)>21:
-                    print('Dealer busts, you win!')
-                    play_again()
-            score(dealer_hand,player_hand)
+            score(dealer_hand, player_hand)
+            play_again()
+        elif choice == "s":
+            if total(dealer_hand) < 17:
+                hit(dealer_hand)
+            score(dealer_hand, player_hand)
             play_again()
         elif choice == "q":
             print("Bye!")
-            quit=True
             exit()
 if __name__ == "__main__":
-   game()
+    game()
