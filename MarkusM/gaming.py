@@ -1,5 +1,3 @@
-from ctypes.wintypes import HPALETTE
-
 
 
 class monster:
@@ -39,7 +37,7 @@ class event:
             print(self.eventText)
             print("")
         elif self.specialEvent == True:
-            print("2")
+            if self.eventId = 1
     
 
 
@@ -49,7 +47,7 @@ hero = hero(1,1,1,1,1,"geir")
 
 monsterList = []
 monsterList.append(monster1)
+monsterList.append(monster2)
+
 
 monsterList[0].combat()
-
-monster1.combat()
