@@ -39,44 +39,82 @@ class hero(monster):
         self.coward = coward
         self.inv = []
     
-    def invOpen(self):
-        print("")
-        print("Skriv inn tallet du objektet du vil vite mer om,")
-        print('eller skriv "b" for å gå tilbake')
-        print(f"1: {self.inv[0].name}")
-        if len(self.inv) == 2:
-            print(f"2: {self.inv[1].name}")
-            if len(self.inv) == 3:
-                print(f"3: {self.inv[2].name}")
-                if len(self.inv) == 4:
-                    print(f"4: {self.inv[3].name}")
-                else:
-                    print("4: tom")
-            else:
-                print("2: tom")
-                print("3. tom")
+    def itemAdd(self,itemAdd):
+        if len(self.inv) == 4:
+            print("inventoriet er fullt! Du kaster det du prøvde å plukke opp.")
         else:
-            print("2: tom")
-            print("3: tom")
-            print("4: tom")
+            self.inv.append(itemAdd)
 
+    def invOpen(self):
+        while True:
+            #displayer listen av valg
+            print("") 
+            print("Skriv inn tallet du objektet du vil vite mer om,")
+            print('eller skriv "b" for å gå tilbake')
+            if len(self.inv) >= 1:
+                print(f"1: {self.inv[0].name}")
+                if len(self.inv) >= 2:
+                    print(f"2: {self.inv[1].name}")
+                    if len(self.inv) >= 3:
+                        print(f"3: {self.inv[2].name}")
+                        if len(self.inv) == 4:
+                            print(f"4: {self.inv[3].name}")
+                        else:
+                            print("4: tom")
+                    else:
+                        print("2: tom")
+                        print("3. tom")
+                else:
+                    print("2: tom")
+                    print("3: tom")
+                    print("4: tom")
 
-        a = input("Hva gjør du?")
+                a = input("Hva gjør du?")
+                print("")
+                if a == "1": #vise stats til inventory
+                    if len(self.inv) > 0:
+                        self.itemOptions(0)
+            
+                elif a == "2":
+                    if len(self.inv) > 1:
+                        self.itemOptions(1)
+
+                elif a == "3":
+                    if len(self.inv) > 2:
+                        self.itemOptions(2)
+            
+                elif a == "4":
+                    if len(self.inv) > 3:
+                        self.itemOptions(3)
+
+                elif a == "b":
+                    break
+            elif len(self.inv) == 0:
+                print("")
+                print("Du har ingen items!")
+                break
+    def itemOptions(self,itemIndex):
+        
         print("")
+        print('trykk "s" for å se stats')
+        print('trykk "k" for å kaste')
+        print('trykk en annen knapp for å gå tilbake')
 
-        if a == "1": #vise stats til inventory
-            hero.istats(0)
-            
-        elif a == "2":
-           hero.istats(1)
+        a = input(f"Hva vil du gjøre med {self.inv[itemIndex].name}?")
 
-        elif a == "3":
-            hero.istats(2)
-            
-        elif a == "4":
-            hero.istats(3)
-            
-    def istats(self,i):
+        if a == "k":
+            self.itemRemove(itemIndex)
+        if a == "s":
+            self.iStats(itemIndex)
+
+
+    def itemRemove(self,itemIndex):
+        if len(self.inv) == 1:
+            self.inv.clear()
+        else:
+            del self.inv[itemIndex]
+
+    def iStats(self,i):
         print("")
         print(f"Navn: {self.inv[i].name}")
         print(self.inv[i].desc)
@@ -230,6 +268,7 @@ class event:
 
             print("")
         elif self.specialEvent == True:
+            print("")
             print(self.eventText)
             if self.eventID == 1:
                 
@@ -257,23 +296,87 @@ class event:
                 print("feil. Fant ikke eventID")
 
 class wEvent:
-    def __init__(self,eventText,options,keyOptions):
+    def __init__(self,eventText,options,keyOptions,id):
         self.eventText = eventText
         self.options = options
         self.keyOptions = keyOptions
+        self.id = id
+    
+    def worldEventOptions(self):
+        
+        while True:
+            print("")
+            print(self.eventText)
+            if "y" in self.options:
+                if self.id == 1: #spesiell melding for event 1
+                    print('trykk "y" for å gå inn')
+                else: #ordinær melding
+                    print('trykk "y" for ja')
+            
+            if "n" in self.options:
+                if self.id == 1: #spesiell melding for event 1
+                    print('trykk "n" for å bli utenfor')
+                else: #ordinær melding
+                    print('trykk "n" for nei')
+            if "i" in self.options:
+                print('trykk "i" for å åpne inventoriet')
+            
+            if "c" in self.options:
+                if self.id == 1: #spesiell melding for event 1
+                    print('trykk "c" for å undersøke huset')
+                else: #ordinær melding
+                    print('trykk "c" for å sjekke  stats til personen du møtte')
+
+            a = input("Hva gjør du? ")
+            if "i" in self.options and a == "i":
+                hero.invOpen()
+            if "n" in self.options and a == "n":
+                if self.id == 1: #spesiell melding for event 1
+                    print("Du forblir utenfor")
+                    break
+                else: #ordinær melding
+                    break
+
+            if "y" in self.options and a =="y":
+                if self.id == 1: #spesiell melding for event 1
+                    print("Du går inn")
+                    event3.event()
+                    break
+                else: #ordinær melding
+                    break
+             
+            if "c" in self.options and a =="c":
+                if self.id ==1: #spesiell melding for evnent 1
+                    if r.randint(1,2) == 1:
+                        print("")
+                        print("Du fant litt tre!")
+                        hero.itemAdd(mats)
+                    else:
+                        print("")
+                        print("Ett hus")
+    def worldEvent(self):
+        print("")
+
+        self.worldEventOptions()
+
+
+        print("")
+
+
 class item:
     def __init__(self,name,desc,dmg):
         self.name = name
         self.desc = desc
         self.dmg = dmg
 
-
+wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c"],["y","n","i","c"],1)
+mats = item("Tre","Litt tre du fant. Ubrukelig",0)
 fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
 starterPinne = item("Pinne","En veldig fin pinne. Ligner svært på en pistol",1)
 
 event1 = event(1,1,"Ett monster angriper deg!",False,101)
 event2 = event(2,3,"En gjeng med monstere angriper deg!",False,102)
-event3 = event(3,1,"På din reise møter du på Ninja fra fortnite. Han spør om du har noe materialer til han. Til gjengjeld sier han at han kan gi deg noe spesielt tilbake.",True,1)
+event3 = event(3,1,"Inne finner du Ninja fra Fornite. Han spør om du har noe materialer til han. Til gjengjeld sier han at han kan gi deg noe spesielt tilbake.",True,1)
 
 monster1 = monster(10,1,1,1,1,"gnom")
 monster2 = monster(1,1,1,1,1,"bob")
@@ -292,11 +395,12 @@ print("")
 
 hero.inv.append(starterPinne)
 
+wEvent1.worldEvent()
 """
 event1.event()
 hero.action()
 
 event2.event()
-"""
 
 event3.event()
+"""
