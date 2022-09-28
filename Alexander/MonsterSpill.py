@@ -11,15 +11,20 @@ weapons = {
 }
 
 class Game():
-    def __init__(self):
-        self.x = 10
-        self.y = 10
+    def __init__(self, Width, Height, Pxpos, Pypos):
+        self.x = Height
+        self.y = Width
+        self.x += 1
+        self.y += 1
         self.board = np.empty((self.x, self.y), dtype='str')
+        self.Pxpos = Pxpos
+        self.Pypos = Pypos
         
-    def init(self):
+    def init(self, monster):
         self.board.fill(' ')
         self.board[4][0] = 'M'
-        self.board[4][9] = 'P'
+        self.board[self.Pxpos][self.Pypos] = 'P'
+
     
     def printBoard(self):
         for y in range(0, self.y):
@@ -50,10 +55,10 @@ class Monster():
     
 class Player():
     
-    def __init__(self):
+    def __init__(self, game):
         self.health = 100
         self.inventory = ["Sword", None, None, None]
-        self.pos = [4, 9]
+        self.pos = [game.Pxpos, game.Pypos]
         
     def hit(self, amount):
         self.health -= amount
@@ -85,14 +90,13 @@ class Player():
         
         
         
-p1 = Player()  
 m = Monster() 
-game = Game()
-game.init()
+game = Game(5, 5, 2, 1)
+p1 = Player(game)  
+game.init(m)
 game.printBoard()
-p1.move(0, 8, game)
+p1.move(0, 0, game)
 print(p1.mrange(m))
-print(weapons[p1.inventory[0]][1])
 p1.attack(m)
 
     
