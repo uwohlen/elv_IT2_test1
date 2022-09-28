@@ -23,7 +23,7 @@ per = Spiller("Per", 110,1)
 
 print(arne)
 print(f'{per}, men Per har til gjengjeld super mye flaks!')
-karakter = input(print(f'Velg hvilken karakter du vil ha: For Arne trykk 1, og for Per trykk 2 '))
+karakter = input(f'Velg hvilken karakter du vil ha: For Arne trykk 1, og for Per trykk 2: ')
 
 if karakter == 1:
     print(f' Du valgte Arne, han er min favoritt :)')
