@@ -120,7 +120,7 @@ def score(dealer_hand, player_hand):
 	elif total(player_hand) < total(dealer_hand):
 		print_results(dealer_hand, player_hand)
         print("Sorry. Your score isn't higher than the dealer. You lose.\n")
-    else
+	elif total(player_hand) > total(dealer_hand):
         print_results(dealer_hand, player_hand)	
         print("Congratulations. Your score is higher than the dealer. You win\n")		
 
