@@ -33,6 +33,14 @@ class hero(monster):
         self.dead = dead
         self.coward = coward
     
+    def stats(self):
+        print("")
+        print(f"liv: {self.hp}")
+        print(f"level: {self.lv}")
+        print(f"damage: {self.dmg}")
+        print(f"xp: {self.xp}")
+
+    
     def victory(self,monsterID,monsterNr):
         #hvis ett monster dør:
 
@@ -63,16 +71,33 @@ class hero(monster):
         
     def combat(self,monsterID,monsterNr):
         monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg
+        print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
         if monsterList[monsterID-1].hp <= 0:
             return hero.victory(monsterID,monsterNr)
         
     
     def action(self):
-        a = input("hva vil du gjøre? ")
-    def combatAction(self):
+        a = input("hva vil du gjøre?")
+    def eAction(self):
         print("")
         print('trykk "f" for å sloss')
-        print('trukk "r" for å stikke av')
+        print('trykk "c" for å sjekke  stats til personen du møtte')
+        print('trykk "s" for å se dine stats')
+        print('trykk "r" for å stikke av')
+        a = input("hva gjør du? ")
+
+        if a == "f":
+            return "f"
+        if a == "r":
+            return "r"
+        if a == "c":
+            return "c"
+        if a == "s":
+            return "s"
+
+    def combatAction(self):
+        print('trykk "f" for å sloss')
+        print('trykk "r" for å stikke av')
         a = input("hva gjør du? ")
 
         print("")
@@ -84,21 +109,12 @@ class hero(monster):
         if a == "r":
             return "r"
         
-
     def death(self):
         print("du døde :(")
         print("på reisen din klarte du å:")
         print("siste stats:")
 
         hero.dead = True
-
-
-
-
-        
-
-
-
 
 class event:
     def __init__(self,monsterSpawn,monsterAmount,eventText,specialEvent,eventID):
@@ -131,7 +147,7 @@ class event:
                     action = hero.combatAction()  #actions11
                     if action == "f":
                         print("du angriper")
-                        hero.combatx(self.monsterSpawn,self.monsterAmount)
+                        hero.combat(self.monsterSpawn,self.monsterAmount)
                         
                     if action =="r":
                         print("du stakk av")
@@ -139,7 +155,7 @@ class event:
                         self.monsterAmount = 0
                 
                 #for eventer med fler enn ett monster
-            elif self.monsterAmount <= 6:
+            elif self.monsterAmount <= 2:
 
                 while self.monsterAmount > 0:
 
@@ -161,12 +177,22 @@ class event:
 
             print("")
         elif self.specialEvent == True:
-            if self.eventId == 1:
+            print(self.eventText)
+            if self.eventID == 1:
+                
                 #spesialevent 1
-                print("")
+                a = hero.eAction()
+                if a == "s":
+                    hero.stats()
+                if a == "c":
+                    monsterList[self.monsterSpawn-1].stats()
+                
+
+
 
             else:
                 print("feil. Fant ikke eventID")
+
 class wEvent:
     def __init__(self,eventText,options,keyOptions):
         self.eventText = eventText
@@ -175,10 +201,14 @@ class wEvent:
 
 
 event1 = event(1,1,"Ett monster angriper deg!",False,101)
-event2 = event(1,6,"En gjeng med monstere angriper deg!",False,102)
+event2 = event(2,3,"En gjeng med monstere angriper deg!",False,102)
+event3 = event(3,1,"På din reise møter du på Ninja fra fortnite. Han spør om du har noe materialer til han. Til gjengjeld sier han at han kan gi deg noe spesielt tilbake",True,1)
 
-monster1 = monster(1,1,1,1,1,1,"gnom")
-monster2 = monster(1,1,1,1,1,1,1)
+monster1 = monster(10,1,1,1,1,1,"gnom")
+monster2 = monster(1,1,1,1,1,1,"bob")
+monster3 = monster(10,10,27,"boogie bomb",100,1,'Tyler "Fortnite Ninja" Blevins')
+
+
 hero = hero(30,1,1,1,1,"geir",False,1)
 
 monsterList = []
@@ -186,7 +216,13 @@ monsterList.append(monster1)
 monsterList.append(monster2)
 
 
+print("")
+
+"""
 event1.event()
 hero.action()
 
 event2.event()
+"""
+
+event3.event()
