@@ -38,6 +38,40 @@ class hero(monster):
         self.coward = coward
         self.inv = []
 
+    def bossFight(self,monsterID):
+        if monsterID == 2: #ninja bossfight
+            print("")
+            print("Ninja: Jeg skal ikke prøve hardt siden du er ny rundt disse kanter")
+            print("Du angriper Ninja!")
+            
+            while monster3.hp > 0:
+                print("")
+                a = self.combatAction()
+
+                if a == "f":
+                    print("fight")
+                if a == "r":
+                    if r.randint(1,12) == 12:
+                        print("")
+                        print("Suksess! Du klare å stikke av!")
+                        break
+                    else:
+                        print("")
+                        print("Ninja: Du kan ikke stikka av fra meg!")
+                if a == "c":
+                    monster3.stats()
+                    print("Ninja: Hvorfor ser du på meg på den måten?")
+                    break
+                    #utvide for å lage en alternativ slutt på kampan
+                
+            
+
+            
+        else:
+            print("Feil. monsterID ikke funnet.")
+            
+
+
     def levelUp(self):
         self.lv += 1
         print(f"du fikk en level! Du er har nå {self.lv} levler")
@@ -196,6 +230,8 @@ class hero(monster):
     def combatAction(self):
         print('trykk "f" for å sloss')
         print('trykk "r" for å stikke av')
+        print('trykk "s" for å se stats')
+        print('trykk "c" for å se fienden sine stats')
         a = input("hva gjør du? ")
 
         print("")
@@ -206,6 +242,10 @@ class hero(monster):
             return "f"
         if a == "r":
             return "r"
+        if a == "s":
+            hero.stats()
+        if a == "c":
+            return "c"
         
     def death(self):
         print("du døde :(")
@@ -252,6 +292,8 @@ class event:
                         hero.coward +=1
                         self.monsterAmount = 0
                         break
+                    if action == "c":
+                        monsterList[self.monsterSpawn-1].stats()
                 
                 #for eventer med fler enn ett monster
             elif self.monsterAmount >= 2:
@@ -273,6 +315,8 @@ class event:
                         hero.coward +=1
                         self.monsterAmount = 0
                         break
+                    if action =="c":
+                        monsterList[self.monsterSpawn-1].stats()
                         
 
             print("")
@@ -316,6 +360,8 @@ class event:
                         if a == "f": #helten sloss mot tyler
                             print("")
                             print('Ninja: Feil valg')
+                            monster3.bossFight(self.monsterSpawn)
+                            
                         if a == "r":
                             print("")
                             print("Ninja: Du løper fra meg???")
@@ -410,6 +456,8 @@ class item:
         self.desc = desc
         self.dmg = dmg
 
+
+
 wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c","s"],["y","n","i","c","s"],1)
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
 fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
@@ -434,9 +482,11 @@ monsterList.append(monster3)
 
 print("")
 
-hero.inv.append(starterPinne)
-event1.event()
-wEvent1.worldEvent()
+hero.bossFight(2)
+
+#hero.inv.append(starterPinne)
+#event1.event()
+#wEvent1.worldEvent()
 """
 event1.event()
 hero.action()
