@@ -7,8 +7,7 @@ class Monster:
         self.iq = iq
         self.juks = juks
     def __str__(self):
-        print(f'Din motstander er {self.navn} som ikke liker å tape, og med sin iq på {self.iq}, vil han knuse deg!')
-        print(f'Han kan muligens jukse litt, men {self.navn} er et monster, hva skal du gjøre?')
+        return(f'Din motstander er {self.navn} som ikke liker å tape, og med sin iq på {self.iq}, vil han knuse deg! Han kan muligens jukse litt, men {self.navn} er et monster, hva skal du gjøre?')
 
 
 class Spiller:
@@ -52,50 +51,12 @@ def deal(deck):
         hand.append(card)
     return hand
 
-
-def game():
-    choice = 0
-    clear()
-    print ("WELCOME TO BLACKJACK!\n")
-    dealer_hand = deal(deck)
-    player_hand = deal(deck)
-    print ("The dealer is showing a " + str(dealer_hand[0]))
-    print ("You have a " + str(player_hand) + " for a total of " + str(total(player_hand)))
-    blackjack(dealer_hand, player_hand)
-    quit=False
-    while not quit:
-        choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
-        if choice == 'h':
-            hit(player_hand)
-            print(player_hand)
-            if total(player_hand)>21:
-                print('You busted')
-                play_again()
-        elif choice=='s':
-            while total(dealer_hand)<17:
-                hit(dealer_hand)
-                print(dealer_hand)
-                if total(dealer_hand)>21:
-                    print('Dealer busts, you win!')
-                    play_again()
-            score(dealer_hand,player_hand)
-            play_again()
-        elif choice == "q":
-            print("Bye!")
-            quit=True
-            exit()
-
-
-if __name__ == "__main__":
-   game()
-
 def play_again():
     again = input("Do you want to play again? (Y/N) : ").lower()
     if again == "y":
         dealer_hand = []
         player_hand = []
         deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-        game()
     else:
         print("Hade!")
         exit()
