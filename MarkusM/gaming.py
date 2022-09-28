@@ -9,7 +9,6 @@ class monster: #konstruktør for monster
         self.wk = wk
         self.xp = xp
         self.name = name
-
     def combat(self): #monster angriper
         hero.hp = hero.hp - self.dmg
         print(f"{hero.hp} liv igjen")
@@ -38,7 +37,11 @@ class hero(monster):
         self.dead = dead
         self.coward = coward
         self.inv = []
-    
+
+    def levelUp(self):
+        self.lv += 1
+        print(f"du fikk en level! Du er har nå {self.lv} levler")
+
     def itemAdd(self,itemAdd):
         if len(self.inv) == 4:
             print("inventoriet er fullt! Du kaster det du prøvde å plukke opp.")
@@ -98,7 +101,7 @@ class hero(monster):
         print("")
         print('trykk "s" for å se stats')
         print('trykk "k" for å kaste')
-        print('trykk en annen knapp for å gå tilbake')
+        print('trykk en annen for å gå tilbake')
 
         a = input(f"Hva vil du gjøre med {self.inv[itemIndex].name}?")
 
@@ -135,6 +138,10 @@ class hero(monster):
         print(f"{monsterList[monsterID-1].name} døde")
         self.xp += monsterList[monsterID-1].xp
         print("du fikk",monsterList[monsterID-1].xp,"xp")
+        while self.xp >= 10:
+            self.xp -=10
+            self.levelUp()
+            
         
         monsterNr = monsterNr-1
         monsterKilled = 1
@@ -155,7 +162,7 @@ class hero(monster):
             print("du vant!")
         else:
             print("kampen fortsetter")
-        return monsterKilled #returnerer hvor mange monstre som er drept
+            return monsterKilled #returnerer hvor mange monstre som er drept
         
     def combat(self,monsterID,monsterNr):
         monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg
@@ -228,7 +235,7 @@ class event:
                     hero.combat(self.monsterSpawn,self.monsterAmount)
                 
 
-                while monsterList[self.monsterSpawn-1].hp >=0:
+                while monsterList[self.monsterSpawn-1].hp > 0:
                     if r.randint(1,6) == 6:
                         print(f"{monsterList[self.monsterSpawn-1].name} har demens, og glemmer derfor å angripe")
 
@@ -244,9 +251,10 @@ class event:
                         print("du stakk av")
                         hero.coward +=1
                         self.monsterAmount = 0
+                        break
                 
                 #for eventer med fler enn ett monster
-            elif self.monsterAmount <= 2:
+            elif self.monsterAmount >= 2:
 
                 while self.monsterAmount > 0:
 
@@ -264,6 +272,7 @@ class event:
                         print("du stakk av")
                         hero.coward +=1
                         self.monsterAmount = 0
+                        break
                         
 
             print("")
@@ -288,9 +297,11 @@ class event:
                         if a == "y":
                             hero.itemRemove(i)
                             print("")
-                            print("takk")
+                            print(f"Ninja: takk {hero.name}")
                             tMats = True
                             event3.eventText = "Inne finner du Ninja fra Fortnite. Han er takknemlig for at du ga han mats, og planlegger å straks dra til moisty mire"
+                            hero.itemAdd(fortniteScar)
+                            print("Ninja ga deg en legendarisk scar fra Fortnite!")
                         if a =="n":
                             print("")
                             print("Triste saker, trodde du var bedre enn dette. Nå kan jeg aldri drepe tFue.")
@@ -351,6 +362,8 @@ class wEvent:
                     print('trykk "c" for å undersøke huset')
                 else: #ordinær melding
                     print('trykk "c" for å sjekke  stats til personen du møtte')
+            if "s" in self.options:
+                print('trykk "s" for å se dine stats')
 
             a = input("Hva gjør du? ")
             if "i" in self.options and a == "i":
@@ -379,6 +392,9 @@ class wEvent:
                     else:
                         print("")
                         print("Ett hus")
+            if "s" in self.options and a =="s":
+                hero.stats()
+
     def worldEvent(self):
         print("")
 
@@ -394,7 +410,7 @@ class item:
         self.desc = desc
         self.dmg = dmg
 
-wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c"],["y","n","i","c"],1)
+wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c","s"],["y","n","i","c","s"],1)
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
 fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
 starterPinne = item("Pinne","En veldig fin pinne. Ligner svært på en pistol",1)
@@ -419,7 +435,7 @@ monsterList.append(monster3)
 print("")
 
 hero.inv.append(starterPinne)
-#event1.event()
+event1.event()
 wEvent1.worldEvent()
 """
 event1.event()
