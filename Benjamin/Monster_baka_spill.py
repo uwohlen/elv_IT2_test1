@@ -3,7 +3,7 @@ import os
 import sys, time
 
 def slow_type(t):
-    typing_speed = 15000 #wpm
+    typing_speed = 150 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
@@ -37,10 +37,10 @@ slow_type(f'Karakteren Arne har en iq på hele 140!\n')
 slow_type(f'Karakteren Per har en iq på bare 70, men Per har til gjengjeld super mye flaks!\n')
 karakter = input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2:')
 
-if karakter := 1:
+if karakter == "1":
     slow_type(' Du valgte Arne, han er min favoritt :)\n')
     slow_type(f'{greven}\n')
-elif karakter := 2:
+elif karakter == "2":
     slow_type('Du valgte Per, han er en flink gutt :)\n')
     slow_type(f'{greven}\n')
 
