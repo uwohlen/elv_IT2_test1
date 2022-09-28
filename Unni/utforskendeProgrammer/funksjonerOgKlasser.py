@@ -1,3 +1,7 @@
+"""
+En fil som importeres av importFil.py
+UW
+"""
 def leggSammen(liste: list):
     """Summerer elementene i en liste. 
     En input, av typen liste, elementene må være av samme type. 
