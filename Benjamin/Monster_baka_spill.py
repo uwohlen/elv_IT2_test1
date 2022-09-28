@@ -57,8 +57,9 @@ def play_again():
         dealer_hand = []
         player_hand = []
         deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+        game()
     else:
-        print("Hade!")
+        print("Bye!")
         exit()
 
 def total(hand):
@@ -121,3 +122,37 @@ def score(dealer_hand, player_hand):
 	elif total(player_hand) > total(dealer_hand):
 		print_results(dealer_hand, player_hand)			   
 		print ("Congratulations. Your score is higher than the dealer. You win\n")
+
+def game():
+    choice = 0
+    clear()
+    print ("WELCOME TO BLACKJACK!\n")
+    dealer_hand = deal(deck)
+    player_hand = deal(deck)
+    print ("The dealer is showing a " + str(dealer_hand[0]))
+    print ("You have a " + str(player_hand) + " for a total of " + str(total(player_hand)))
+    blackjack(dealer_hand, player_hand)
+    quit=False
+    while not quit:
+        choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
+        if choice == 'h':
+            hit(player_hand)
+            print(player_hand)
+            if total(player_hand)>21:
+                print('You busted')
+                play_again()
+        elif choice=='s':
+            while total(dealer_hand)<17:
+                hit(dealer_hand)
+                print(dealer_hand)
+                if total(dealer_hand)>21:
+                    print('Dealer busts, you win!')
+                    play_again()
+            score(dealer_hand,player_hand)
+            play_again()
+        elif choice == "q":
+            print("Bye!")
+            quit=True
+            exit()
+if __name__ == "__main__":
+   game()
