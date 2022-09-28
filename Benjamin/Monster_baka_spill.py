@@ -1,5 +1,13 @@
 import random
 import os
+import sys, time, random
+
+def slow_type(t):
+    typing_speed = 150 #wpm
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+        time.sleep(random.random()*10.0/typing_speed)
 
 class Monster:
     def __init__(self,navn,iq,juks):
@@ -7,7 +15,7 @@ class Monster:
         self.iq = iq
         self.juks = juks
     def __str__(self):
-        return(f'Din motstander er {self.navn} som ikke liker å tape, og med sin iq på {self.iq}, vil han knuse deg! Han kan muligens jukse litt, men {self.navn} er et monster, hva skal du gjøre?')
+        return(f'Din motstander er {self.navn} som ikke liker å tape, og med sin iq på {self.iq}, \nvil han knuse deg! Han kan muligens jukse litt, men {self.navn} er et monster,\nhva skal du gjøre?                                                                                                          .')
 
 
 class Spiller:
@@ -17,25 +25,24 @@ class Spiller:
         self.flaks = flaks
     
     def __str__(self):
-        return(f'Karakteren {self.navn} har en iq på hele {self.iq}!')
+        return(slow_type(f'Karakteren {self.navn} har en iq på hele {self.iq}.'))
     
-arne = Spiller("Arne", 140,0)
-per = Spiller("Per", 110,1)
+arne = Spiller("Arne", "140","0")
+per = Spiller("Per", "70","1")
+greven = Monster("Greven","350","1")
 
-print('Dette spillet går ut på å spille blackjack mot en monster, er du klar?')
+slow_type('Dette spillet går ut på å spille blackjack mot et monster, er du klar?\n')
 
-print(arne)
-print(f'{per}, men Per har til gjengjeld super mye flaks!')
-karakter = input(f'Velg hvilken karakter du vil ha: For Arne trykk 1, og for Per trykk 2: ')
+slow_type(f'Karakteren Arne har en iq på hele 140!\n')
+slow_type(f'Karakteren Per har en iq på bare 70, men Per har til gjengjeld super mye flaks!\n')
+karakter = input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2: ')
 
 if karakter == 1:
-    print(f' Du valgte Arne, han er min favoritt :)')
-else:
-    print(f'Du valgte Per, han er en flink gutt :)')
+    slow_type(' Du valgte Arne, han er min favoritt :)\n')
+elif karakter == 2:
+    slow_type('Du valgte Per, han er en flink gutt :)\n')
 
-greven = Monster("Greven",350,1)
-
-print(greven)
+slow_type(f'{greven}\n')
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
@@ -66,11 +73,10 @@ def total(hand):
     total = 0
     for card in hand:
         if card == "J" or card == "Q" or card == "K":
-            total+= 10
+            total = total + 10
         elif card == "A":
-            if total >= 11: total+= 1
-        else: total+= 11
-        total += card
+            if total >= 11: total = total + 1
+        else: total = total + 11
     return total
 
 def hit(hand):
