@@ -32,8 +32,8 @@ per = Spiller("Per", "70","1")
 
 slow_type('Dette spillet går ut på å spille blackjack mot et monster, er du klar?\n')
 
-slow_type(f'Karakteren Arne har en iq på hele 140.\n')
-slow_type(f'Karakteren Per har en iq på hele 70, men Per har til gjengjeld super mye flaks!\n')
+slow_type(f'Karakteren Arne har en iq på hele 140!\n')
+slow_type(f'Karakteren Per har en iq på bare 70, men Per har til gjengjeld super mye flaks!\n')
 karakter = slow_type(input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2: \n'))
 
 if karakter == 1:
@@ -43,7 +43,7 @@ elif karakter == 2:
 
 greven = Monster("Greven","350","1")
 
-slow_type(f'{greven}\n')
+slow_type(greven)
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
