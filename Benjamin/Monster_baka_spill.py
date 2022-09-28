@@ -168,3 +168,9 @@ def game():
             exit()
 if __name__ == "__main__":
     game()
+
+#I fremtiden skal det legges til:
+#Valuta
+#oversikt over tap og seiere
+#Juks, flaks og iq skal spille en rolle
+#Valuta kan brukes for å drepe Greven
