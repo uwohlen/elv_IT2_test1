@@ -169,7 +169,7 @@ class hero(monster):
     def eAction(self):
         print("")
         print('trykk "f" for å sloss')
-        print('trykk "c" for å sjekke  stats til personen du møtte')
+        print('trykk "c" for å sjekke stats til personen du møtte')
         print('trykk "s" for å se dine stats')
         print('trykk "r" for å stikke av')
         print('trykk "i" for å åpne inventory')
@@ -268,25 +268,50 @@ class event:
 
             print("")
         elif self.specialEvent == True:
-            print("")
-            print(self.eventText)
             if self.eventID == 1:
-                
                 #spesialevent 1
+                tMats = False
                 while True:
-
-                    a = hero.eAction()
-                    if a == "c":
-                        monsterList[self.monsterSpawn-1].stats()
-                    if a == "f": #helten sloss mot tyler
+                    hasMats = False
+                    for i in range(len(hero.inv)):
+                        if "Tre" in hero.inv[i].name:
+                            hasMats = True
+                            matsLocation = i
+                            break
+                    if hasMats == True and tMats == False:
                         print("")
-                        print('Ninja: Feil valg')
-                    if a == "r":
+                        print(self.eventText)
                         print("")
-                        print("Ninja: Du løper fra meg???")
-                        print("Du løp fra Ninja")
-                        hero.coward +=1
-                        break
+                        print("Tyler: Du har mats!!!")
+                        print("Kan jeg få? Jeg trenger for å drepe tFue i moisy mire")
+                        a = input('Gir du han? Skriv inn "y" for ja og "n" for nei')
+                        if a == "y":
+                            hero.itemRemove(i)
+                            print("")
+                            print("takk")
+                            tMats = True
+                            event3.eventText = "Inne finner du Ninja fra Fortnite. Han er takknemlig for at du ga han mats, og planlegger å straks dra til moisty mire"
+                        if a =="n":
+                            print("")
+                            print("Triste saker, trodde du var bedre enn dette. Nå kan jeg aldri drepe tFue.")
+                            tMats = True
+                            event3.eventText = "Inne finner du Ninja fra Fortnite. Han er sint fordi du ikke ga han mats, selv om du har det på deg. Du burde kanskje ikke bli her lenge"
+                    else:
+                        print("")
+                        print(self.eventText)
+                        a = hero.eAction()
+                        if a == "c":
+                            monsterList[self.monsterSpawn-1].stats()
+                        if a == "f": #helten sloss mot tyler
+                            print("")
+                            print('Ninja: Feil valg')
+                        if a == "r":
+                            print("")
+                            print("Ninja: Du løper fra meg???")
+                            print("Du løp fra Ninja")
+                            hero.coward +=1
+                            break
+                    
                     
                 
 
@@ -394,7 +419,7 @@ monsterList.append(monster3)
 print("")
 
 hero.inv.append(starterPinne)
-
+#event1.event()
 wEvent1.worldEvent()
 """
 event1.event()
