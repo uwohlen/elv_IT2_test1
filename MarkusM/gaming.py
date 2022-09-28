@@ -1,4 +1,14 @@
 import random as r
+import sys, time
+
+def slow_type(t):
+    typing_speed = 15000 #wpm
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+        time.sleep(r.random()*10.0/typing_speed)
+
+
 
 class monster: #konstruktør for monster
     def __init__(self,hp,lv,dmg,wk,xp,name):
@@ -43,13 +53,47 @@ class hero(monster):
             print("")
             print("Ninja: Jeg skal ikke prøve hardt siden du er ny rundt disse kanter")
             print("Du angriper Ninja!")
-            
+            jukseSpm = False
             while monster3.hp > 0:
                 print("")
                 a = self.combatAction()
 
                 if a == "f":
                     self.combat(monsterID,1)
+
+                    if monsterList[monsterID-1].hp > 0:
+                        if self.hp == 1:
+                            if jukseSpm == False:
+                                print("Ninja: Siden du har ett hp igjen lar jeg deg slå meg en gang til, for morro skyld.")
+
+                                slow_type("Vil du jukse?")
+                                time.sleep(1)
+                                print("")
+
+                                a = input('Skriv "j" for ja og "n" for nei ')
+
+                                if a == "j":
+                                    time.sleep(0.5)
+                                    slow_type("Du jukser")
+                                    jukseSpm = True
+
+                                if a == "n":
+                                    print("Du jukser ikke")
+                                    jukseSpm = True
+                            else:
+                                hero.death()
+                                hero.stats()
+                                sys.exit()
+
+
+                            
+
+                        if self.hp > 1:
+                            print("Ninja angriper")
+                            print("Ninja dreper deg nesten i ett slag. Du har nå ett liv igjen")
+                            self.hp = 1
+
+                        
                 if a == "r":
                     if r.randint(1,12) == 12:
                         print("")
@@ -61,7 +105,6 @@ class hero(monster):
                 if a == "c":
                     monster3.stats()
                     print("Ninja: Hvorfor ser du på meg på den måten?")
-                    break
                     #utvide for å lage en alternativ slutt på kampan
                 
             
@@ -189,13 +232,11 @@ class hero(monster):
                 print("du fikk",monsterList[monsterID-1].xp,"xp")
                 monsterKilled = 2
 
-
-        print("det er",monsterNr,"monstre igjen")
-
         if monsterNr == 0:
             print("du vant!")
         else:
             print("kampen fortsetter")
+            print("det er",monsterNr,"monstre igjen")
             return monsterKilled #returnerer hvor mange monstre som er drept
         
     def combat(self,monsterID,monsterNr):
@@ -369,11 +410,6 @@ class event:
                             print("Du løp fra Ninja")
                             hero.coward +=1
                             break
-                    
-                    
-                
-
-
 
             else:
                 print("feil. Fant ikke eventID")
