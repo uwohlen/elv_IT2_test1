@@ -52,8 +52,45 @@ def deal(deck):
         hand.append(card)
     return hand
 
+
+def game():
+    choice = 0
+    clear()
+    print ("WELCOME TO BLACKJACK!\n")
+    dealer_hand = deal(deck)
+    player_hand = deal(deck)
+    print ("The dealer is showing a " + str(dealer_hand[0]))
+    print ("You have a " + str(player_hand) + " for a total of " + str(total(player_hand)))
+    blackjack(dealer_hand, player_hand)
+    quit=False
+    while not quit:
+        choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
+        if choice == 'h':
+            hit(player_hand)
+            print(player_hand)
+            if total(player_hand)>21:
+                print('You busted')
+                play_again()
+        elif choice=='s':
+            while total(dealer_hand)<17:
+                hit(dealer_hand)
+                print(dealer_hand)
+                if total(dealer_hand)>21:
+                    print('Dealer busts, you win!')
+                    play_again()
+            score(dealer_hand,player_hand)
+            play_again()
+        elif choice == "q":
+            print("Bye!")
+            quit=True
+            exit()
+
+
+if __name__ == "__main__":
+   game()
+
 def play_again():
-    again = raw_input("Do you want to play again? (Y/N) : ").lower()
+    again = input("Do you want to play again? (Y/N) : ").lower()
     if again == "y":
         dealer_hand = []
         player_hand = []
@@ -94,25 +131,32 @@ def print_results(dealer_hand, player_hand):
 	print("The dealer has a " + str(dealer_hand) + " for a total of " + str(total(dealer_hand)))
 	print("You have a " + str(player_hand) + " for a total of " + str(total(player_hand)))
 
-def vinn(dealer_hand, player_hand):	
+def blackjack(dealer_hand, player_hand):
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
-		print("Congratulations! You got a Blackjack!")
-	elif total(dealer_hand) > 21:
-		print_results(dealer_hand, player_hand)			   
-		print("Dealer busts. You win!")
-	elif total(player_hand) > total(dealer_hand):
-	    print(dealer_hand, player_hand)
-		print("Congratulations. Your score is higher than the dealer. You win")
-
-def tap(dealer_hand, player_hand):
-	if total(dealer_hand) == 21:
+		print ("Congratulations! You got a Blackjack!\n")
+		play_again()
+	elif total(dealer_hand) == 21:
 		print_results(dealer_hand, player_hand)		
-		print("Sorry, you lose. The dealer got a blackjack.")
+		print ("Sorry, you lose. The dealer got a blackjack.\n")
+		play_again()
+
+def score(dealer_hand, player_hand):
+	if total(player_hand) == 21:
+		print_results(dealer_hand, player_hand)
+		print ("Congratulations! You got a Blackjack!\n")
+	elif total(dealer_hand) == 21:
+		print_results(dealer_hand, player_hand)		
+		print ("Sorry, you lose. The dealer got a blackjack.\n")
 	elif total(player_hand) > 21:
 		print_results(dealer_hand, player_hand)
-		print("Sorry. You busted. You lose.")
+		print ("Sorry. You busted. You lose.\n")
+	elif total(dealer_hand) > 21:
+		print_results(dealer_hand, player_hand)			   
+		print ("Dealer busts. You win!\n")
 	elif total(player_hand) < total(dealer_hand):
 		print_results(dealer_hand, player_hand)
-		print("Sorry. Your score isn't higher than the dealer. You lose.")
-
+		print(f' Beklager, hånden din er lavere enn Greven sin, og du taper!\n')
+	elif total(player_hand) > total(dealer_hand):
+		print_results(dealer_hand, player_hand)			   
+		print ("Congratulations. Your score is higher than the dealer. You win\n")
