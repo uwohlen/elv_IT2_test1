@@ -35,14 +35,15 @@ slow_type('Dette spillet går ut på å spille blackjack mot et monster, er du k
 
 slow_type(f'Karakteren Arne har en iq på hele 140!\n')
 slow_type(f'Karakteren Per har en iq på bare 70, men Per har til gjengjeld super mye flaks!\n')
-karakter = input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2: ')
+karakter = input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2:')
 
-if karakter == 1:
+if karakter := 1:
     slow_type(' Du valgte Arne, han er min favoritt :)\n')
-elif karakter == 2:
+    slow_type(f'{greven}\n')
+elif karakter := 2:
     slow_type('Du valgte Per, han er en flink gutt :)\n')
+    slow_type(f'{greven}\n')
 
-slow_type(f'{greven}\n')
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
