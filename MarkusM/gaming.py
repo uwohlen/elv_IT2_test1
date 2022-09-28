@@ -39,7 +39,7 @@ class hero(monster):
         self.inv = []
 
     def bossFight(self,monsterID):
-        if monsterID == 2: #ninja bossfight
+        if monsterID == 3: #ninja bossfight
             print("")
             print("Ninja: Jeg skal ikke prøve hardt siden du er ny rundt disse kanter")
             print("Du angriper Ninja!")
@@ -49,7 +49,7 @@ class hero(monster):
                 a = self.combatAction()
 
                 if a == "f":
-                    print("fight")
+                    self.combat(monsterID,1)
                 if a == "r":
                     if r.randint(1,12) == 12:
                         print("")
@@ -200,6 +200,7 @@ class hero(monster):
         
     def combat(self,monsterID,monsterNr):
         monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg
+        print(f"Du gjør {self.dmg} skade")
         print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
         if monsterList[monsterID-1].hp <= 0:
             return hero.victory(monsterID,monsterNr)
@@ -482,7 +483,7 @@ monsterList.append(monster3)
 
 print("")
 
-hero.bossFight(2)
+hero.bossFight(3)
 
 #hero.inv.append(starterPinne)
 #event1.event()
