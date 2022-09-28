@@ -106,7 +106,7 @@ def clear():
         os.system('clear')
 
 def print_results(dealer_hand, player_hand):
-	clear()
+	'''clear()'''
 	print("Greven har " + str(dealer_hand) + " som tilsvarer " + str(total(dealer_hand)))
 	print("Du har " + str(player_hand) + " som tilsvarer " + str(total(player_hand)))
 
@@ -143,7 +143,7 @@ def score(dealer_hand, player_hand):
 
 def game():
     choice = 0
-    clear()
+    '''clear()'''
     print("VELKOMMEN TIL GREVENS BLACKJACK!\n")
     dealer_hand = deal(deck)
     player_hand = deal(deck)
@@ -151,7 +151,7 @@ def game():
         print(f'Du fikk kortene: {(player_hand)} som betyr at du har summen: {(total(player_hand))}')
         blackjack(dealer_hand, player_hand)
         choice = input("Vil du: [H]Slå, [S]stå, eller [A]Avslutte: ").lower()
-        clear()
+        '''clear()'''
         if choice == "h":
             hit(player_hand)
             while total(dealer_hand) < 17:
@@ -168,3 +168,9 @@ def game():
             exit()
 if __name__ == "__main__":
     game()
+
+#I fremtiden skal det legges til:
+#Valuta
+#oversikt over tap og seiere
+#Juks, flaks og iq skal spille en rolle
+#Valuta kan brukes for å drepe Greven
