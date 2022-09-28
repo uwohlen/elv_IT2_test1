@@ -2,7 +2,7 @@ rekkefolge = "abcdefghijklmnopqrstuvwxyzæøå"
 
 def navn_verdi(navn):
     total_verdi = 0
-    i = 1
+    i = 0
     maks = len(rekkefolge) * 2
     for bokstav in navn:
         indeks = rekkefolge.index(bokstav.lower())

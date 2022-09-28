@@ -1,3 +1,9 @@
+"""
+Sammenligner variabelen dictionary og funksjoner... 
+med en variabel som bygger på en klasse med innebygd metode
+UW
+"""
+
 mars={
     "navn":"Mars",
     "solavstand": 227.9,
