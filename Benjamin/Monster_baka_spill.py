@@ -29,21 +29,20 @@ class Spiller:
     
 arne = Spiller("Arne", "140","0")
 per = Spiller("Per", "70","1")
+greven = Monster("Greven","350","1")
 
 slow_type('Dette spillet går ut på å spille blackjack mot et monster, er du klar?\n')
 
 slow_type(f'Karakteren Arne har en iq på hele 140!\n')
 slow_type(f'Karakteren Per har en iq på bare 70, men Per har til gjengjeld super mye flaks!\n')
-karakter = slow_type(input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2: \n'))
+karakter = input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2: ')
 
 if karakter == 1:
-    slow_type(f' Du valgte Arne, han er min favoritt :)\n')
+    slow_type(' Du valgte Arne, han er min favoritt :)\n')
 elif karakter == 2:
-    slow_type(f'Du valgte Per, han er en flink gutt :)\n')
+    slow_type('Du valgte Per, han er en flink gutt :)\n')
 
-greven = Monster("Greven","350","1")
-
-slow_type(greven)
+slow_type(f'{greven}\n')
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
@@ -74,11 +73,10 @@ def total(hand):
     total = 0
     for card in hand:
         if card == "J" or card == "Q" or card == "K":
-            total+= 10
+            total = total + 10
         elif card == "A":
-            if total >= 11: total+= 1
-        else: total+= 11
-        total += card
+            if total >= 11: total = total + 1
+        else: total = total + 11
     return total
 
 def hit(hand):
