@@ -3,7 +3,7 @@ import os
 import sys, time, random
 
 def slow_type(t):
-    typing_speed = 150 #wpm
+    typing_speed = 1500 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
@@ -35,27 +35,28 @@ slow_type('Dette spillet går ut på å spille blackjack mot et monster, er du k
 
 slow_type(f'Karakteren Arne har en iq på hele 140!\n')
 slow_type(f'Karakteren Per har en iq på bare 70, men Per har til gjengjeld super mye flaks!\n')
-karakter = input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2: ')
+karakter = input('Velg hvilken karakter du vil bruke:\nFor Arne trykk 1, og for Per trykk 2:')
 
-if karakter == 1:
+if karakter := 1:
     slow_type(' Du valgte Arne, han er min favoritt :)\n')
-elif karakter == 2:
+    slow_type(f'{greven}\n')
+elif karakter := 2:
     slow_type('Du valgte Per, han er en flink gutt :)\n')
+    slow_type(f'{greven}\n')
 
-slow_type(f'{greven}\n')
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
 def deal(deck):
-    hand = []
+    hand = [0,0,0,0,0,0]
     for i in range(2):
         random.shuffle(deck)
-        card = deck.pop()
-        if card == 11:card = "J"
-        if card == 12:card = "Q"
-        if card == 13:card = "K"
-        if card == 14:card = "A"
-        hand.append(card)
+        kort = deck.pop()
+        if kort == 11:kort = "J"
+        if kort == 12:kort = "Q"
+        if kort == 13:kort = "K"
+        if kort == 14:kort = "A"
+        hand[1] = kort
     return hand
 
 def play_again():
@@ -71,21 +72,44 @@ def play_again():
 
 def total(hand):
     total = 0
-    for card in hand:
-        if card == "J" or card == "Q" or card == "K":
-            total = total + 10
-        elif card == "A":
-            if total >= 11: total = total + 1
-        else: total = total + 11
+    if hand[0] == "J" or hand[0] == "Q" or hand[0] == "K":
+        total = total + 10
+    elif hand[0] == "A":
+            total = total + 11
+    elif hand[1]== "J" or hand[1] == "Q" or hand[1] == "K":
+        total = total + 10
+    elif hand[1] == "A":
+        if total >= 11:
+                total = total + 1
+        elif total < 11: 
+                total = total + 11
+    elif hand[2]== "J" or hand[2] == "Q" or hand[2] == "K":
+        total = total + 10
+    elif hand[2] == "A":
+        if total >= 11:
+                total = total + 1
+        elif total < 11: 
+                total = total + 11
+    elif hand[3]== "J" or hand[3] == "Q" or hand[3] == "K":
+        total = total + 10
+    elif hand[3] == "A":
+        if total >= 11:
+                total = total + 1
+        elif total < 11: 
+                total = total + 11
+    else:
+        total = hand[0] + hand[1]
     return total
 
+
 def hit(hand):
-	card = deck.pop()
-	if card == 11:card = "J"
-	if card == 12:card = "Q"
-	if card == 13:card = "K"
-	if card == 14:card = "A"
-	hand.append(card)
+	kort = deck.pop()
+	if kort == 11:kort = "J"
+	if kort == 12:kort = "Q"
+	if kort == 13:kort = "K"
+	if kort == 14:kort = "A"
+	if "0" in hand:
+        
 	return hand
 
 def clear():
@@ -132,7 +156,7 @@ def score(dealer_hand, player_hand):
 def game():
     choice = 0
     clear()
-    print ("WELCOME TO BLACKJACK!\n")
+    print ("VELKOMMEN TIL BLACKJACK!\n")
     dealer_hand = deal(deck)
     player_hand = deal(deck)
     print ("The dealer is showing a " + str(dealer_hand[0]))
@@ -140,7 +164,7 @@ def game():
     blackjack(dealer_hand, player_hand)
     quit=False
     while not quit:
-        choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
+        choice = input("Vil du: [H]it, [S]tand, eller [Q]uit: ").lower()
         if choice == 'h':
             hit(player_hand)
             print(player_hand)
