@@ -3,7 +3,7 @@ import sys, time
 import os
 
 def slow_type(t):
-    typing_speed = 15000 #wpm
+    typing_speed = 300 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
@@ -13,7 +13,7 @@ def slower_type(t,speed):
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
-        time.sleep(r.random()*10.0/speed)
+        time.sleep(1/speed)
 
 def clear():
     if os.name == 'nt':
@@ -86,34 +86,35 @@ class hero(monster):
                                 if a == "j":
                                     time.sleep(0.5)
                                     slow_type("Du jukser")
+                                    time.sleep(0.9)
                                     jukseSpm = True
                                     print("")
-                                    time.sleep(0.9)
                                     slow_type("Hacker epic games...")
-                                    print("")
                                     time.sleep(0.5)
+                                    print("")
                                     slow_type("Infiltrerer fortnite_server...")
                                     time.sleep(0.5)
                                     print("")
                                     slow_type("Sletter ninja.png...")
                                     time.sleep(1)
                                     print("")
+                                    clear()
                                     slow_type("Error. Trenger bankID-innlogging")
                                     time.sleep(1)
                                     print("")
                                     input("fødeslsnummer")
                                     input("passord")
                                     clear()
-                                    slower_type("...",150)
+                                    slower_type("...",15)
                                     time.sleep(1)
                                     clear()
-                                    slower_type("...",100)
+                                    slower_type("...",10)
                                     time.sleep(1)
                                     clear()
-                                    slower_type("...",50)
+                                    slower_type("...",5)
                                     time.sleep(1)
                                     clear()
-                                    slower_type("...",20)
+                                    slower_type("...",2)
                                     time.sleep(1)
                                     clear()
                                     
@@ -123,10 +124,36 @@ class hero(monster):
                                     slow_type('"Tyler_Fortnite_Ninja_blevins.hp" = 0 ')
                                     slower_type("...",10)
                                     print("")
+                                    monster3.hp = 0 
 
+                                    if len(hero.inv) == 4:
+                                        slow_type(f'hero.inventory.remove({hero.inv[3]}')
+                                        hero.itemRemove(3)
 
+                                    slow_type(f'{hero.name}.inventory.add(Fortnite_Builder_Plan)...')
+                                    hero.itemAdd(Fortnite_Builder_Plan)
+                                    time.sleep(0.5)
+                                    print("")
+                                    slow_type("Tyler_Fortnite_Ninja_Blevins.death...")
+                                    time.sleep(0.5)
+                                    print("")
+                                    print("")
+                                    print("Ninja: Stream sniping")
+                                    time.sleep(1)
+                                    print("")
+                                    slow_type(f'{hero.name}.xp.set("tyler_Fortnite_Ninja_Blevins".xp")...')
+                                    print("")
+                                    time.sleep(1)
+                                    print("Du fikk 40 xp!")
+                                    hero.levelUp()
+                                    hero.levelUp()
+                                    hero.levelUp()
+                                    hero.levelUp()
 
+                                    print("Victory royale!")
 
+                                    break
+                                    
 
                                 if a == "n":
                                     print("Du jukser ikke")
@@ -454,9 +481,10 @@ class event:
                         if a == "c":
                             monsterList[self.monsterSpawn-1].stats()
                         if a == "f": #helten sloss mot tyler
-                            print("")
+                            clear()
                             print('Ninja: Feil valg')
-                            monster3.bossFight(self.monsterSpawn)
+                            hero.bossFight(self.monsterSpawn)
+                            break
                             
                         if a == "r":
                             print("")
@@ -517,6 +545,10 @@ class wEvent:
                     print("Du går inn")
                     event3.event()
                     break
+                if self.id == 2: #spesiell melding for event 2
+                    print("du går ut")
+                    wEventTomtHusUt.worldEvent()
+                    break
                 else: #ordinær melding
                     break
              
@@ -550,9 +582,17 @@ class item:
 
 
 wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c","s"],["y","n","i","c","s"],1)
+wEventTomtHus = wEvent("Huset er tomt. Vil du gå ut?",["y","n"],["y","n"],2)
+wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],3)
+wEventTomtHusIn = wEvent("Huset er forsatt tomt. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
+wEventTomtHuskiste = wEvent("I kisten fant du en scar!",["y","n"],["y","n"],203)
+WEvent2 = wEvent("Videre på din reise finner du en by",["y","n"],["n","n"],3)
+
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
 fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
 starterPinne = item("Pinne","En veldig fin pinne. Ligner svært på en pistol",1)
+Fortnite_Builder_Plan = item("Fortnite_Builder_Plan","?????????","????")
+
 
 event1 = event(1,1,"Ett monster angriper deg!",False,101)
 event2 = event(2,3,"En gjeng med monstere angriper deg!",False,102)
@@ -560,7 +600,7 @@ event3 = event(3,1,"Inne finner du Ninja fra Fornite. Han spør om du har noe ma
 
 monster1 = monster(10,1,1,1,1,"gnom")
 monster2 = monster(1,1,1,1,1,"bob")
-monster3 = monster(10,10,27,"boogie bomb",100,'Tyler "Fortnite Ninja" Blevins')
+monster3 = monster(10,10,27,"boogie bomb",40,'Tyler "Fortnite Ninja" Blevins')
 
 
 hero = hero(30,1,1,1,1,"geir",False,1)
@@ -570,19 +610,30 @@ monsterList.append(monster1)
 monsterList.append(monster2)
 monsterList.append(monster3)
 
-
+slow_type("Velkommen til dette spillet")
+time.sleep(1)
 print("")
+hero.name=input("Hva heter du?")
+print("")
+slower_type("ok",5)
+print("")
+slow_type("Du får en pinne for å komme i gang")
+time.sleep(1)
+clear()
+hero.inv.append(starterPinne)
 
-hero.bossFight(3)
 
-#hero.inv.append(starterPinne)
-#event1.event()
-#wEvent1.worldEvent()
-"""
+
 event1.event()
-hero.action()
-
+#hero.action()
 event2.event()
+#event3.event()
+wEvent1.worldEvent()
 
-event3.event()
-"""
+if monster3.hp == 0:
+    wEventTomtHus.worldEvent()
+else:
+    wEvent2.worldEvent()
+#wEvent2()
+
+#wEventTomtHus.worldEvent()
