@@ -656,4 +656,6 @@ else:
     wEvent2.worldEvent()
 #wEvent2()
 
-#wEventTomtHus.worldEvent()
+#wEventTomtHus.worldEvent()¨
+
+#legge til at itemet blir deselecta når ett item blir fjernet
