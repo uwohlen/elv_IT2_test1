@@ -9,7 +9,7 @@ def slow_type(t):
         sys.stdout.flush()
         time.sleep(random.random()*10.0/typing_speed)
 
-class Monster:
+class Monster: #konstruktør for monstere
     def __init__(self,navn,iq,juks):
         self.navn = navn
         self.iq = iq
@@ -18,7 +18,7 @@ class Monster:
         return(f'Din motstander er {self.navn} som ikke liker å tape, og med sin iq på {self.iq}, \nvil han knuse deg! Han kan muligens jukse litt, men {self.navn} er et monster,\nhva skal du gjøre?                                                                                                          .')
 
 
-class Spiller:
+class Spiller: #konstruktør for karakterer
     def __init__(self,navn,iq,flaks):
         self.navn = navn
         self.iq = iq
@@ -47,7 +47,7 @@ elif karakter == "2":
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
-def deal(deck):
+def deal(deck): #Definerer funksjonen for å dele ut kort
     hand = []
     for i in range(2):
         random.shuffle(deck)
@@ -63,7 +63,7 @@ def deal(deck):
         hand.append(kort)
     return hand
 
-def play_again():
+def play_again(): #Definerer funksjonen for å spille på nytt
     again = input("Vil du spille igjen? (Y/N) : \n").lower()
     if again == "y":
         dealer_hand = []
@@ -74,7 +74,7 @@ def play_again():
         print("Greven var vel for skummel!\n")
         exit()
 
-def total(hand):
+def total(hand): #Definerer funksjonen for å finne sum av utdelt kort
     total = 0
     for kort in hand:
         if kort == "J" or kort == "Q" or kort == "K":
@@ -85,7 +85,7 @@ def total(hand):
         else: total += kort
     return total
 
-def hit(hand):
+def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra kort delt ut
     random.shuffle(deck)
     kort = deck[random.randint(0,51)]
     if kort == 11:
@@ -99,18 +99,18 @@ def hit(hand):
     hand.append(kort)
     return hand
 
-def clear():
+def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
     if os.name == 'nt':
         os.system('CLS')
     if os.name == 'posix':
         os.system('clear')
 
-def print_results(dealer_hand, player_hand):
+def print_results(dealer_hand, player_hand): #Definerer funksjonen for å printe ut midlertidlige resultater til terminalen
 	'''clear()'''
 	slow_type(f' Greven har: {str(dealer_hand)}, som tilsvarer: {str(total(dealer_hand))}\n')
 	slow_type(f' Du har: {str(player_hand)}, som tilsvarer: {str(total(player_hand))}\n')
 
-def blackjack(dealer_hand, player_hand):
+def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi dersom noen har fått blackjack
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
 		slow_type("Gratulerer! Du fikk Blackjack!\n")
@@ -120,7 +120,8 @@ def blackjack(dealer_hand, player_hand):
 		slow_type("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
 		play_again()
 
-def score(dealer_hand, player_hand):
+def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut endelige resultater til terminalen
+	'''clear()'''
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
 		slow_type("Gratulerer! Du fikk Blackjack!\n")
@@ -141,7 +142,7 @@ def score(dealer_hand, player_hand):
 		slow_type("Gratulerer, hånden din er høyere enn Greven sin, og dermed vant du!\n")
     
 
-def game():
+def game(): #Definerer spillets gang :)
     choice = 0
     '''clear()'''
     slow_type("VELKOMMEN TIL GREVENS BLACKJACK!\n")
