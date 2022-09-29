@@ -582,9 +582,9 @@ class item:
 
 
 wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c","s"],["y","n","i","c","s"],1)
-wEventTomtHus = wEvent("Huset er tomt. Vil du gå ut?",["y","n"],["y","n"],2)
+wEventTomtHus = wEvent("Huset er tomt. Ninja sin døde kropp råtner på gulvet. Vil du gå ut?",["y","n"],["y","n"],2)
 wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],3)
-wEventTomtHusIn = wEvent("Huset er forsatt tomt. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
+wEventTomtHusIn = wEvent("Ninja sin døde kropp råtner fortsatt på gulvet. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
 wEventTomtHuskiste = wEvent("I kisten fant du en scar!",["y","n"],["y","n"],203)
 WEvent2 = wEvent("Videre på din reise finner du en by",["y","n"],["n","n"],3)
 
@@ -623,6 +623,7 @@ clear()
 hero.inv.append(starterPinne)
 
 
+slow_type("🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓")
 
 event1.event()
 #hero.action()
