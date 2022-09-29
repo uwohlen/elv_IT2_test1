@@ -48,7 +48,7 @@ elif karakter == "2":
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 vinn = 0
 tap = 0
-penger = 1000
+penger = 100000
 
 def deal(deck): #Definerer funksjonen for å dele ut kort
     hand = []
@@ -103,6 +103,20 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
     hand.append(kort)
     return hand
 
+def DrepeGreven():
+    global penger
+    ønske = input("Vil du bruke 10 000$ for å drepe Greven?   (Y/N): ").lower()
+    if ønske == "y":
+        penger -= 10000
+        slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
+        exit()
+    elif ønske == "n":
+        slow_type("Neivel da\n")
+    else:
+        slow_type("Neivel da\n")
+
+
+
 def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
     if os.name == 'nt':
         os.system('CLS')
@@ -122,14 +136,14 @@ def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi ders
     if total(player_hand) == 21:
         print_results(dealer_hand, player_hand)
         slow_type("Gratulerer! Du fikk Blackjack!\n")
-        play_again()
         vinn += 1
         penger += gamble * 2
+        play_again()
     elif total(dealer_hand) == 21:
         print_results(dealer_hand, player_hand)		
         slow_type("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
-        play_again()
         tap += 1
+        play_again()
 
 def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut endelige resultater til terminalen
     global vinn
@@ -172,9 +186,11 @@ def game(): #Definerer spillets gang :)
     global gamble
     choice = 0
     clear()
-    print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣\n")
-    slow_type(f'     seiere: {vinn}       tap: {tap}\n')
+    print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
+    slow_type(f' seiere: {vinn}       tap: {tap}\n')
     slow_type(f'Balanse: {penger}$\n')
+    if penger > 10000:
+        DrepeGreven()
     gamble = int(input(f'Skriv inn mengden $ du vil gamble: '))
     if int(gamble) > int(penger):
         slow_type(f'Skulle ønske du hadde så mye penger lmao\n')
@@ -186,11 +202,7 @@ def game(): #Definerer spillets gang :)
         penger = penger - gamble
     dealer_hand = deal(deck)
     player_hand = deal(deck)
-    if blackjack(dealer_hand, player_hand) == True:
-        blackjack(dealer_hand, player_hand)
-        vinn += 1
-        penger += gamble * 2
-        play_again()
+    blackjack(dealer_hand, player_hand)
     slow_type(f'Du fikk kortene: {(player_hand)} som betyr at du har summen: {(total(player_hand))}\n')
     while choice != "a":
         choice = input("Vil du: [H]Slå, [S]stå, eller [A]Avslutte: ").lower()
@@ -199,7 +211,6 @@ def game(): #Definerer spillets gang :)
             hit(player_hand)
             if total(player_hand) == 21:
                 blackjack(dealer_hand, player_hand)
-                play_again()
             slow_type(f'Du har: {str(player_hand)}, som tilsvarer: {str(total(player_hand))}\n')
             while total(dealer_hand) < 17:
                 hit(dealer_hand)
@@ -210,14 +221,11 @@ def game(): #Definerer spillets gang :)
         elif choice == "s":
             while total(dealer_hand) < 17:
                 hit(dealer_hand)
-                score(dealer_hand, player_hand)
-                play_again()
             if total(dealer_hand) > 17:
                 score(dealer_hand,player_hand)
                 play_again()
-            else:
-                score(dealer_hand,player_hand)
-                play_again()
+            score(dealer_hand, player_hand)
+            play_again()
         elif choice == "a":
             slow_type("Greven var vel for skummel!\n")
             exit()
@@ -227,9 +235,10 @@ if __name__ == "__main__":
 #I fremtiden skal det legges til:
 #oversikt over tap og seiere xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #Valuta xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-#Valuta kan brukes for å drepe Greven
+#Valuta kan brukes for å drepe Greven xxxxxxxxxxxxxxxxxxxx
 #Juks, flaks og iq skal spille en rolle
 #Flaks skal gjøre at noen ganger så mister man ikke penger siden greven glemmer å ta dem
 #Iq skal gjøre at man får ekstra bonuser/multipliers for gevinstene sine
 #Juksing kan gjøre at greven ikke gir tilbake den summen man skal ha
 #legge til voicelines for Greven basert på randint genererte nummere, disse blir printa etter hvert game
+#legge til en butikk hvor du kan kjøpe oppgraderinger, og glock for å drepe Greven
