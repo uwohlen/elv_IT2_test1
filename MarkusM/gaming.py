@@ -32,14 +32,14 @@ class monster: #konstruktør for monster
         self.name = name
     def combat(self): #monster angriper
         hero.hp = hero.hp - self.dmg
-        print(f"{hero.hp} liv igjen")
+        print(f"Du har {hero.hp} liv igjen")
         if hero.hp <=0:
             hero.dead()
 
     def mcombat(self,amount): #mange monstre angriper
         hero.hp = hero.hp - self.dmg*amount
         print("du tar",self.dmg*amount,"skade")
-        print(f"{hero.hp} liv igjen")
+        print(f"Du har {hero.hp} liv igjen")
         if hero.hp <=0:
             hero.death()
     def stats(self):
@@ -313,7 +313,9 @@ class hero(monster):
 
         if monsterNr == 0:
             print("du vant!")
+            return monsterKilled
         else:
+            clear()
             print("kampen fortsetter")
             print("det er",monsterNr,"monstre igjen")
             return monsterKilled #returnerer hvor mange monstre som er drept
@@ -350,16 +352,14 @@ class hero(monster):
             hero.invOpen()
 
     def combatAction(self):
+        print("")
         time.sleep(1)
         print('trykk "f" for å sloss')
         print('trykk "r" for å stikke av')
         print('trykk "s" for å se stats')
         print('trykk "c" for å se fienden sine stats')
         a = input("hva gjør du? ")
-
-        print("")
-        print("")
-        print("")
+        clear()
 
         if a == "f":
             return "f"
@@ -387,10 +387,11 @@ class event:
 
     def event(self):
         if self.specialEvent == False:
-            print("")
+            clear()
 
 
             print(self.eventText)
+            print("")
             if self.monsterAmount == 1:
                 #vanlige events
                 if r.randint(1,6) == 1:
@@ -586,7 +587,7 @@ wEventTomtHus = wEvent("Huset er tomt. Ninja sin døde kropp råtner på gulvet.
 wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],3)
 wEventTomtHusIn = wEvent("Ninja sin døde kropp råtner fortsatt på gulvet. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
 wEventTomtHuskiste = wEvent("I kisten fant du en scar!",["y","n"],["y","n"],203)
-WEvent2 = wEvent("Videre på din reise finner du en by",["y","n"],["n","n"],3)
+wEvent2 = wEvent("Videre på din reise finner du en by. En gammel mann sitter forran ett hus på en knirkete gyngestol.",["y","n"],["n","n"],3)
 
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
 fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
@@ -601,6 +602,8 @@ event3 = event(3,1,"Inne finner du Ninja fra Fornite. Han spør om du har noe ma
 monster1 = monster(10,1,1,1,1,"gnom")
 monster2 = monster(1,1,1,1,1,"bob")
 monster3 = monster(10,10,27,"boogie bomb",40,'Tyler "Fortnite Ninja" Blevins')
+gammelMann = monster(1,1,0,"alt",1,"Rodrik")
+
 
 
 hero = hero(30,1,1,1,1,"geir",False,1)
@@ -623,7 +626,7 @@ clear()
 hero.inv.append(starterPinne)
 
 
-slow_type("🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓🤓")
+#🤓
 
 event1.event()
 #hero.action()
