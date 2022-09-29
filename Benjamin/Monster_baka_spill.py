@@ -197,7 +197,7 @@ if __name__ == "__main__":
     game()
 
 #I fremtiden skal det legges til:
+#oversikt over tap og seiere xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #Valuta
-#oversikt over tap og seiere
-#Juks, flaks og iq skal spille en rolle
 #Valuta kan brukes for å drepe Greven
+#Juks, flaks og iq skal spille en rolle
