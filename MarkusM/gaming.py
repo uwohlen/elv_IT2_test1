@@ -520,7 +520,7 @@ class wEvent:
     def worldEventOptions(self):
         
         while True:
-            print("")
+            clear()
             print(self.eventText)
             if "y" in self.options:
                 if self.id == 1: #spesiell melding for event 1
@@ -656,6 +656,11 @@ else:
     wEvent2.worldEvent()
 #wEvent2()
 
-#wEventTomtHus.worldEvent()¨
+#wEventTomtHus.worldEvent()|
 
 #legge til at itemet blir deselecta når ett item blir fjernet
+#intergrere mer av story:
+    #finne en pc for å queue opp til ett fornite spill
+    #sloss mot den gamle mannen. Gjør at du får masse penger, men du får også en "bad omen"
+    #bruke fortnite scar til å sloss mot politiet. Hvis du vinner mot en politimann kommer du i fengsel, og kan rømme hvis man har mats og builder plan. Hvis man taper havner man i fengsel, og kan rømme.
+    #hvis man ikke fighter får man en lett dom. Må arbeide på en arbeidsleir
