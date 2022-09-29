@@ -29,7 +29,7 @@ class Spiller: #konstruktør for karakterer
     
 arne = Spiller("Arne", "140","0")
 per = Spiller("Per", "70","1")
-greven = Monster("Greven","350","1")
+greven = Monster("Greven","100","1")
 
 slow_type('Dette spillet går ut på å spille blackjack mot et monster, er du klar?\n')
 
@@ -172,7 +172,7 @@ def game(): #Definerer spillets gang :)
     global gamble
     choice = 0
     clear()
-    slow_type("VELKOMMEN TIL GREVENS BLACKJACK!\n")
+    print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣\n")
     slow_type(f'     seiere: {vinn}       tap: {tap}\n')
     slow_type(f'Balanse: {penger}$\n')
     gamble = int(input(f'Skriv inn mengden $ du vil gamble: '))
@@ -226,6 +226,9 @@ if __name__ == "__main__":
 
 #I fremtiden skal det legges til:
 #oversikt over tap og seiere xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-#Valuta
+#Valuta xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #Valuta kan brukes for å drepe Greven
 #Juks, flaks og iq skal spille en rolle
+#Flaks skal gjøre at noen ganger så mister man ikke penger siden greven glemmer å ta dem
+#Iq skal gjøre at man får ekstra bonuser/multipliers for gevinstene sine
+#Juksing kan gjøre at greven ikke gir tilbake den summen man skal ha
