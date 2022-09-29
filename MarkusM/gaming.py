@@ -34,7 +34,7 @@ class monster: #konstruktør for monster
         hero.hp = hero.hp - self.dmg
         print(f"Du har {hero.hp} liv igjen")
         if hero.hp <=0:
-            hero.dead()
+            hero.death()
 
     def mcombat(self,amount): #mange monstre angriper
         hero.hp = hero.hp - self.dmg*amount
@@ -145,10 +145,15 @@ class hero(monster):
                                     print("")
                                     time.sleep(1)
                                     print("Du fikk 40 xp!")
+                                    time.sleep(0.5)
                                     hero.levelUp()
+                                    time.sleep(0.5)
                                     hero.levelUp()
+                                    time.sleep(0.5)
                                     hero.levelUp()
+                                    time.sleep(0.5)
                                     hero.levelUp()
+                                    time.sleep(0.5)
 
                                     print("Victory royale!")
 
@@ -206,7 +211,7 @@ class hero(monster):
     def invOpen(self):
         while True:
             #displayer listen av valg
-            print("") 
+            clear()
             print("Skriv inn tallet du objektet du vil vite mer om,")
             print('eller skriv "b" for å gå tilbake')
             if len(self.inv) >= 1:
@@ -252,11 +257,11 @@ class hero(monster):
                 print("Du har ingen items!")
                 break
     def itemOptions(self,itemIndex):
-        
-        print("")
         time.sleep(0.5)
+        clear()
         print('trykk "s" for å se stats')
         print('trykk "k" for å kaste')
+        print('trykk "b" for å bruke')
         print('trykk en annen for å gå tilbake')
 
         a = input(f"Hva vil du gjøre med {self.inv[itemIndex].name}?")
@@ -265,6 +270,12 @@ class hero(monster):
             self.itemRemove(itemIndex)
         if a == "s":
             self.iStats(itemIndex)
+        if a == "b":
+            print(f"Du velger å bruke {hero.inv[itemIndex].name}")
+            time.sleep(1)
+            global itemSelected
+            itemSelected = itemIndex
+            
 
 
     def itemRemove(self,itemIndex):
@@ -280,8 +291,7 @@ class hero(monster):
         print(f"Skade: {self.inv[i].dmg}")
     
     def stats(self):
-        print("")
-        print("")
+        clear()
         print(f"liv: {self.hp}")
         print(f"level: {self.lv}")
         print(f"damage: {self.dmg}")
@@ -321,7 +331,7 @@ class hero(monster):
             return monsterKilled #returnerer hvor mange monstre som er drept
         
     def combat(self,monsterID,monsterNr):
-        monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg
+        monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg*hero.inv[itemSelected].dmg
         print(f"Du gjør {self.dmg} skade")
         print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
         if monsterList[monsterID-1].hp <= 0:
@@ -358,6 +368,7 @@ class hero(monster):
         print('trykk "r" for å stikke av')
         print('trykk "s" for å se stats')
         print('trykk "c" for å se fienden sine stats')
+        print('trykk "i" for å åpne inventory')
         a = input("hva gjør du? ")
         clear()
 
@@ -369,6 +380,8 @@ class hero(monster):
             hero.stats()
         if a == "c":
             return "c"
+        if a == "i":
+            hero.invOpen()
         
     def death(self):
         print("du døde :(")
@@ -608,6 +621,10 @@ gammelMann = monster(1,1,0,"alt",1,"Rodrik")
 
 hero = hero(30,1,1,1,1,"geir",False,1)
 
+
+itemSelected = 0
+
+
 monsterList = []
 monsterList.append(monster1)
 monsterList.append(monster2)
@@ -624,7 +641,6 @@ slow_type("Du får en pinne for å komme i gang")
 time.sleep(1)
 clear()
 hero.inv.append(starterPinne)
-
 
 #🤓
 
