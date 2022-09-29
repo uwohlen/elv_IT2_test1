@@ -232,3 +232,4 @@ if __name__ == "__main__":
 #Flaks skal gjøre at noen ganger så mister man ikke penger siden greven glemmer å ta dem
 #Iq skal gjøre at man får ekstra bonuser/multipliers for gevinstene sine
 #Juksing kan gjøre at greven ikke gir tilbake den summen man skal ha
+#legge til voicelines for Greven basert på randint genererte nummere, disse blir printa etter hvert game
