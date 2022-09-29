@@ -3,7 +3,7 @@ import os
 import sys, time
 
 def slow_type(t):
-    typing_speed = 150 #wpm
+    typing_speed = 15000 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
@@ -64,14 +64,14 @@ def deal(deck):
     return hand
 
 def play_again():
-    again = input("Vil du spille igjen? (Y/N) : ").lower()
+    again = input("Vil du spille igjen? (Y/N) : \n").lower()
     if again == "y":
         dealer_hand = []
         player_hand = []
         deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
         game()
     else:
-        print("Greven var vel for skummel!")
+        print("Greven var vel for skummel!\n")
         exit()
 
 def total(hand):
@@ -107,64 +107,70 @@ def clear():
 
 def print_results(dealer_hand, player_hand):
 	'''clear()'''
-	print("Greven har " + str(dealer_hand) + " som tilsvarer " + str(total(dealer_hand)))
-	print("Du har " + str(player_hand) + " som tilsvarer " + str(total(player_hand)))
+	slow_type(f' Greven har: {str(dealer_hand)}, som tilsvarer: {str(total(dealer_hand))}\n')
+	slow_type(f' Du har: {str(player_hand)}, som tilsvarer: {str(total(player_hand))}\n')
 
 def blackjack(dealer_hand, player_hand):
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
-		print ("Gratulerer! Du fikk Blackjack!\n")
+		slow_type("Gratulerer! Du fikk Blackjack!\n")
 		play_again()
 	elif total(dealer_hand) == 21:
 		print_results(dealer_hand, player_hand)		
-		print ("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
+		slow_type("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
 		play_again()
 
 def score(dealer_hand, player_hand):
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
-		print ("Gratulerer! Du fikk Blackjack!\n")
+		slow_type("Gratulerer! Du fikk Blackjack!\n")
 	elif total(dealer_hand) == 21:
 		print_results(dealer_hand, player_hand)		
-		print ("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
+		slow_type("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
 	elif total(player_hand) > 21:
 		print_results(dealer_hand, player_hand)
-		print ("Desverre busta du, altså gikk over 21, og dermed tapte :(\n")
+		slow_type("Desverre busta du, altså gikk over 21, og dermed tapte :(\n")
 	elif total(dealer_hand) > 21:
 		print_results(dealer_hand, player_hand)			   
-		print ("Greven busta, altså gikk over 21, og dermed vant du!\n")
+		slow_type("Greven busta, altså gikk over 21, og dermed vant du!\n")
 	elif total(player_hand) < total(dealer_hand):
 		print_results(dealer_hand, player_hand)
-		print(" Beklager, hånden din er lavere enn Greven sin, og du taper!\n")
+		slow_type(" Beklager, hånden din er lavere enn Greven sin, og du taper!\n")
 	elif total(player_hand) > total(dealer_hand):
 		print_results(dealer_hand, player_hand)			   
-		print ("Gratulerer, hånden din er høyere enn Greven sin, og dermned vant du!\n")
+		slow_type("Gratulerer, hånden din er høyere enn Greven sin, og dermed vant du!\n")
     
 
 def game():
     choice = 0
     '''clear()'''
-    print("VELKOMMEN TIL GREVENS BLACKJACK!\n")
+    slow_type("VELKOMMEN TIL GREVENS BLACKJACK!\n")
     dealer_hand = deal(deck)
     player_hand = deal(deck)
+    slow_type(f'Du fikk kortene: {(player_hand)} som betyr at du har summen: {(total(player_hand))}\n')
+    blackjack(dealer_hand, player_hand)
     while choice != "a":
-        print(f'Du fikk kortene: {(player_hand)} som betyr at du har summen: {(total(player_hand))}')
-        blackjack(dealer_hand, player_hand)
-        choice = input("Vil du: [H]Slå, [S]stå, eller [A]Avslutte: ").lower()
+        choice = input("Vil du: [H]Slå, [S]stå, eller [A]Avslutte: \n").lower()
         '''clear()'''
         if choice == "h":
             hit(player_hand)
+            slow_type(f' Du har: {str(player_hand)}, som tilsvarer: {str(total(player_hand))}\n')
             while total(dealer_hand) < 17:
                 hit(dealer_hand)
-            score(dealer_hand, player_hand)
-            play_again()
+            if total(player_hand)>21:
+                slow_type("Desverre busta du, altså gikk over 21, og dermed tapte :(\n")
+                play_again()
+            elif total(player_hand) == 21:
+                blackjack(dealer_hand, player_hand)
         elif choice == "s":
             while total(dealer_hand) < 17:
                 hit(dealer_hand)
-            score(dealer_hand, player_hand)
+                score(dealer_hand, player_hand)
+                play_again()
+            score(dealer_hand,player_hand)
             play_again()
         elif choice == "a":
-            print("Greven var vel for skummel!")
+            slow_type("Greven var vel for skummel!\n")
             exit()
 if __name__ == "__main__":
     game()
