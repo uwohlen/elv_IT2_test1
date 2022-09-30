@@ -53,7 +53,7 @@ class monster: #konstruktør for monster
         print(f"damage: {self.dmg}")
         print(f"xp: {self.xp}")
         print(f"svakhet: {self.wk}")
-        time.sleep(1)
+        time.sleep(2)
         print("")
 
 
@@ -199,6 +199,44 @@ class hero(monster):
                     monster3.stats()
                     print("Ninja: Hvorfor ser du på meg på den måten?")
                     #utvide for å lage en alternativ slutt på kampan
+        if monsterID == 4: #rodrik bossfight
+            time.sleep(0.5)
+            clear()
+            slow_type("Den gamle mannen angriper!")
+            print("")
+            time.sleep(1)
+            print("Gjør 0 skade")
+            time.sleep(0.5)
+            print(f"Du har fortsatt {hero.hp} liv igjen")
+            sspm = 0
+            time.sleep(1.5)
+            clear()
+            while True:
+                slow_type("Rodrik er utmattet")
+                print("")
+
+                a = self.combatAction()
+                if a == "f":
+                    print("Du gjør 9999 skade!")
+                    time.sleep(1.5)
+                    slow_type("Den gamle mannen dør!")
+                    time.sleep(1)
+                    clear()
+                    break
+                elif a == "r":
+                    if sspm == 0:
+
+                        slow_type("Hvorfor vil du stikke av?")
+                        sspm +=1
+                        time.sleep(1)
+                        clear()
+                    elif sspm == 1:
+                        slow_type("Du ville dette")
+                        time.sleep(1)
+                        clear()
+                elif a == "c":
+                    gammelMann.stats()
+
          
         else:
             print("Feil. monsterID ikke funnet.")
@@ -322,6 +360,8 @@ class hero(monster):
         print(f"level: {self.lv}")
         print(f"damage: {self.dmg}")
         print(f"xp: {self.xp}")
+        time.sleep(1)
+        print("")
 
     
     def victory(self,monsterID,monsterNr):
@@ -488,8 +528,7 @@ class event:
 
             print("")
         elif self.specialEvent == True:
-            if self.eventID == 1:
-                #spesialevent 1
+            if self.eventID == 1:   #spesialevent 1
                 tMats = False
                 while True:
                     hasMats = False
@@ -536,7 +575,8 @@ class event:
                             print("Du løp fra Ninja")
                             hero.coward +=1
                             break
-            elif self.eventID == 2:
+            elif self.eventID == 2: #spesialevent 2
+                fspm = 0
                 while True:
                     slow_type(self.eventText)
                     print("")
@@ -546,9 +586,29 @@ class event:
                         monsterList[self.monsterSpawn-1].stats()
                     if a == "f": #helten sloss mot den gamle mannen
                         clear()
-                        slower_type("...",2)
-                        print("")
-                        #hero.bossFight(self.monsterSpawn)
+                        if fspm == 0:
+                            slower_type("... ",2)
+                            time.sleep(1)
+                            slower_type('"nei"',10)
+                            print("")
+                            time.sleep(1)
+                            fspm +=1
+                            eventGammelMann.eventText = "Rodrik lurer på hva du faktisk vil"
+                            clear()
+                        elif fspm == 1:
+                            slower_type("... ",2)
+                            time.sleep(1)
+                            slower_type('"ikke"',10)
+                            print("")
+                            time.sleep(1)
+                            fspm +=1
+                            eventGammelMann.eventText = "Rodrik ser skrekkslagen ut"
+                            clear()
+                        elif fspm == 2:
+                            slower_type("...",2)
+                            time.sleep(2)
+                            hero.bossFight(self.monsterSpawn)
+                            break
                         #break
                         
                     if a == "r":
@@ -745,6 +805,8 @@ else: #om man ikke velger å sloss mot ninja
     wEvent2.worldEvent() #gammel mann i byen
     if gammelMann.hp <= 0: #lagrer badOmen for å sloss med djevel
         badOmen = True
+    print("Du går videre!")
+    time.sleep(1)
     event4.event()
     #butikk. Kjøpe eller snakke med inbyggere
     #if fight med shopkeeper and badomen == True:
@@ -761,10 +823,6 @@ else: #om man ikke velger å sloss mot ninja
             #????
 
     
-
-
-
-
 #legge til at itemet blir deselecta når ett item blir fjernet. - skal være fikset, men vet ikke sikkert
 
 #VIKTIG! kan ikke se hvor mye skade fiende gjør
