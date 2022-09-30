@@ -26,17 +26,6 @@ class Spiller: #konstruktør for karakterer
     
     def __str__(self):
         return(slow_type(f'Karakteren {self.navn} har en iq på hele {self.iq}.'))
-    
-'''class Butikk:
-    def __init__(self,navn,pris):
-        self.navn = navn
-        self.pris = pris
-    def __str__(self):
-        return(f'{self.navn}: {self.pris}$')'''
-
-'''glock9 = butikk("Glock9",10000)'''
-
-
 
 arne = Spiller("Arne", "140","0")
 per = Spiller("Per", "70","1")
@@ -69,10 +58,6 @@ tap = 0
 penger = 10000
 items = []
 butikk = ["[G]glock9: 10000$"]
-'''butikk = {
-"navn": "Glock9",
-"pris": 10000
-}'''
 
 def deal(deck): #Definerer funksjonen for å dele ut kort
     hand = []
@@ -152,29 +137,9 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
     hand.append(kort)
     return hand
 
-ønske = 0
-'''def DrepeGreven():
-    global penger
-    while True:
-        ønske = input("Vil du bruke 10 000$ for å drepe Greven?   (Y/N): ").lower()
-        if ønske == "y":
-            penger -= 10000
-            slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
-            break
-            exit()
-        elif ønske == "n":
-            slow_type("Neivel da\n")
-            break
-        else:
-            slow_type("Bruh, var det vanskelig å skrive ja eller nei?\n")'''
-
 def DrepeGreven():
     slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
     exit()
-
-
-
-
 
 def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
     if os.name == 'nt':
