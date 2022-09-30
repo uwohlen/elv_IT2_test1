@@ -35,7 +35,7 @@ class monster: #konstruktør for monster
         self.name = name
     def combat(self): #monster angriper
         hero.hp = hero.hp - self.dmg
-        print(f"Du har {hero.hp} liv igjen")
+        print(f"{self.name} angriper og gjør {self.dmg} skade. Du har {hero.hp} liv igjen")
         if hero.hp <=0:
             hero.death()
 
@@ -360,7 +360,7 @@ class hero(monster):
         print(f"level: {self.lv}")
         print(f"damage: {self.dmg}")
         print(f"xp: {self.xp}")
-        time.sleep(1)
+        time.sleep(2)
         print("")
 
     
@@ -371,6 +371,7 @@ class hero(monster):
         self.xp += monsterList[monsterID-1].xp
         print("du fikk",monsterList[monsterID-1].xp,"xp")
         while self.xp >= 10:
+            time.sleep(0.5)
             self.xp -=10
             self.levelUp()
             
@@ -388,17 +389,20 @@ class hero(monster):
                 monsterKilled = 2
 
         if monsterNr == 0:
-            print("du vant!")
+            slow_type("du vant!")
+            time.sleep(3.4)
             return monsterKilled
         else:
             clear()
             print("kampen fortsetter")
-            print("det er",monsterNr,"monstre igjen")
+            slow_type(f"det er {monsterNr} monstre igjen")
+            print("")
+            time.sleep(1)
             return monsterKilled #returnerer hvor mange monstre som er drept
         
     def combat(self,monsterID,monsterNr):
         monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg*hero.inv[itemSelected].dmg
-        print(f"Du gjør {self.dmg} skade")
+        print(f"Du angriper og gjør {self.dmg} skade")
         print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
         if monsterList[monsterID-1].hp <= 0:
             return hero.victory(monsterID,monsterNr)
@@ -452,6 +456,7 @@ class hero(monster):
             hero.invOpen()
         
     def death(self):
+        clear()
         print("du døde :(")
         print("på reisen din klarte du å:")
         print("siste stats:")
@@ -473,6 +478,7 @@ class event:
             slow_type(self.eventText)
             print("")
             print("")
+            time.sleep(1)
             if self.monsterAmount == 1:
                 #vanlige events
                 if r.randint(1,6) == 1:
@@ -481,7 +487,7 @@ class event:
                 
 
                 while monsterList[self.monsterSpawn-1].hp > 0:
-                    if r.randint(1,6) == 6:
+                    if r.randint(1,12) == 6:
                         print(f"{monsterList[self.monsterSpawn-1].name} har demens, og glemmer derfor å angripe")
 
                     else:
@@ -489,7 +495,6 @@ class event:
                     
                     action = hero.combatAction()  #actions11
                     if action == "f":
-                        print("du angriper")
                         hero.combat(self.monsterSpawn,self.monsterAmount)
                         
                     if action =="r":
@@ -512,7 +517,6 @@ class event:
                     print("")
                     action = hero.combatAction()  #actions
                     if action == "f":
-                        print("du angriper")
                         self.monsterAmount-=hero.combat(self.monsterSpawn,self.monsterAmount)
                         
                     if action =="r":
@@ -613,7 +617,7 @@ class event:
                         
                     if a == "r":
                         print("")
-                        print('"Hade bå badet!"')
+                        print('"Hade på badet!"')
                         time.sleep(0.5)
                         slow_type("Du gikk fra den gamle mannen")
                         time.sleep(1)
@@ -669,6 +673,12 @@ class wEvent:
                     global skipFactor
                     skipFactor =+1
                     break
+                elif self.id == 4:
+                    print("Du plukker ikke opp sverdet")
+                    break
+                elif self.id == 5:
+                    print("Du plukker ikke opp steinen")
+                    break
                 else: #ordinær melding
                     break
 
@@ -683,6 +693,16 @@ class wEvent:
                     break
                 elif self.id ==3:
                     eventGammelMann.event()
+                    break
+                elif self.id == 4:
+                    clear()
+                    print("Du plukker opp sverdet!")
+                    hero.itemAdd(bandittSverd)
+                    break
+                elif self.id == 5:
+                    clear()
+                    print("Du plukker opp steinen")
+                    hero.itemAdd(skarpStein)
                     break
                 else: #ordinær melding
                     break
@@ -717,12 +737,15 @@ wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryg
 wEventTomtHusIn = wEvent("Ninja sin døde kropp råtner fortsatt på gulvet. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
 wEventTomtHuskiste = wEvent("I kisten fant du en scar!",["y","n"],["y","n"],203)
 wEvent2 = wEvent("Videre på din reise finner du en by. En gammel mann sitter forran ett hus på en knirkete gyngestol. Går du bort til mannen?",["y","n"],["n","n"],3)
+wEventBandittSverd = wEvent("Banditten mistet ett sverd! Vil du plukke det opp?",["y","n"],["n","n"],4)
+wEventSkarpStein = wEvent("Gnomen mistet en skarp stein! Vil du plukke den opp?",["y","n"],["n","n"],5)
 
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
 fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
 starterPinne = item("Pinne","En veldig fin pinne. Ligner svært på en pistol",1)
 Fortnite_Builder_Plan = item("Fortnite_Builder_Plan","?????????","????")
-
+bandittSverd = item("Sverd","Ett helt ordinært sverd. Ble funnet på en banditts døde kropp.", 5)
+skarpStein = item("skarp Stein","En skarp stein du fant på en gnom",2)
 
 event1 = event(1,1,"Ett monster angriper deg!",False,101)
 event2 = event(2,3,"En gjeng med monstere angriper deg!",False,102)
@@ -730,12 +753,12 @@ event3 = event(3,1,"Inne finner du Ninja fra Fornite. Han spør om du har noe ma
 eventGammelMann = event(4,1,"Rodrik hilser deg velkommen.",True,2)
 event4 = event(5,1,"En banditt angriper deg!",False,103)
 
-monster1 = monster(1,1,1,1,1,"gnom")
+monster1 = monster(1,1,1,1,1,"Gnom")
 monster2 = monster(1,1,1,1,1,"bob")
 monster3 = monster(10,10,27,"boogie bomb",40,'Tyler "Fortnite Ninja" Blevins')
 gammelMann = monster(1,1,0,"alt",1,"Rodrik")
 monster4 = monster(10,2,2,"penger",2,"banditt")
-shopkeeper = monster(100,10,40,"å være hyggelig",1,"mohammed zumbul")
+shopkeeper = monster(100,10,40,"å være hyggelig",1,"Mohammed Zumbul")
 
 
 
@@ -777,15 +800,22 @@ hero.inv.append(starterPinne)
 
 #🤓
 
-#event1.event()
-#hero.action()
-#event2.event()
+event1.event()
+if monster1.hp == 0:
+    wEventSkarpStein.worldEvent()
+time.sleep(2)
+clear()
+
+event2.event() #flere monstere
+
+time.sleep(2)
+clear()
 
 #event3.event()
-#wEvent1.worldEvent()
+wEvent1.worldEvent() #huset
 
 #spillets gang
-
+time.sleep(2)
 if monster3.hp <= 0: #om ninja er død
     wEventTomtHus.worldEvent() 
     #if hero.inv has scar:
@@ -805,9 +835,15 @@ else: #om man ikke velger å sloss mot ninja
     wEvent2.worldEvent() #gammel mann i byen
     if gammelMann.hp <= 0: #lagrer badOmen for å sloss med djevel
         badOmen = True
+    clear()
     print("Du går videre!")
     time.sleep(1)
-    event4.event()
+    event4.event() #banditt
+    time.sleep(1)
+    if monster4.hp <= 0:
+        wEventBandittSverd.worldEvent() #bandittsverd
+    time.sleep(2)
+    
     #butikk. Kjøpe eller snakke med inbyggere
     #if fight med shopkeeper and badomen == True:
         #djevel bossfight
@@ -825,5 +861,5 @@ else: #om man ikke velger å sloss mot ninja
     
 #legge til at itemet blir deselecta når ett item blir fjernet. - skal være fikset, men vet ikke sikkert
 
-#VIKTIG! kan ikke se hvor mye skade fiende gjør
-#Redesigne combatUI. Skrive skade og hvem som angriper i en setning
+#VIKTIG! kan ikke se hvor mye skade fiende gjør - midlertidig fikset
+#Redesigne combatUI. Skrive skade og hvem som angriper i en setning - fikset, men kanskje ikke helt fornøyd?
