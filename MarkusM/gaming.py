@@ -402,7 +402,7 @@ class hero(monster):
         
     def combat(self,monsterID,monsterNr):
         monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg*hero.inv[itemSelected].dmg
-        print(f"Du angriper og gjør {self.dmg} skade")
+        print(f"Du angriper og gjør {self.dmg*hero.inv[itemSelected]} skade")
         print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
         if monsterList[monsterID-1].hp <= 0:
             return hero.victory(monsterID,monsterNr)
@@ -514,7 +514,6 @@ class event:
                     if hero.dead == True:
                         break
                     
-                    print("")
                     action = hero.combatAction()  #actions
                     if action == "f":
                         self.monsterAmount-=hero.combat(self.monsterSpawn,self.monsterAmount)
@@ -745,7 +744,7 @@ fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. G
 starterPinne = item("Pinne","En veldig fin pinne. Ligner svært på en pistol",1)
 Fortnite_Builder_Plan = item("Fortnite_Builder_Plan","?????????","????")
 bandittSverd = item("Sverd","Ett helt ordinært sverd. Ble funnet på en banditts døde kropp.", 5)
-skarpStein = item("skarp Stein","En skarp stein du fant på en gnom",2)
+skarpStein = item("Skarp Stein","En skarp stein du fant på en gnom",2)
 
 event1 = event(1,1,"Ett monster angriper deg!",False,101)
 event2 = event(2,3,"En gjeng med monstere angriper deg!",False,102)
@@ -808,14 +807,12 @@ clear()
 
 event2.event() #flere monstere
 
-time.sleep(2)
-clear()
-
 #event3.event()
 wEvent1.worldEvent() #huset
 
 #spillets gang
 time.sleep(2)
+clear()
 if monster3.hp <= 0: #om ninja er død
     wEventTomtHus.worldEvent() 
     #if hero.inv has scar:
@@ -861,5 +858,5 @@ else: #om man ikke velger å sloss mot ninja
     
 #legge til at itemet blir deselecta når ett item blir fjernet. - skal være fikset, men vet ikke sikkert
 
-#VIKTIG! kan ikke se hvor mye skade fiende gjør - midlertidig fikset
+#VIKTIG! kan ikke se hvor mye skade fiende gjør
 #Redesigne combatUI. Skrive skade og hvem som angriper i en setning - fikset, men kanskje ikke helt fornøyd?
