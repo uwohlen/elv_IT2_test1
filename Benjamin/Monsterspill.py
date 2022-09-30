@@ -52,10 +52,10 @@ while True:
 
 
 
-deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 vinn = 0
 tap = 0
-penger = 10000
+penger = 1000
 items = []
 butikk = ["[G]glock9: 10000$"]
 
@@ -97,19 +97,31 @@ def play_again(): #Definerer funksjonen for å spille på nytt
             print("\n")
             while True:
                 gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-                if gjenstand == "g" and penger >= 10000:
-                    items.append("Glock9")
-                    butikk.pop(0)
-                    penger -= 10000
-                    slow_type("Takk for kjøpet!\n")
-                    slow_type(f'Din nye balanse er: {penger}$                                                      \n')
-                    break
-                elif gjenstand == "g" and penger < 10000:
-                    slow_type("Du har ikke råd, fattiglus!")
-                elif gjenstand == "t":
-                    break
-                else:
-                    slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                if "[G]glock9: 10000$" in butikk:
+                    if gjenstand == "g" and penger >= 10000:
+                        items.append("Glock9")
+                        butikk.pop(0)
+                        penger -= 10000
+                        slow_type("Takk for kjøpet!\n")
+                        slow_type(f'Din nye balanse er: {penger}$                                                      \n')
+                        break
+                    elif gjenstand == "g" and penger < 10000:
+                        slow_type("Du har ikke råd, fattiglus!")
+                    elif gjenstand == "t":
+                        break
+                    else:
+                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                elif "[G]glock9: 10000$" not in butikk:
+                    gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
+                    if gjenstand == "t":
+                        break
+                    if gjenstand == "g":
+                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                    else:
+                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                        
+
+
         game()
 
 def total(hand): #Definerer funksjonen for å finne sum av utdelt kort
@@ -198,12 +210,12 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         vinn += 1
         penger += gamble * 2
         slow_type(f'Din nye balanse er: {penger}$\n')
-    elif total(player_hand) < total(dealer_hand):
+    elif int(total(player_hand)) < int(total(dealer_hand)):
         print_results(dealer_hand, player_hand)
         slow_type("Beklager, hånden din er lavere enn Greven sin, og du taper!\n")
         tap += 1
         slow_type(f'Din nye balanse er: {penger}$\n')
-    elif total(player_hand) > total(dealer_hand):
+    elif int(total(player_hand)) > int(total(dealer_hand)):
         print_results(dealer_hand, player_hand)			   
         slow_type("Gratulerer, hånden din er høyere enn Greven sin, og dermed vant du!\n")
         vinn += 1
@@ -260,12 +272,15 @@ def game(): #Definerer spillets gang :)
                 tap += 1
                 play_again()
         elif choice == "s":
-            while total(dealer_hand) < 17:
-                hit(dealer_hand)
             if total(dealer_hand) > 17:
                 score(dealer_hand,player_hand)
                 play_again()
-            score(dealer_hand, player_hand)
+            else:
+                while total(dealer_hand) < 17:
+                    hit(dealer_hand)
+                score(dealer_hand,player_hand)
+                play_again()
+            score(dealer_hand,player_hand)
             play_again()
         elif choice == "a":
             slow_type("Greven var vel for skummel!\n")
