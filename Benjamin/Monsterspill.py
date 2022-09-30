@@ -57,7 +57,7 @@ vinn = 0
 tap = 0
 penger = 1000
 items = []
-butikk = ["[G]glock9: 10000$"]
+butikk = ["[G]glock9: 10.000$"]
 
 def deal(deck): #Definerer funksjonen for å dele ut kort
     hand = []
@@ -91,13 +91,13 @@ def play_again(): #Definerer funksjonen for å spille på nytt
         elif again == "b":
             global penger
             clear()
-            print("♣♠♦♥BUTIKK♥♦♠♣")
+            print(f'♣♠♦♥BUTIKK♥♦♠♣            Balanse: {penger}$')
             for i in range(len(butikk)):
                 print(butikk[i])
             print("\n")
             while True:
                 gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-                if "[G]glock9: 10000$" in butikk:
+                if "[G]glock9: 10.000$" in butikk:
                     if gjenstand == "g" and penger >= 10000:
                         items.append("Glock9")
                         butikk.pop(0)
@@ -106,12 +106,12 @@ def play_again(): #Definerer funksjonen for å spille på nytt
                         slow_type(f'Din nye balanse er: {penger}$                                                      \n')
                         break
                     elif gjenstand == "g" and penger < 10000:
-                        slow_type("Du har ikke råd, fattiglus!")
+                        slow_type("Du har ikke råd, fattiglus!\n")
                     elif gjenstand == "t":
                         break
                     else:
                         slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
-                elif "[G]glock9: 10000$" not in butikk:
+                elif "[G]glock9: 10.000$" not in butikk:
                     gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
                     if gjenstand == "t":
                         break
