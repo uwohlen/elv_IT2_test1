@@ -1,6 +1,9 @@
+#monsterspill 1.0
 import random as r
 import sys, time
 import os
+
+
 
 def slow_type(t):
     typing_speed = 300 #wpm
@@ -43,13 +46,15 @@ class monster: #konstruktør for monster
         if hero.hp <=0:
             hero.death()
     def stats(self):
-        print("")
+        clear()
         print(f"navn: {self.name}")
         print(f"liv: {self.hp}")
         print(f"level: {self.lv}")
         print(f"damage: {self.dmg}")
         print(f"xp: {self.xp}")
         print(f"svakhet: {self.wk}")
+        time.sleep(1)
+        print("")
 
 
 class hero(monster):
@@ -175,8 +180,13 @@ class hero(monster):
                             print("Ninja angriper")
                             print("Ninja dreper deg nesten i ett slag. Du har nå ett liv igjen")
                             self.hp = 1
-
-                        
+                    if monster3.hp <= 0:
+                        print("Ninja: Stream sniping")
+                        time.sleep(1)
+                        print("Victory royale!")
+                        time.sleep(2)
+                        break
+                
                 if a == "r":
                     if r.randint(1,12) == 12:
                         print("")
@@ -189,14 +199,9 @@ class hero(monster):
                     monster3.stats()
                     print("Ninja: Hvorfor ser du på meg på den måten?")
                     #utvide for å lage en alternativ slutt på kampan
-                
-            
-
-            
+         
         else:
             print("Feil. monsterID ikke funnet.")
-            
-
 
     def levelUp(self):
         self.lv += 1
@@ -211,17 +216,25 @@ class hero(monster):
     def invOpen(self):
         while True:
             #displayer listen av valg
-            clear()
+            #lage metode for å displaye hvilket item som er i bruk. Er det mulig å putte en if-setning
+            #i en print funksjon? Evt displate x for i bruk, og mellomrom for ikke i bruk, eller (i bruk)?
+            if len(self.inv) == 0:
+                print("")
+                print("Du har ingen items!")
+                break
+            print(f"-{hero.name}'s inventory-")
+            print("")
             print("Skriv inn tallet du objektet du vil vite mer om,")
             print('eller skriv "b" for å gå tilbake')
+            global itemSelected
             if len(self.inv) >= 1:
-                print(f"1: {self.inv[0].name}")
+                print(f"1: {self.inv[0].name} {'(selected)' if itemSelected == 0 else ' '}")
                 if len(self.inv) >= 2:
-                    print(f"2: {self.inv[1].name}")
+                    print(f"2: {self.inv[1].name} {'(selected)' if itemSelected == 1 else ' '}")
                     if len(self.inv) >= 3:
-                        print(f"3: {self.inv[2].name}")
+                        print(f"3: {self.inv[2].name} {'(selected)' if itemSelected == 2 else ' '}")
                         if len(self.inv) == 4:
-                            print(f"4: {self.inv[3].name}")
+                            print(f"4: {self.inv[3].name} {'(selected)' if itemSelected == 3 else ' '}")
                         else:
                             print("4: tom")
                     else:
@@ -233,7 +246,7 @@ class hero(monster):
                     print("4: tom")
 
                 a = input("Hva gjør du?")
-                print("")
+                clear()
                 if a == "1": #vise stats til inventory
                     if len(self.inv) > 0:
                         self.itemOptions(0)
@@ -252,20 +265,16 @@ class hero(monster):
 
                 elif a == "b":
                     break
-            elif len(self.inv) == 0:
-                print("")
-                print("Du har ingen items!")
-                break
     def itemOptions(self,itemIndex):
-        time.sleep(0.5)
-        clear()
+        print(f"-{hero.inv[itemIndex].name}-")
+        print("")
         print('trykk "s" for å se stats')
         print('trykk "k" for å kaste')
         print('trykk "b" for å bruke')
         print('trykk en annen for å gå tilbake')
 
         a = input(f"Hva vil du gjøre med {self.inv[itemIndex].name}?")
-
+        clear()
         if a == "k":
             self.itemRemove(itemIndex)
         if a == "s":
@@ -279,10 +288,27 @@ class hero(monster):
 
 
     def itemRemove(self,itemIndex):
+        global itemSelected
         if len(self.inv) == 1:
             self.inv.clear()
+            if itemSelected == itemIndex:
+                print(f"Våpenet du bruker ble kastet. Når du får ett item, vil det bli valgt automatisk")
+                itemSelected = 0
+
         else:
             del self.inv[itemIndex]
+            if itemSelected == itemIndex:
+                print(f"Våpenet du bruker ble kastet. {hero.inv[0].name} ble valgt automatisk.")
+                itemSelected = 0
+            elif itemSelected > itemIndex:
+                itemSelected -= 1
+            #testing:
+            #print(itemSelected, "itemSelected")
+            #print(itemIndex,"itemIndex")
+            #VIKTIG. Finne ut hvilket item som brukes, og selecte det igjen.
+            #Hvis feil våpen brukes, endre elif-koden over
+        
+        
 
     def iStats(self,i):
         print("")
@@ -359,6 +385,7 @@ class hero(monster):
         if a == "s":
             hero.stats()
         if a == "i":
+            clear()
             hero.invOpen()
 
     def combatAction(self):
@@ -381,6 +408,7 @@ class hero(monster):
         if a == "c":
             return "c"
         if a == "i":
+            clear()
             hero.invOpen()
         
     def death(self):
@@ -400,10 +428,10 @@ class event:
 
     def event(self):
         if self.specialEvent == False:
-            clear()
 
 
-            print(self.eventText)
+            slow_type(self.eventText)
+            print("")
             print("")
             if self.monsterAmount == 1:
                 #vanlige events
@@ -454,6 +482,8 @@ class event:
                         break
                     if action =="c":
                         monsterList[self.monsterSpawn-1].stats()
+            clear()
+        
                         
 
             print("")
@@ -469,27 +499,27 @@ class event:
                             matsLocation = i
                             break
                     if hasMats == True and tMats == False:
+                        slow_type(self.eventText)
                         print("")
-                        print(self.eventText)
                         print("")
-                        print("Tyler: Du har mats!!!")
+                        print("Ninja: Du har mats!!!")
                         print("Kan jeg få? Jeg trenger for å drepe tFue i moisy mire")
                         a = input('Gir du han? Skriv inn "y" for ja og "n" for nei')
                         if a == "y":
                             hero.itemRemove(i)
-                            print("")
+                            clear()
                             print(f"Ninja: takk {hero.name}")
+                            print("")
                             tMats = True
                             event3.eventText = "Inne finner du Ninja fra Fortnite. Han er takknemlig for at du ga han mats, og planlegger å straks dra til moisty mire"
                             hero.itemAdd(fortniteScar)
                             print("Ninja ga deg en legendarisk scar fra Fortnite!")
                         if a =="n":
-                            print("")
-                            print("Triste saker, trodde du var bedre enn dette. Nå kan jeg aldri drepe tFue.")
+                            clear()
+                            print("Ninja: Triste saker, trodde du var bedre enn dette. Nå kan jeg aldri drepe tFue.")
                             tMats = True
                             event3.eventText = "Inne finner du Ninja fra Fortnite. Han er sint fordi du ikke ga han mats, selv om du har det på deg. Du burde kanskje ikke bli her lenge"
                     else:
-                        print("")
                         print(self.eventText)
                         a = hero.eAction()
                         if a == "c":
@@ -506,7 +536,30 @@ class event:
                             print("Du løp fra Ninja")
                             hero.coward +=1
                             break
-
+            elif self.eventID == 2:
+                while True:
+                    slow_type(self.eventText)
+                    print("")
+                    a = hero.eAction()
+                    clear()
+                    if a == "c":
+                        monsterList[self.monsterSpawn-1].stats()
+                    if a == "f": #helten sloss mot den gamle mannen
+                        clear()
+                        slower_type("...",2)
+                        print("")
+                        #hero.bossFight(self.monsterSpawn)
+                        #break
+                        
+                    if a == "r":
+                        print("")
+                        print('"Hade bå badet!"')
+                        time.sleep(0.5)
+                        slow_type("Du gikk fra den gamle mannen")
+                        time.sleep(1)
+                        clear()
+                        hero.coward +=1
+                        break
             else:
                 print("feil. Fant ikke eventID")
 
@@ -520,7 +573,6 @@ class wEvent:
     def worldEventOptions(self):
         
         while True:
-            clear()
             print(self.eventText)
             if "y" in self.options:
                 if self.id == 1: #spesiell melding for event 1
@@ -545,11 +597,17 @@ class wEvent:
                 print('trykk "s" for å se dine stats')
 
             a = input("Hva gjør du? ")
+            clear()
             if "i" in self.options and a == "i":
                 hero.invOpen()
             if "n" in self.options and a == "n":
                 if self.id == 1: #spesiell melding for event 1
                     print("Du forblir utenfor")
+                    break
+                elif self.id == 3:
+                    print("Du går videre")
+                    global skipFactor
+                    skipFactor =+1
                     break
                 else: #ordinær melding
                     break
@@ -559,9 +617,12 @@ class wEvent:
                     print("Du går inn")
                     event3.event()
                     break
-                if self.id == 2: #spesiell melding for event 2
+                elif self.id == 2: #spesiell melding for event 2
                     print("du går ut")
                     wEventTomtHusUt.worldEvent()
+                    break
+                elif self.id ==3:
+                    eventGammelMann.event()
                     break
                 else: #ordinær melding
                     break
@@ -569,22 +630,17 @@ class wEvent:
             if "c" in self.options and a =="c":
                 if self.id ==1: #spesiell melding for evnent 1
                     if r.randint(1,2) == 1:
-                        print("")
                         print("Du fant litt tre!")
+                        print("")
                         hero.itemAdd(mats)
                     else:
+                        print('"Ett hus"')
                         print("")
-                        print("Ett hus")
             if "s" in self.options and a =="s":
                 hero.stats()
 
     def worldEvent(self):
-        print("")
-
         self.worldEventOptions()
-
-
-        print("")
 
 
 class item:
@@ -600,7 +656,7 @@ wEventTomtHus = wEvent("Huset er tomt. Ninja sin døde kropp råtner på gulvet.
 wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],3)
 wEventTomtHusIn = wEvent("Ninja sin døde kropp råtner fortsatt på gulvet. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
 wEventTomtHuskiste = wEvent("I kisten fant du en scar!",["y","n"],["y","n"],203)
-wEvent2 = wEvent("Videre på din reise finner du en by. En gammel mann sitter forran ett hus på en knirkete gyngestol.",["y","n"],["n","n"],3)
+wEvent2 = wEvent("Videre på din reise finner du en by. En gammel mann sitter forran ett hus på en knirkete gyngestol. Går du bort til mannen?",["y","n"],["n","n"],3)
 
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
 fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
@@ -611,11 +667,15 @@ Fortnite_Builder_Plan = item("Fortnite_Builder_Plan","?????????","????")
 event1 = event(1,1,"Ett monster angriper deg!",False,101)
 event2 = event(2,3,"En gjeng med monstere angriper deg!",False,102)
 event3 = event(3,1,"Inne finner du Ninja fra Fornite. Han spør om du har noe materialer til han. Til gjengjeld sier han at han kan gi deg noe spesielt tilbake.",True,1)
+eventGammelMann = event(4,1,"Rodrik hilser deg velkommen.",True,2)
+event4 = event(5,1,"En banditt angriper deg!",False,103)
 
-monster1 = monster(10,1,1,1,1,"gnom")
+monster1 = monster(1,1,1,1,1,"gnom")
 monster2 = monster(1,1,1,1,1,"bob")
 monster3 = monster(10,10,27,"boogie bomb",40,'Tyler "Fortnite Ninja" Blevins')
 gammelMann = monster(1,1,0,"alt",1,"Rodrik")
+monster4 = monster(10,2,2,"penger",2,"banditt")
+shopkeeper = monster(100,10,40,"å være hyggelig",1,"mohammed zumbul")
 
 
 
@@ -623,12 +683,16 @@ hero = hero(30,1,1,1,1,"geir",False,1)
 
 
 itemSelected = 0
+skipFactor = 0
+badOmen = False
 
 
 monsterList = []
 monsterList.append(monster1)
 monsterList.append(monster2)
 monsterList.append(monster3)
+monsterList.append(gammelMann)
+monsterList.append(monster4)
 
 slow_type("Velkommen til dette spillet")
 time.sleep(1)
@@ -636,31 +700,72 @@ print("")
 hero.name=input("Hva heter du?")
 print("")
 slower_type("ok",5)
+time.sleep(0.5)
 print("")
 slow_type("Du får en pinne for å komme i gang")
 time.sleep(1)
 clear()
 hero.inv.append(starterPinne)
 
+#teste inventory:
+#hero.inv.append(starterPinne)
+#hero.inv.append(starterPinne)
+#ero.inv.append(starterPinne)
+
+#hero.invOpen()
+
+
 #🤓
 
-event1.event()
+#event1.event()
 #hero.action()
-event2.event()
+#event2.event()
+
 #event3.event()
-wEvent1.worldEvent()
+#wEvent1.worldEvent()
 
-if monster3.hp == 0:
-    wEventTomtHus.worldEvent()
-else:
-    wEvent2.worldEvent()
-#wEvent2()
+#spillets gang
 
-#wEventTomtHus.worldEvent()|
+if monster3.hp <= 0: #om ninja er død
+    wEventTomtHus.worldEvent() 
+    #if hero.inv has scar:
+        #sloss mot politiet
+        #if victory:
+            #finne en datamaskin for å spille among us/fortnite
+        #else:
+            #fengsel
+            #if hero.inv has fortnitebuilderplan and mats:
+                #bygge seg ut av fengsel
+            #else:
+                #sitte i fengsel til man dør av alder
+    #else:
+        #arbeidsleir. Ende opp med samme ending som fight med shopkeeper uten badomen?
 
-#legge til at itemet blir deselecta når ett item blir fjernet
-#intergrere mer av story:
-    #finne en pc for å queue opp til ett fornite spill
-    #sloss mot den gamle mannen. Gjør at du får masse penger, men du får også en "bad omen"
-    #bruke fortnite scar til å sloss mot politiet. Hvis du vinner mot en politimann kommer du i fengsel, og kan rømme hvis man har mats og builder plan. Hvis man taper havner man i fengsel, og kan rømme.
-    #hvis man ikke fighter får man en lett dom. Må arbeide på en arbeidsleir
+else: #om man ikke velger å sloss mot ninja
+    wEvent2.worldEvent() #gammel mann i byen
+    if gammelMann.hp <= 0: #lagrer badOmen for å sloss med djevel
+        badOmen = True
+    event4.event()
+    #butikk. Kjøpe eller snakke med inbyggere
+    #if fight med shopkeeper and badomen == True:
+        #djevel bossfight
+    #elif fight med shopkeeper:
+        #ta over butikken
+        #kjøpe opp flere og flere butikker
+        #adventure capitalism type beat
+    #else:
+        #if skipfactor = 3:
+            #fuck you for å skippe alt
+            #fighte meg. garantert å tape?
+        #else:
+            #????
+
+    
+
+
+
+
+#legge til at itemet blir deselecta når ett item blir fjernet. - skal være fikset, men vet ikke sikkert
+
+#VIKTIG! kan ikke se hvor mye skade fiende gjør
+#Redesigne combatUI. Skrive skade og hvem som angriper i en setning
