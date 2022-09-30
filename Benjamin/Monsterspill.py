@@ -98,6 +98,7 @@ def play_again(): #Definerer funksjonen for å spille på nytt
             dealer_hand = []
             player_hand = []
             deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+            game()
             break
         elif again == "n":
             print("Greven var vel for skummel!\n")
@@ -110,7 +111,7 @@ def play_again(): #Definerer funksjonen for å spille på nytt
                 print(butikk[i])
             print("\n")
             while True:
-                gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen. \nFor å gå tilbake trykk[T]: ').lower()
+                gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
                 if gjenstand == "g" and penger >= 10000:
                     items.append("Glock9")
                     butikk.pop(0)
@@ -252,6 +253,8 @@ def game(): #Definerer spillets gang :)
     global gamble
     choice = 0
     clear()
+    if penger < 50:
+        penger += 100
     print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
     slow_type(f' seiere: {vinn}       tap: {tap}\n')
     slow_type(f'Balanse: {penger}$\n')
@@ -269,8 +272,6 @@ def game(): #Definerer spillets gang :)
             penger = int(penger) - int(gamble)
             slow_type(f'Du betta: {gamble}\n')
             break
-    if penger < 50:
-        penger += 100
     dealer_hand = deal(deck)
     player_hand = deal(deck)
     blackjack(dealer_hand, player_hand)
