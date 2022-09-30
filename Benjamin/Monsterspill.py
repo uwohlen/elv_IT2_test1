@@ -92,17 +92,15 @@ def deal(deck): #Definerer funksjonen for å dele ut kort
 
 def play_again(): #Definerer funksjonen for å spille på nytt
     while True:
-        again = input("Vil du spille igjen eller besøke butikken? [Y]ja, [N]Nei og [B]Butikk : ").lower()
-        if again == "y":
+        again = input("Vil du spille igjen eller besøke butikken? [J]ja, [N]Nei og [B]Butikk : ").lower()
+        if again == "j":
             clear()
             dealer_hand = []
             player_hand = []
             deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
             break
-            game()
         elif again == "n":
             print("Greven var vel for skummel!\n")
-            break
             exit()
         elif again == "b":
             global penger
@@ -126,7 +124,7 @@ def play_again(): #Definerer funksjonen for å spille på nytt
                     break
                 else:
                     slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
-            game()
+        game()
 
 def total(hand): #Definerer funksjonen for å finne sum av utdelt kort
     total = 0
@@ -154,7 +152,7 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
     return hand
 
 ønske = 0
-def DrepeGreven():
+'''def DrepeGreven():
     global penger
     while True:
         ønske = input("Vil du bruke 10 000$ for å drepe Greven?   (Y/N): ").lower()
@@ -167,7 +165,15 @@ def DrepeGreven():
             slow_type("Neivel da\n")
             break
         else:
-            slow_type("Bruh, var det vanskelig å skrive ja eller nei?\n")
+            slow_type("Bruh, var det vanskelig å skrive ja eller nei?\n")'''
+
+def DrepeGreven():
+    slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
+    exit()
+
+
+
+
 
 def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
     if os.name == 'nt':
@@ -259,16 +265,21 @@ def game(): #Definerer spillets gang :)
             slow_type(f'Skulle ønske du hadde så mye penger lmao\n')
         elif int(gamble) < 0:
             slow_type(f'Ayo? Du vil at Greven skal spandere betten for deg?\n')
-        elif gamble <= penger:
-            penger = penger - gamble
+        elif int(gamble) <= int(penger):
+            penger = int(penger) - int(gamble)
             slow_type(f'Du betta: {gamble}\n')
             break
+    if penger < 50:
+        penger += 100
     dealer_hand = deal(deck)
     player_hand = deal(deck)
     blackjack(dealer_hand, player_hand)
     slow_type(f'Du fikk kortene: {(player_hand)} som betyr at du har summen: {(total(player_hand))}\n')
     while choice != "a":
-        choice = input("Vil du: [H]Slå, [S]stå, eller [A]Avslutte: ").lower()
+        if "Glock9" not in items:
+            choice = input("Vil du: [H]Slå, [S]stå eller [A]Avslutte: ").lower()
+        else:
+            choice = input("Vil du: [H]Slå, [S]stå, [A]Avslutte eller [G]Glock9: ").lower()
         '''clear()'''
         if choice == "h":
             hit(player_hand)
@@ -293,6 +304,8 @@ def game(): #Definerer spillets gang :)
         elif choice == "a":
             slow_type("Greven var vel for skummel!\n")
             exit()
+        elif choice == "g" and "Glock9" in items:
+            DrepeGreven()
 if __name__ == "__main__":
     game()
 
