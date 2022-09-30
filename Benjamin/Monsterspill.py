@@ -27,14 +27,15 @@ class Spiller: #konstruktør for karakterer
     def __str__(self):
         return(slow_type(f'Karakteren {self.navn} har en iq på hele {self.iq}.'))
     
-class butikk:
+'''class Butikk:
     def __init__(self,navn,pris):
         self.navn = navn
         self.pris = pris
     def __str__(self):
-        return(f'{self.navn}: {self.pris}$')
+        return(f'{self.navn}: {self.pris}$')'''
 
-glock9 = butikk("Glock9",10000)
+'''glock9 = butikk("Glock9",10000)'''
+
 
 
 arne = Spiller("Arne", "140","0")
@@ -58,7 +59,7 @@ while True:
         slow_type(f'{greven}\n')
         break
     else:
-        slow_type("bruh, du hadde 1 jævla oppgave\n")
+        slow_type("bruh, du hadde 1 oppgave :/\n")
 
 
 
@@ -67,6 +68,11 @@ vinn = 0
 tap = 0
 penger = 10000
 items = []
+butikk = ["[G]glock9: 10000$"]
+'''butikk = {
+"navn": "Glock9",
+"pris": 10000
+}'''
 
 def deal(deck): #Definerer funksjonen for å dele ut kort
     hand = []
@@ -102,18 +108,25 @@ def play_again(): #Definerer funksjonen for å spille på nytt
             global penger
             clear()
             print("♣♠♦♥BUTIKK♥♦♠♣")
-            print(f'{glock9}\n')
+            for i in range(len(butikk)):
+                print(butikk[i])
+            print("\n")
             while True:
-                gjenstand = input(f'For å kjøpe gjenstander skriv: [G]Glock9 \nFor å gå tilbake trykk[T]').lower()
-                if gjenstand == "g" and penger > 10000:
-                    items.append("glock9")
+                gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen. \nFor å gå tilbake trykk[T]: ').lower()
+                if gjenstand == "g" and penger >= 10000:
+                    items.append("Glock9")
+                    butikk.pop(0)
                     penger -= 10000
+                    slow_type("Takk for kjøpet!\n")
+                    slow_type(f'Din nye balanse er: {penger}$                                                      \n')
                     break
+                elif gjenstand == "g" and penger < 10000:
+                    slow_type("Du har ikke råd, fattiglus!")
                 elif gjenstand == "t":
                     break
-                    game()
                 else:
-                    ("For å trykke på n, y eller b, må du bruke noe som kalles et tastatur")
+                    slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+            game()
 
 def total(hand): #Definerer funksjonen for å finne sum av utdelt kort
     total = 0
@@ -177,13 +190,13 @@ def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi ders
         slow_type("Gratulerer! Du fikk Blackjack!\n")
         vinn += 1
         penger += gamble * 2
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
         play_again()
     elif total(dealer_hand) == 21:
         print_results(dealer_hand, player_hand)		
         slow_type("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
         tap += 1
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
         play_again()
 
 def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut endelige resultater til terminalen
@@ -196,34 +209,34 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         slow_type("Gratulerer! Du fikk Blackjack!\n")
         vinn += 1
         penger += gamble * 2
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
     elif total(dealer_hand) == 21:
         print_results(dealer_hand, player_hand)		
         slow_type("Desverre var Greven bare bedre enn deg og fikk Blackjack.\n")
         tap += 1
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
     elif total(player_hand) > 21:
         print_results(dealer_hand, player_hand)
         slow_type("Desverre busta du, altså gikk over 21, og dermed tapte :(\n")
         tap += 1
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
     elif total(dealer_hand) > 21:
         print_results(dealer_hand, player_hand)			   
         slow_type("Greven busta, altså gikk over 21, og dermed vant du!\n")
         vinn += 1
         penger += gamble * 2
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
     elif total(player_hand) < total(dealer_hand):
         print_results(dealer_hand, player_hand)
         slow_type("Beklager, hånden din er lavere enn Greven sin, og du taper!\n")
         tap += 1
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
     elif total(player_hand) > total(dealer_hand):
         print_results(dealer_hand, player_hand)			   
         slow_type("Gratulerer, hånden din er høyere enn Greven sin, og dermed vant du!\n")
         vinn += 1
         penger += gamble * 2
-        slow_type(f'Din nye balanse er: {penger}\n')
+        slow_type(f'Din nye balanse er: {penger}$\n')
     
 
 def game(): #Definerer spillets gang :)
@@ -236,9 +249,10 @@ def game(): #Definerer spillets gang :)
     print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
     slow_type(f' seiere: {vinn}       tap: {tap}\n')
     slow_type(f'Balanse: {penger}$\n')
-    slow_type(items)
-    if penger > 10000:
-        DrepeGreven()
+    print("Dine gjenstander:")
+    for i in range(len(items)):
+        print(items[i])
+    print("\n")
     while True:
         gamble = int(input(f'Skriv inn mengden $ du vil gamble: '))
         if int(gamble) > int(penger):
@@ -265,7 +279,7 @@ def game(): #Definerer spillets gang :)
                 hit(dealer_hand)
             if total(player_hand)>21:
                 slow_type("Desverre busta du, altså gikk over 21, og dermed tapte :(\n")
-                slow_type(f'Din nye balanse er: {penger}\n')
+                slow_type(f'Din nye balanse er: {penger}$\n')
                 tap += 1
                 play_again()
         elif choice == "s":
@@ -291,4 +305,4 @@ if __name__ == "__main__":
 #Iq skal gjøre at man får ekstra bonuser/multipliers for gevinstene sine
 #Juksing kan gjøre at greven ikke gir tilbake den summen man skal ha
 #legge til voicelines for Greven basert på randint genererte nummere, disse blir printa etter hvert game
-#legge til en butikk hvor du kan kjøpe oppgraderinger, og glock for å drepe Greven
+#legge til en butikk hvor du kan kjøpe oppgraderinger, og glock for å drepe Greven xxxxxxxxxxxxxxx
