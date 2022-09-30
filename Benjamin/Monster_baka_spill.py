@@ -26,8 +26,6 @@ class Spiller: #konstruktør for karakterer
     
     def __str__(self):
         return(slow_type(f'Karakteren {self.navn} har en iq på hele {self.iq}.'))
-    
-<<<<<<< HEAD
 '''class Butikk:
 =======
 class butikk:
@@ -36,16 +34,9 @@ class butikk:
         self.navn = navn
         self.pris = pris
     def __str__(self):
-<<<<<<< HEAD
         return(f'{self.navn}: {self.pris}$')'''
 
 '''glock9 = butikk("Glock9",10000)'''
-
-=======
-        return(f'{self.navn}: {self.pris}$')
-
-glock9 = butikk("Glock9",10000)
->>>>>>> 4ce53e1bc34281bdf4d861b85123a96129612c07
 
 
 arne = Spiller("Arne", "140","0")
@@ -69,11 +60,7 @@ while True:
         slow_type(f'{greven}\n')
         break
     else:
-<<<<<<< HEAD
         slow_type("bruh, du hadde 1 oppgave :/\n")
-=======
-        slow_type("bruh, du hadde 1 jævla oppgave\n")
->>>>>>> 4ce53e1bc34281bdf4d861b85123a96129612c07
 
 
 
