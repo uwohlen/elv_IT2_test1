@@ -82,24 +82,30 @@ def finnretning():
                 rad_nr = i 
                 kolonne_nr = j
 
-    if rad_nr == 0:
+    if rad_nr == 0 or 1:
         mulige_retninger+="opp"
-        if kolonne_nr<2:
-            mulige_retninger+=" eller til høyre"
-    
-    if rad_nr == 1:
-        "blabla"
+
+    if kolonne_nr<2:
+        mulige_retninger+=", til høyre"
+    if kolonne_nr > 0:
+        mulige_retninger+=" eller til venstre"
+        
     print(mulige_retninger)
+
+
+                
+
     
 finnretning()  
 
 sant = True
+"""
 def kjoor():
     while sant==True:
-        try:
-            print("x")
-        except:
-            print("dette rommet har ingenting")
-            print("du kan enten bevege deg {retning}")
-            
-
+         or "felle" or"gjenstand" or"monster"
+        """
+liste=dir(naa_rom)
+for i in liste:
+    if "_" not in i and i != "romnummer":
+        verdi = i     
+        
