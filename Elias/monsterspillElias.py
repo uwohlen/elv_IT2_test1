@@ -22,13 +22,14 @@ class Spiller:
         self.vaapen = vaapen
         self.gjenstander = gjenstander
 
+
 print("Velkommen til dette spillet")
 print("Maalet med spillet er å komme deg gjennom et hus")
 print("I huset kan du finne vaapen, gjenstander, og monster :o")
 print("For å bevege deg skriver du enten inn opp, ned, hoeyre, venstre")
 print("Dersom du kommer i et rom med en gjenstand kan du skrive 'grip' for å plukke det opp eller bruke det")
 print("I rom med monster foelger egen instruks")
-navn_spiller = "roger"#input("\nFoer du begynner må du skrive inn navnet ditt: ")
+navn_spiller = "Roger"#input("\nFoer du begynner må du skrive inn navnet ditt: ")
 
 
 #setter startverdier for spiller
@@ -66,7 +67,7 @@ rom_liste[0][0].kiste=True
 rom_liste[0][1].felle=True
 rom_liste[0][2].gjenstand="sverd"
 rom_liste[1][0].monster=True
-rom_liste[1][1].gjenstand="felle"
+rom_liste[1][1].gjenstand="tazer"
 rom_liste[2][0].gjenstand = "potion of healing"
 rom_liste[2][2].monster = True
 
@@ -108,30 +109,84 @@ def finnVariabel():
             verdi = i
             return verdi
 
+def plukkOppGjenstand():
+    if finnVariabel== "gjenstand":
+        spiller.gjenstander.append(naa_rom.gjenstand)
+        print(f"{naa_rom.gjenstand} er plukket opp")
+
+def aapneKiste(): #fiks på den her
+    return
+
+
 def kjoor():
     global naa_rom, rad_nr, kolonne_nr
     while sant==True:
         print(f"\n{navn_spiller} har kommet inn i rom nr {naa_rom.romnummer}")
+        
         if finnVariabel()!=None:
-            print(f"Dette rommet har en/et {finnVariabel()}")
+            if finnVariabel()=="gjenstand":
+                if naa_rom.gjenstand=="potion of healing":
+                    print(f"Dette rommet har en/et {naa_rom.gjenstand}")
+                    print("Dersom du drikker den har faar du doblet livet ditt")
+                    print("For aa drikke den maa du skrive 'drikk'")
+                    valg_muligheter.append("drikk")
+                if naa_rom.gjenstand == "tazer":
+                    print(f"Dette rommet har en tazer, som gir 40 skade per treff")
+                    print("For aa plukke den opp maa du skriv 'plukk opp'")
+                    valg_muligheter.append("plukkopp")
+                if naa_rom.gjenstand == "sverd":
+                    print(f"Dette rommet har et sverd, som gir 50 skade per treff")
+                    print("For aa plukke det opp maa du skrive 'plukk opp'")   
+                    valg_muligheter.append("plukkopp")
+                    
+            if finnVariabel()=="kiste":
+                print(f"Dette rommet har en/et {finnVariabel()}")
+                valg_muligheter.append("aapne")
+                print("For aa aapne kisten skriver du inn aapne")
+            if finnVariabel()=="felle":
+                print(f"ooups, {navn_spiller} traakket i en felle og mistet halve livet")
+                spiller.hp = spiller.hp/2
+                print(f'{navn_spiller} har naa {spiller.hp} liv')
+
+
         else:
             print("Dette rommet har ingenting!")
 
         finnretning()
 
-        valg = input(f"Hva vil {navn_spiller} gjøre: ").lower()
-
+        valg = input(f"Hva vil {navn_spiller} gjøre: ").lower().replace(" ", "")
+        
         if valg not in valg_muligheter:
             print("\nSkriv inn et gyldig alternativ")
-            valg = input(f"Hva vil {navn_spiller} gjøre: ").lower()
-        
-        elif valg == "opp":
-            rad_nr +=1
-        elif valg == "hoeyre":
-            kolonne_nr +=1
-        elif valg == "venstre":
-            kolonne_nr -=1
-    
+
+            
+            
+        else:
+            if valg == "opp":
+                rad_nr +=1
+            elif valg == "hoeyre":
+                kolonne_nr +=1
+            elif valg == "venstre":
+                kolonne_nr -=1
+
+            if valg == "plukkopp":
+                plukkOppGjenstand()
+                print(f"{naa_rom.gjenstand} er plukket opp")
+                delattr(naa_rom, "gjenstand")
+                valg_muligheter.remove("plukkopp")
+            
+            if valg == "aapne":
+                aapneKiste()
+                print("kisten er aapnet")
+                delattr(naa_rom, "kiste")
+                valg_muligheter.remove("aapne")
+
+            if valg == "drikk":
+                spiller.hp *= 2
+                print(f"{navn_spiller} har nå {spiller.hp} liv!")
+                delattr(naa_rom, "gjenstand")
+                valg_muligheter.remove("drikk")
+
         naa_rom=rom_liste[rad_nr][kolonne_nr]
 
 kjoor()
