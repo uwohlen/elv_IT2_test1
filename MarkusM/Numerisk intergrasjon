@@ -1,0 +1,17 @@
+def intergral(a,b,n,function):
+    summen = 0 #rektangelbredden
+    import math as m
+    
+
+    def f(x):
+	    return m.sqrt(1+x**2)
+    
+    delta_x = (b-a)/n
+
+
+    for i in range(n):				# i fra og med 0 til og med n−1
+	    summen = summen + f(a + (i)*delta_x) * delta_x
+
+    print(round(summen, 5))
+
+intergral(0,1,10000,"sqrt(1+x^2)")
