@@ -57,7 +57,11 @@ vinn = 0
 tap = 0
 penger = 1000
 items = []
-butikk = ["[G]glock9: 10.000$"]
+butikk = ["[G]glock9: 50.000$","[A]ammo: 5.000$","[V]vitaminer: 2.500$"]
+bonus = 0
+g = butikk.index("[G]glock9: 50.000$")
+a = butikk.index("[A]ammo: 5.000$")
+v = butikk.index("[V]vitaminer: 2.500$")
 
 def deal(deck): #Definerer funksjonen for å dele ut kort
     hand = []
@@ -97,32 +101,38 @@ def play_again(): #Definerer funksjonen for å spille på nytt
             print("\n")
             while True:
                 gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-                if "[G]glock9: 10.000$" in butikk:
-                    if gjenstand == "g" and penger >= 10000:
-                        items.append("Glock9")
-                        butikk.pop(0)
-                        penger -= 10000
-                        slow_type("Takk for kjøpet!\n")
-                        slow_type(f'Din nye balanse er: {penger}$                                                      \n')
-                        break
-                    elif gjenstand == "g" and penger < 10000:
-                        slow_type("Du har ikke råd, fattiglus!\n")
-                    elif gjenstand == "t":
-                        break
-                    else:
-                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
-                elif "[G]glock9: 10.000$" not in butikk:
-                    gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-                    if gjenstand == "t":
-                        break
-                    if gjenstand == "g":
-                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
-                    else:
-                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                if gjenstand == "g" and penger >= 50000:
+                    items.append("Glock9")
+                    butikk.pop(g)
+                    penger -= 50000
+                    slow_type("Takk for kjøpet!\n")                        
+                    slow_type(f'Din nye balanse er: {penger}$                                                      \n')
+                    break
+                elif gjenstand == "g" and penger < 50000:
+                    slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+                    break
+                if gjenstand == "a" and penger >= 5000:
+                    items.append("Ammo")
+                    butikk.pop(a)
+                    penger -= 5000
+                    slow_type("Takk for kjøpet!\n")
+                    slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+                    break
+                elif gjenstand == "a" and penger < 5000:
+                    slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+                    break
+                elif gjenstand != ("g","a","v"):
+                    slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                if gjenstand == "t":
+                    break
+
+
                         
 
 
         game()
+
+
 
 def total(hand): #Definerer funksjonen for å finne sum av utdelt kort
     total = 0
@@ -134,6 +144,8 @@ def total(hand): #Definerer funksjonen for å finne sum av utdelt kort
             else: total+= 11
         else: total += kort
     return total
+
+
 
 def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra kort delt ut
     random.shuffle(deck)
@@ -149,9 +161,13 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
     hand.append(kort)
     return hand
 
+
+
 def DrepeGreven():
     slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
     exit()
+
+
 
 def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
     if os.name == 'nt':
@@ -159,10 +175,20 @@ def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
     if os.name == 'posix':
         os.system('clear')
 
+
+
 def print_results(dealer_hand, player_hand): #Definerer funksjonen for å printe ut midlertidlige resultater til terminalen
 	'''clear()'''
 	slow_type(f'Greven fikk: {str(dealer_hand)}, som tilsvarer: {str(total(dealer_hand))}\n')
 	slow_type(f'Du har: {str(player_hand)}, som tilsvarer: {str(total(player_hand))}\n')
+
+def gevinst():
+    global penger
+    global gamble
+    global bonus
+    penger += gamble + gamble * (1 + random.randint(0,bonus)/10)
+    return penger
+
 
 def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi dersom noen har fått blackjack
     global vinn
@@ -173,7 +199,7 @@ def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi ders
         print_results(dealer_hand, player_hand)
         slow_type("Gratulerer! Du fikk Blackjack!\n")
         vinn += 1
-        penger += gamble * 2
+        gevinst()
         slow_type(f'Din nye balanse er: {penger}$\n')
         play_again()
     elif total(dealer_hand) == 21:
@@ -182,6 +208,8 @@ def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi ders
         tap += 1
         slow_type(f'Din nye balanse er: {penger}$\n')
         play_again()
+
+
 
 def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut endelige resultater til terminalen
     global vinn
@@ -192,7 +220,7 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         print_results(dealer_hand, player_hand)
         slow_type("Gratulerer! Du fikk Blackjack!\n")
         vinn += 1
-        penger += gamble * 2
+        gevinst()
         slow_type(f'Din nye balanse er: {penger}$\n')
     elif total(dealer_hand) == 21:
         print_results(dealer_hand, player_hand)		
@@ -208,7 +236,7 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         print_results(dealer_hand, player_hand)			   
         slow_type("Greven busta, altså gikk over 21, og dermed vant du!\n")
         vinn += 1
-        penger += gamble * 2
+        gevinst()
         slow_type(f'Din nye balanse er: {penger}$\n')
     elif int(total(player_hand)) < int(total(dealer_hand)):
         print_results(dealer_hand, player_hand)
@@ -219,7 +247,7 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         print_results(dealer_hand, player_hand)			   
         slow_type("Gratulerer, hånden din er høyere enn Greven sin, og dermed vant du!\n")
         vinn += 1
-        penger += gamble * 2
+        gevinst()
         slow_type(f'Din nye balanse er: {penger}$\n')
     
 
@@ -241,12 +269,13 @@ def game(): #Definerer spillets gang :)
     print("\n")
     while True:
         gamble = int(input(f'Skriv inn mengden $ du vil gamble: '))
-        if int(gamble) > int(penger):
+        penger = int(penger)
+        if gamble > penger:
             slow_type(f'Skulle ønske du hadde så mye penger lmao\n')
-        elif int(gamble) < 0:
+        elif gamble < 0:
             slow_type(f'Ayo? Du vil at Greven skal spandere betten for deg?\n')
-        elif int(gamble) <= int(penger):
-            penger = int(penger) - int(gamble)
+        elif gamble <= penger:
+            penger = penger - gamble
             slow_type(f'Du betta: {gamble}\n')
             break
     dealer_hand = deal(deck)
