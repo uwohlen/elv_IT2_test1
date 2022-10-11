@@ -402,7 +402,7 @@ class hero(monster):
         
     def combat(self,monsterID,monsterNr):
         monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg*hero.inv[itemSelected].dmg
-        print(f"Du angriper og gjør {self.dmg*hero.inv[itemSelected]} skade")
+        print(f"Du angriper og gjør {self.dmg*hero.inv[itemSelected].dmg} skade")
         print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
         if monsterList[monsterID-1].hp <= 0:
             return hero.victory(monsterID,monsterNr)
@@ -810,7 +810,7 @@ event2.event() #flere monstere
 #event3.event()
 wEvent1.worldEvent() #huset
 
-#spillets gang
+#spillets gang:
 time.sleep(2)
 clear()
 if monster3.hp <= 0: #om ninja er død
