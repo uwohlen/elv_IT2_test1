@@ -13,7 +13,7 @@ class Unit:
 
 class Player(Unit):
     def __init__(self, name, health, base_attack, speed, dead:bool, armor, ranged, melee):
-        super().__init__(self, name, health, base_attack, speed, dead)
+        super().__init__(name, health, base_attack, speed, dead)
         self.armor = armor
         self.ranged = ranged
         self.melee = melee
@@ -31,11 +31,11 @@ class Player(Unit):
 
 class Mobs(Unit):
     def __init__(self, name, health, base_attack, speed, dead:bool):
-        super().__init__(self, name, health, base_attack, speed, dead)
+        super().__init__(name, health, base_attack, speed, dead)
         
 
 player1 = Player("player1",10, 4, 3, False, 4, 4, 4)
-slime = Mobs("slime", 2, 1, 4)
+slime = Mobs("slime", 2, 1, 4, False)
 unit = Unit("unit",1,2,3,False)
 
 
