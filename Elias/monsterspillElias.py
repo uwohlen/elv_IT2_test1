@@ -1,17 +1,5 @@
-from ast import Str
-from multiprocessing.sharedctypes import Value
 import random 
-import os
-import sys, time
-""" 
 
-def slow_type(t):
-    typing_speed = 30000 #wpm
-    for l in t:
-        sys.stdout.write(l)
-        sys.stdout.flush
-        time.sleep(random.random()*10.0/typing_speed)
-"""
 print("Velkommen til dette spillet")
 print("Maalet med spillet er å komme deg gjennom et hus")
 print("I huset kan du finne vaapen, gjenstander, og monster :o")
@@ -21,7 +9,7 @@ print("I rom med monster foelger egen instruks")
 navn_spiller = input("\nFoer du begynner må du skrive inn navnet ditt: ").capitalize()
 
 class Monster: #lager en klasse for monsteret
-    def __init__(self, navn:str, hp:int = 0, skade_per_slag_maks:int = 0, liv:bool=True):
+    def __init__(self, navn:str="", hp:int = 0, skade_per_slag_maks:int = 0, liv:bool=True):
         self.navn = navn
         self.hp=hp
         self.skade_per_slag_maks=skade_per_slag_maks
@@ -36,7 +24,6 @@ class Monster: #lager en klasse for monsteret
         skade = random.randint(0, self.skade_per_slag_maks)
         Spiller.hp-=skade
         Spiller.sjekkliv()
-
         print(f"{navn_spiller} ble truffet av monsteret")
         print(f"{navn_spiller} mistet {skade} hp, så spilleren har nå {Spiller.hp} hp igjen!")
 
@@ -48,13 +35,11 @@ class Spiller: #klasse for spiller
         self.liv = liv
 
     def sjekkliv(self): #sjekker om spilleren lever
-        
         if self.hp<=0:
             self.liv=False
             print(f"Du tapte kampen og doede, rip /: Men du kan proeve igjen")
             igjen = input("Ja eller Nei?: ").lower().replace(" ", "")
             if igjen == "ja":
-                self.hp = 100
                 kjoor()
                 
 
@@ -65,7 +50,7 @@ class Spiller: #klasse for spiller
     def spillerPotionofhealing(self): #metode for naar spilleren drikker Potion of Healing
         self.hp*=2 
 
-    def printEgenskap(self): #printer ut hvilke vaapen og skaden det gjoer
+    def printEgenskap(self): #metode som printer ut hvilke vaapen og skaden det gjoer
         tekst=""
         for i in self.gjenstander:
             tekst+=f"\nGjenstanden {i.navn} gjoer {i.skade} skade"
@@ -80,24 +65,26 @@ class Vaapen(): #metode for vaapen
     def __init__(self, navn, skade):
         self.navn=navn
         self.skade=skade
-class Gjenstand(): #metode for gjenstand. Brukes for Potion of Healing
+
+class Gjenstand(): #klasse for gjenstand. Brukes for Potion of Healing
     def __init__(self,navn):
         self.navn=navn
-
-#setter startverdier for spiller
-start_hp_spiller = 100
-spiller = Spiller(navn_spiller, start_hp_spiller,[Vaapen("knyttneve", 20)])
-
-#lager monstere
-monster1 = Monster("Peder", 50, 40)
-monster2 = Monster("morbius", 169, 60)
 
 class Rom: #klasse for rommet
     def __init__ (self, romnummer):
         self.romnummer = romnummer
 
+#setter startverdier for spiller og setter opp monstere uten verdier.
+#Dette blir satt opp naar programmet starter
+start_hp_spiller = 100
+spiller = Spiller(navn_spiller, start_hp_spiller,[Vaapen("knyttneve", 20)])
+monster1 = Monster()
+monster2 = Monster()
+   
 #lager en tom liste for oppsettet til romfordelingen
 rom_liste = [[],[],[]]
+rad_nr=0
+kolonne_nr=0
 
 #fordeler rommene gjennom en while loekke
 tall=1
@@ -116,21 +103,36 @@ for i in range(3):
     |  [1][0] nr=4 |  [1][1] nr=5 |  [1][2] nr=6 |
     |  [0][0] nr=1 |  [0][1] nr=2 |  [0][2] nr=3 |  
 """
-#legger til egenskaper ved de forskjellige rommene
-rom_liste[0][0].kiste=True
-rom_liste[0][1].felle=True
-rom_liste[0][2].gjenstand=Vaapen("sverd",40)
-rom_liste[1][0].monster=monster1
-rom_liste[1][1].gjenstand=Vaapen("tazer",50)
-rom_liste[2][0].gjenstand = Gjenstand("potion of healing")
-rom_liste[2][2].monster = monster2
-
 naa_rom = rom_liste[0][0]
-
 valg_muligheter=[]
 
-rad_nr=0
-kolonne_nr=0
+
+"""
+funksjon for aa sette startverdier
+dersom spilleren doer, skal:
+    alle monstrene resettes
+    spilleren skal starte i rom 1
+    rommene skal tilbakestilles
+    spilleren skal faa fullt hp og vaapnene nullstilles
+"""
+def settStartverdier():
+    global naa_rom
+    #lager monstere
+    monster1 = Monster("Peder", 50, 40)
+    monster2 = Monster("morbius", 169, 60)
+
+    #legger til egenskaper ved de forskjellige rommene
+    rom_liste[0][0].kiste=True
+    rom_liste[0][1].felle=True
+    rom_liste[0][2].gjenstand=Vaapen("sverd",40)
+    rom_liste[1][0].monster=monster1
+    rom_liste[1][1].gjenstand=Vaapen("tazer",50)
+    rom_liste[2][0].gjenstand = Gjenstand("potion of healing")
+    rom_liste[2][2].monster = monster2
+
+    spiller.hp = start_hp_spiller
+    spiller.gjenstander = [Vaapen("knyttneve", 20)]
+    naa_rom = rom_liste[0][0]
 
 #funksjon for aa printe ut mulige retninger spilleren kan gaa. Tar hensyn til "border" til huset. 
 def finnretning():
@@ -158,7 +160,6 @@ def finnretning():
         valg_muligheter.append("venstre")
 
     print(mulige_retninger)
-    
 
 #leter etter objekter i rommet
 def finnVariabel():
@@ -238,9 +239,14 @@ def monsterKamp():
 #funksjonen til selve spillet
 sant = True
 def kjoor():
-    global naa_rom, rad_nr, kolonne_nr, sant
+    settStartverdier()
+    global sant, naa_rom, rad_nr, kolonne_nr, valg_muligheter
     while sant==True:
+        valg_muligheter = [] #nullstiller valgmuligheter for hver iterasjon
         print(f"\n{navn_spiller} er rom nr {naa_rom.romnummer}")
+        
+        #sjekker om rommet har en gjenstand
+        #printer hvilken gjenstand det, og hva den gjør
         if finnVariabel()!=None:
             if finnVariabel()=="gjenstand":
                 if naa_rom.gjenstand.navn=="potion of healing":
@@ -248,7 +254,6 @@ def kjoor():
                     print("Dersom du drikker den har faar du doblet livet ditt")
                     print("For aa drikke den maa du skrive 'drikk'")
                     valg_muligheter.append("drikk")
-
                 else:
                     print(f"Dette rommet har en/et {naa_rom.gjenstand.navn}, som gir {naa_rom.gjenstand.skade} skade per treff")
                     print("For aa plukke det opp maa du skrive 'plukk opp'")   
@@ -266,21 +271,25 @@ def kjoor():
 
         else:
             print("Dette rommet har ingenting!")
+
+        #dersom monsteret i det siste rommet ikke er der, har man har vunnet
+        #og da stopper while-loekken aa kjoere
         try: 
             rom_liste[2][2].monster
         except:
             sant=False
             print("Du vant spillet")
             break
-
+        
+        #printer ut hvilke retninger spilleren kan gaa
         finnretning()
 
         valg = input(f"Hva vil {navn_spiller} gjøre: ").lower().replace(" ", "")
         
+        #sjekker om inputen var et gyldig valg
         if valg not in valg_muligheter:
             print("\nSkriv inn et gyldig alternativ")
-
-            
+ 
         else:
             if valg == "opp":
                 rad_nr +=1
@@ -304,14 +313,8 @@ def kjoor():
                 print(f"{navn_spiller} har nå {spiller.hp} liv!")
                 delattr(naa_rom, "gjenstand")
                 valg_muligheter.remove("drikk")
-
+        #oppdaterer naa_rom
         naa_rom=rom_liste[rad_nr][kolonne_nr]
         
-
-
+#spillet kjoeres
 kjoor()
-
-
-
-
-#maa fikse aa restarte gamet
