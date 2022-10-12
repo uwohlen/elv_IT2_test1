@@ -195,7 +195,11 @@ class Player():
             return 1
         else:
             return 0
-        
+   
+print("Monster Spill")
+print("Målet er å drepe monstret før han dreper deg")
+print("Du har muligheten å enten flytte (m), angrepe (a) eller bytte våpen (e) når det er turen din")
+print("for å flytte seg rundt bruker mann wasd knappene etter du har skrevett inn 'a'\n")    
         
         
 monster = Monster(4, 0)
@@ -204,3 +208,4 @@ game = Game(10, 10, player, monster)
 game.init([monster], player)
 while player.alive() or monster.alive(game):
     game.G_round(player, [monster]) 
+print("Oh no you died!!!")
