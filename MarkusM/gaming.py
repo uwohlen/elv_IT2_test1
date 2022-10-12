@@ -45,6 +45,7 @@ class monster: #konstruktør for monster
         print(f"Du har {hero.hp} liv igjen")
         if hero.hp <=0:
             hero.death()
+
     def stats(self):
         clear()
         print(f"navn: {self.name}")
@@ -75,7 +76,10 @@ class hero(monster):
                 a = self.combatAction()
 
                 if a == "f":
-                    self.combat(monsterID,1)
+                    monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg*hero.inv[itemSelected].dmg
+                    print(f"Du angriper og gjør {self.dmg*hero.inv[itemSelected].dmg} skade")
+                    print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
+
 
                     if monsterList[monsterID-1].hp > 0:
                         if self.hp == 1:
@@ -173,9 +177,6 @@ class hero(monster):
                                 hero.stats()
                                 sys.exit()
 
-
-                            
-
                         if self.hp > 1:
                             print("Ninja angriper")
                             print("Ninja dreper deg nesten i ett slag. Du har nå ett liv igjen")
@@ -183,6 +184,10 @@ class hero(monster):
                     if monster3.hp <= 0:
                         print("Ninja: Stream sniping")
                         time.sleep(1)
+                        slow_type("Du får 40 xp!")
+                        for i in range(4):
+                            hero.levelUp()
+                            time.sleep(0.5)
                         print("Victory royale!")
                         time.sleep(2)
                         break
@@ -527,8 +532,6 @@ class event:
                         monsterList[self.monsterSpawn-1].stats()
             clear()
         
-                        
-
             print("")
         elif self.specialEvent == True:
             if self.eventID == 1:   #spesialevent 1
@@ -544,8 +547,11 @@ class event:
                         slow_type(self.eventText)
                         print("")
                         print("")
-                        print("Ninja: Du har mats!!!")
-                        print("Kan jeg få? Jeg trenger for å drepe tFue i moisy mire")
+                        slow_type("Ninja: Du har mats!!!")
+                        print("")
+                        slow_type("Kan jeg få? Jeg trenger for å drepe tFue i moisy mire")
+                        print("")
+                        time.sleep(0.5)
                         a = input('Gir du han? Skriv inn "y" for ja og "n" for nei')
                         if a == "y":
                             hero.itemRemove(i)
@@ -636,7 +642,9 @@ class wEvent:
     def worldEventOptions(self):
         
         while True:
-            print(self.eventText)
+            slow_type(self.eventText)
+            time.sleep(1)
+            print("")
             if "y" in self.options:
                 if self.id == 1: #spesiell melding for event 1
                     print('trykk "y" for å gå inn')
@@ -667,10 +675,19 @@ class wEvent:
                 if self.id == 1: #spesiell melding for event 1
                     print("Du forblir utenfor")
                     break
+                elif self.id == 2:
+                    print("Du går ikke ut")
+                    wEventTomtHusIn.worldEvent()
                 elif self.id == 3:
                     print("Du går videre")
                     global skipFactor
                     skipFactor =+1
+                    break
+                elif self.id == 201:
+                    print("Du sloss mot poilitet!")
+                    break
+                elif self.id == 202:
+                    print("du åpner ikke kisten")
                     break
                 elif self.id == 4:
                     print("Du plukker ikke opp sverdet")
@@ -690,6 +707,28 @@ class wEvent:
                     print("du går ut")
                     wEventTomtHusUt.worldEvent()
                     break
+                elif self.id == 202:
+                    hasScar = False
+                    for i in range(len(hero.inv)):
+                        if "Fortnite Scar" in hero.inv[i].name:
+                            hasScar = True
+                            break
+                    if hasScar == True:
+                        slower_type("...",2)
+                        print("")
+                        time.sleep(0.5)
+                        slow_type("Kisten er tom :( ")
+                        print("")
+                        time.sleep(1)
+                        clear()
+                        break
+                    else:
+                        wEventTomtHuskiste.worldEvent()
+                        break
+                elif self.id == 203:
+                    print("Velger å plukke opp Fortnite Scar")
+                    hero.itemAdd(fortniteScar)
+                    break
                 elif self.id ==3:
                     eventGammelMann.event()
                     break
@@ -702,6 +741,12 @@ class wEvent:
                     clear()
                     print("Du plukker opp steinen")
                     hero.itemAdd(skarpStein)
+                    break
+                elif self.id == 201:
+                    print("Du blir arrestert!")
+                    #ringe saul??
+                    #wEventAdvokat()
+                    #Hvis man tar plea deal kommer man i arbeidsleir, ellers havner man i fengsel som om man hadde sloss mot politet
                     break
                 else: #ordinær melding
                     break
@@ -732,7 +777,7 @@ class item:
 
 wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c","s"],["y","n","i","c","s"],1)
 wEventTomtHus = wEvent("Huset er tomt. Ninja sin døde kropp råtner på gulvet. Vil du gå ut?",["y","n"],["y","n"],2)
-wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],3)
+wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],201)
 wEventTomtHusIn = wEvent("Ninja sin døde kropp råtner fortsatt på gulvet. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
 wEventTomtHuskiste = wEvent("I kisten fant du en scar!",["y","n"],["y","n"],203)
 wEvent2 = wEvent("Videre på din reise finner du en by. En gammel mann sitter forran ett hus på en knirkete gyngestol. Går du bort til mannen?",["y","n"],["n","n"],3)
@@ -740,7 +785,7 @@ wEventBandittSverd = wEvent("Banditten mistet ett sverd! Vil du plukke det opp?"
 wEventSkarpStein = wEvent("Gnomen mistet en skarp stein! Vil du plukke den opp?",["y","n"],["n","n"],5)
 
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
-fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
+fortniteScar = item("Fortnite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
 starterPinne = item("Pinne","En veldig fin pinne. Ligner svært på en pistol",1)
 Fortnite_Builder_Plan = item("Fortnite_Builder_Plan","?????????","????")
 bandittSverd = item("Sverd","Ett helt ordinært sverd. Ble funnet på en banditts døde kropp.", 5)
@@ -776,6 +821,7 @@ monsterList.append(monster3)
 monsterList.append(gammelMann)
 monsterList.append(monster4)
 
+
 slow_type("Velkommen til dette spillet")
 time.sleep(1)
 print("")
@@ -798,7 +844,10 @@ hero.inv.append(starterPinne)
 
 
 #🤓
-
+"""
+hero.itemAdd(fortniteScar)
+wEventTomtHus.worldEvent()
+"""
 event1.event()
 if monster1.hp == 0:
     wEventSkarpStein.worldEvent()
@@ -854,7 +903,6 @@ else: #om man ikke velger å sloss mot ninja
             #fighte meg. garantert å tape?
         #else:
             #????
-
     
 #legge til at itemet blir deselecta når ett item blir fjernet. - skal være fikset, men vet ikke sikkert
 
