@@ -53,6 +53,7 @@ class Mobs(Unit):
       global player_damage
 
       player_damage=self.base_attack
+      print(f"{self.name} fling towards you dealing {player_damage} damage")
       return player_damage
     
     def health_check(self):
@@ -63,7 +64,6 @@ class Mobs(Unit):
         self.dead = True
         print(f"the {self.name} died")
         mobs.pop(0)
-        print(mobs[0].name)
        
 
 
@@ -78,16 +78,10 @@ unit = Unit("unit",1,2,3,False)
 mobs = [slime, blue_slime1, blue_slime2]
 
 while (True):
-  if len(mobs) == 0:
-    print("you win!")
-    break
   
-  print(f"you meet {mobs[0].name}, ranged for ranged attack meele for meele attack")
+  
+  print(f"{mobs[0].name} is in front of you, ranged for ranged attack meele for meele attack")
   action = input("what to do? ")
-  
-  player1.health_check()
-  if player1.dead == True:
-    break
   
   #player turn
   if (action == "ranged"):
@@ -107,6 +101,13 @@ while (True):
   
   mobs[0].health_check()
   
+  if len(mobs) == 0:
+    print("you win!")
+    break
   #enemy turn
   mobs[0].mob_damage()
   player1.damage(player_damage)
+
+  player1.health_check()
+  if player1.dead == True:
+    break
