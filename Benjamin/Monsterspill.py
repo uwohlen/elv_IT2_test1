@@ -8,6 +8,13 @@ def slow_type(t):
         sys.stdout.write(l)
         sys.stdout.flush()
         time.sleep(random.random()*10.0/typing_speed)
+    
+def fast_type(t):
+    typing_speed = 1500 #wpm
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+        time.sleep(random.random()*10.0/typing_speed)
 
 class Monster: #konstruktør for monstere
     def __init__(self,navn,iq,juks):
@@ -57,47 +64,48 @@ slow_type(f'Det sies at Monster-BlackJack er litt annerledes enn vanlig BlackJac
 
 
 def regler():
-    slow_type(f'GENERELLE REGLER MONSTER-BLACKJACK\n')
-    slow_type(f'\n')
-    slow_type(f'Blackjack er et klassisk casinobordspill, og spilles av mange casinospillere verden over. \n') 
-    slow_type(f'Kortspillets regler er enkle å lære seg: Målet er å få en kortverdi lik 21, eller nærmest. \n') 
-    slow_type(f'Enkelt forklart fungerer spillet slik:\n')
+    clear()
+    fast_type(f'GENERELLE REGLER MONSTER-BLACKJACK\n')
+    fast_type(f'\n')
+    fast_type(f'Blackjack er et klassisk casinobordspill, og spilles av mange casinospillere verden over. \n') 
+    fast_type(f'Kortspillets regler er enkle å lære seg: Målet er å få en kortverdi lik 21, eller nærmest. \n') 
+    fast_type(f'Enkelt forklart fungerer spillet slik:\n')
  
-    slow_type(f'● Før spillet starter må du legge en bet på bordet. \n')
-    slow_type(f'● Deretter blir det delt ut to kort hver til monsteret og deg.\n')
-    slow_type(f'● Etter de to første kortene er delt ut kan du velge om du ønsker å få tildelt et tredje kort. \n')
-    slow_type(f'● Utfallet i kortspillet er basert på tilfeldigheter, noe som gjør spillet ekstra spennende. \n')
-    slow_type(f'● Du spiller alene mot monsteret. \n')
-    slow_type(f'● Du kan ikke overstige 21. \n')
-    slow_type(f'● Monsteret avslører sine kort til sist, og det er da den som er nærmest 21 som vinner. \n')
-    slow_type(f'● Dersom begge to har like høy hånd, vinner monsteret. \n')
+    fast_type(f'● Før spillet starter må du legge en bet på bordet. \n')
+    fast_type(f'● Deretter blir det delt ut to kort hver til monsteret og deg.\n')
+    fast_type(f'● Etter de to første kortene er delt ut kan du velge om du ønsker å få tildelt et tredje kort. \n')
+    fast_type(f'● Utfallet i kortspillet er basert på tilfeldigheter, noe som gjør spillet ekstra spennende. \n')
+    fast_type(f'● Du spiller alene mot monsteret. \n')
+    fast_type(f'● Du kan ikke overstige 21. \n')
+    fast_type(f'● Monsteret avslører sine kort til sist, og det er da den som er nærmest 21 som vinner. \n')
+    fast_type(f'● Dersom begge to har like høy hånd, vinner monsteret. \n')
     
-    slow_type(f'\n')
-    slow_type(f'VERIDIER PÅ KORT: \n')
-    slow_type(f'● Alle tallkort er verdt sin egen verdi \n')
-    slow_type(f'● Alle billedkort er verdt 10\n')
-    slow_type(f'● Ess er verdt 11 når du har en hånd vært under 11, og 1 når hånden din er over 11\n')
+    fast_type(f'\n')
+    fast_type(f'VERIDIER PÅ KORT: \n')
+    fast_type(f'● Alle tallkort er verdt sin egen verdi \n')
+    fast_type(f'● Alle billedkort er verdt 10\n')
+    fast_type(f'● Ess er verdt 11 når du har en hånd vært under 11, og 1 når hånden din er over 11\n')
 
-    slow_type('\n')
-    slow_type(f'TREKK\n')
-    slow_type(f'I Monster-BlackJack kan du velge ett av disse trekkene når det er din tur:\n')
-    slow_type(f'● Slå: Bruk dette trekket for flere kort.\n')
-    slow_type(f'● Stå: Du avstår fra å få flere kort.\n')
-    slow_type(f'● Avslutt: Du avslutter spillet og forblir evig i monsterverdenen.\n')
+    fast_type('\n')
+    fast_type(f'TREKK\n')
+    fast_type(f'I Monster-BlackJack kan du velge ett av disse trekkene når det er din tur:\n')
+    fast_type(f'● Slå: Bruk dette trekket for flere kort.\n')
+    fast_type(f'● Stå: Du avstår fra å få flere kort.\n')
+    fast_type(f'● Avslutt: Du avslutter spillet og forblir evig i monsterverdenen.\n')
 
-    slow_type('\n')
-    slow_type(f'HVORDAN VINNE?\n')
-    slow_type(f'Det finnes tre utfall som gjør at du vinner dette populære kortspillet:\n')
-    slow_type(f'1. Din hånd er høyere enn monsterets hånd til slutt, uten at verdien går over 21.\n')
-    slow_type(f'2. Du får ekte Blackjack/21 før monsteret (ess + 10 eller billedkort).\n')
-    slow_type(f'3. Monsterets hånd overstiger 21. \n')
+    fast_type('\n')
+    fast_type(f'HVORDAN VINNE?\n')
+    fast_type(f'Det finnes tre utfall som gjør at du vinner dette populære kortspillet:\n')
+    fast_type(f'1. Din hånd er høyere enn monsterets hånd til slutt, uten at verdien går over 21.\n')
+    fast_type(f'2. Du får ekte Blackjack/21 før monsteret (ess + 10 eller billedkort).\n')
+    fast_type(f'3. Monsterets hånd overstiger 21. \n')
 
 
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 vinn = 0
 tap = 0
-penger = 1000
+penger = 50000000
 
 
 
@@ -120,80 +128,94 @@ def deal(deck): #Definerer funksjonen for å dele ut kort
 
 
 def play_again(): #Definerer funksjonen for å spille på nytt
-    while True:
-        again = input("Vil du spille igjen eller besøke butikken? [J]ja, [N]Nei og [B]Butikk : ").lower()
-        if again == "j":
-            clear()
-            dealer_hand = []
-            player_hand = []
-            deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-            game()
-            break
-        elif again == "n":
-            print("Greven var vel for skummel!\n")
-            exit()
-        elif again == "b":
-            sjappe()
+    again = input("Skriv noe for å spille igjen: ")
+    if again == str or int:
+        clear()
+        dealer_hand = []
+        player_hand = []
+        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+        game()
 
 
+class Gjenstander: #konstruktør for monstere
+    def __init__(self,navn,pris,iq,flaks,bonus):
+        self.navn = navn
+        self.pris = pris
+        self.iq = iq
+        self.flaks = flaks
+        self.bonus = bonus
+
+glock = Gjenstander("[G]Glock9",50000,0,0,0)
+ammo = Gjenstander("[A]ammo",5000,0,0,0)
+vitaminer = Gjenstander("[V]vitaminer",2500,0,0,2)
 
 items = []
-butikk = ["[G]glock9: 50.000$","[A]ammo: 5.000$","[V]vitaminer: 2.500$"]
+butikk = [glock,ammo,vitaminer]
 bonus = 0
-g = butikk.index("[G]glock9: 50.000$")
-a = butikk.index("[A]ammo: 5.000$")
-v = butikk.index("[V]vitaminer: 2.500$")
 
 def sjappe():
     global penger
     global bonus
     clear()
     print(f'♣♠♦♥BUTIKK♥♦♠♣            Balanse: {penger}$')
-    for i in range(len(butikk)):
-        print(butikk[i])
+    if glock in butikk:
+        print(f'{glock.navn}: {glock.pris}$')
+    if ammo in butikk:
+        print(f'{ammo.navn}: {ammo.pris}$')
+    if vitaminer in butikk:
+        print(f'{vitaminer.navn}: {vitaminer.pris}$')
     print("\n")
+    print('[T]Tilbake')
     while True:
-        gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-        if gjenstand == "g" and penger >= 50000:
-            items.append("Glock9")
-            butikk.remove("[G]glock9: 50.000$")
-            penger -= 50000
-            slow_type("Takk for kjøpet!\n")                        
-            slow_type(f'Din nye balanse er: {penger}$                                                      \n')
-            break
-        elif gjenstand == "g" and penger < 50000:
-            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
-            break
-        if gjenstand == "a" and penger >= 5000:
-            items.append("Ammo")
-            butikk.remove("[A]ammo: 5.000$")
-            penger -= 5000
-            slow_type("Takk for kjøpet!\n")
-            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            break
-        elif gjenstand == "a" and penger < 5000:
-            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
-            break
-        if gjenstand == "v" and penger >= 2500:
-            items.append("Vitaminer")
-            butikk.remove("[V]vitaminer: 2.500$")
-            penger -= 2500
-            bonus += 2
-            slow_type("Takk for kjøpet!\n")
-            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            break
-        elif gjenstand == "v" and penger < 2500:
-            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
-            break
-        elif gjenstand != ("g","a","v"):
-            slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+        gjenstand = input(f'Skriv inn tilsvarende symbol: ').lower()
         if gjenstand == "t":
             break
-
-
-                        
-
-
+        elif gjenstand == "g" and glock not in butikk:
+            sjappe()
+        elif gjenstand == "a" and ammo not in butikk:
+            sjappe()
+        elif gjenstand == "v" and vitaminer not in butikk:
+            sjappe()
+        elif gjenstand == "g" and penger >= int(glock.pris):
+            items.append("Glock9")
+            butikk.remove(glock)
+            penger -= int(glock.pris)
+            slow_type("Takk for kjøpet!\n")                        
+            slow_type(f'Din nye balanse er: {penger}$                                                      \n')
+            game()
+            break
+        elif gjenstand == "g" and penger < int(glock.pris):
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            game()
+            break
+        elif gjenstand == "a" and penger >= int(ammo.pris):
+            items.append("Ammo")
+            butikk.remove(ammo)
+            penger -= int(ammo.pris)
+            slow_type("Takk for kjøpet!\n")
+            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            game()
+            break
+        elif gjenstand == "a" and penger < int(ammo.pris):
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            game()
+            break
+        elif gjenstand == "v" and penger >= int(vitaminer.pris):
+            items.append("Vitaminer")
+            butikk.remove(vitaminer)
+            penger -= int(vitaminer.pris)
+            bonus += int(vitaminer.bonus)
+            slow_type("Takk for kjøpet!\n")
+            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            game()
+            break
+        elif gjenstand == "v" and penger < int(vitaminer.pris):
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            game()
+            break
+        else:
+            slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(                                           \n")
+            sjappe()
         game()
 
 
@@ -367,7 +389,7 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
     
 
 while True:
-    starte_spill = input(f'Er du opp for utfordringen, eller trenger du kanskje regler til BlackJack først? [J]Ja / [N]Nei / [R]Regler: ').lower()
+    starte_spill = input(f'Er du opp for utfordringen, eller trenger du kanskje litt regler til Monster-BlackJack først? [J]Ja / [N]Nei / [R]Regler: ').lower()
     if starte_spill == "j":
         break
     elif starte_spill == "n":
@@ -388,18 +410,23 @@ def game(): #Definerer spillets gang :)
     if penger < 50:
         penger += 100
     print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
-    slow_type(f' seiere: {vinn}       tap: {tap}\n')
-    slow_type(f'Balanse: {penger}$\n')
+    slow_type(f'Balanse: {penger}$     Seiere: {vinn}     Tap: {tap}\n')
+    slow_type(f'[A]Avslutt      [B]Butikk\n')
     print("Dine gjenstander:")
-    print(arne.flaks)
-    print(per.flaks)
+    '''print(arne.flaks)
+    print(per.flaks)'''
     for i in range(len(items)):
         print(items[i])
     print("\n")
     while True:
         gyldig = False
         while not gyldig:
-            gamble = input(f'Skriv inn mengden $ du vil gamble: ')
+            gamble = input(f'Skriv inn mengden $ du vil gamble: ').lower()
+            if gamble == "b":
+                sjappe()
+            if gamble == "a":
+                slow_type("Greven var vel for skummel!\n")
+                exit()
             try:
                 gamble = int(gamble)
                 gyldig = True
@@ -422,7 +449,7 @@ def game(): #Definerer spillets gang :)
             choice = input("Vil du: [H]Slå, [S]stå eller [A]Avslutte: ").lower()
         else:
             choice = input("Vil du: [H]Slå, [S]stå, [A]Avslutte eller [G]Glock9: ").lower()
-        '''clear()'''
+        clear()
         if choice == "h":
             hit(player_hand)
             if total(player_hand) == 21:
