@@ -27,9 +27,9 @@ class Spiller: #konstruktør for karakterer
     def __str__(self):
         return(slow_type(f'Karakteren {self.navn} har en iq på hele {self.iq}.'))
 
-arne = Spiller("Arne", "140","0")
-per = Spiller("Per", "70","1")
-greven = Monster("Greven","100","1")
+arne = Spiller("Arne",140,3)
+per = Spiller("Per",90,1)
+greven = Monster("Greven",100,1)
 
 slow_type('Dette spillet går ut på å spille blackjack mot et monster, er du klar?\n')
 
@@ -209,6 +209,32 @@ def gevinst():
     return penger
 
 
+def flaks():
+    global penger
+    global gamble
+    if karakter == "1":
+        n = random.randint(1,int(arne.flaks))
+        if n > 2:
+            penger += (1.1 + int(arne.flaks)) * gamble
+    if karakter == "2":
+        n = random.randint(1,int(per.flaks))
+        if n > 2:
+            penger += (1.1 + int(per.flaks)) * gamble
+
+def iq():
+    global penger
+    global gamble
+    if karakter == "1":
+        m = random.randint(1,int(arne.iq))
+        if m > 2:
+            penger += (1.1 + int(arne.flaks)) * gamble
+    if karakter == "2":
+        m = random.randint(1,int(per.iq))
+        if m > 2:
+            penger += (1.1 + int(per.flaks)) * gamble
+
+
+
 def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi dersom noen har fått blackjack
     global vinn
     global tap
@@ -219,6 +245,7 @@ def blackjack(dealer_hand, player_hand): #Definerer funksjonen for å oppgi ders
         slow_type("Gratulerer! Du fikk Blackjack!\n")
         vinn += 1
         gevinst()
+        flaks()
         slow_type(f'Din nye balanse er: {penger}$\n')
         play_again()
     elif total(dealer_hand) == 21:
@@ -240,6 +267,7 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         slow_type("Gratulerer! Du fikk Blackjack!\n")
         vinn += 1
         gevinst()
+        flaks()
         slow_type(f'Din nye balanse er: {penger}$\n')
     elif total(dealer_hand) == 21:
         print_results(dealer_hand, player_hand)		
@@ -256,6 +284,7 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         slow_type("Greven busta, altså gikk over 21, og dermed vant du!\n")
         vinn += 1
         gevinst()
+        flaks()
         slow_type(f'Din nye balanse er: {penger}$\n')
     elif int(total(player_hand)) < int(total(dealer_hand)):
         print_results(dealer_hand, player_hand)
@@ -267,6 +296,7 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         slow_type("Gratulerer, hånden din er høyere enn Greven sin, og dermed vant du!\n")
         vinn += 1
         gevinst()
+        flaks()
         slow_type(f'Din nye balanse er: {penger}$\n')
     
 
