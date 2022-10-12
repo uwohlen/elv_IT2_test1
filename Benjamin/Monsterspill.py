@@ -28,19 +28,18 @@ arne = Spiller("Arne",140,1)
 per = Spiller("Per",110,3)
 greven = Monster("Greven",100,1)
 
-
-'''slow_type('Velkommen til monster BlackJack!\n')'''
 slow_type(f'En dag blir du sugd inn i en annen verden, og den eneste måten å komme seg hjem igjen er å spille BlackJack\n')
 slow_type(f'Desverre for deg er du nødt til å bekjempe en rekke monstere for å seire og returnere hjem trygt\n')
 print('\n')
 
+slow_type('Hvilken karakter vil du bruke i ditt eventyr?\n')
 print(f'[1]Karakter: {arne.navn}    IQ: {arne.iq}      Flaks: Middels')
 print(f'[2]Karakter: {per.navn}     IQ: {per.iq}      Flaks: Høy')
 print(f'[I]Info om egenskaper\n')
 
 karakter = 0
 while True:
-    karakter = input('Velg hvilken karakter du vil bruke i ditt eventyr: ').lower()
+    karakter = input('Skriv inn tilsvarende symbol: ').lower()
     if karakter == "1":
         slow_type('Du valgte Arne, han er min favoritt :)                       \n')
         break
@@ -58,29 +57,40 @@ slow_type(f'Det sies at Monster-BlackJack er litt annerledes enn vanlig BlackJac
 
 
 def regler():
-    slow_type(f'Generelle Blackjack regler\n')
+    slow_type(f'GENERELLE REGLER MONSTER-BLACKJACK\n')
     slow_type(f'\n')
     slow_type(f'Blackjack er et klassisk casinobordspill, og spilles av mange casinospillere verden over. \n') 
     slow_type(f'Kortspillets regler er enkle å lære seg: Målet er å få en kortverdi lik 21, eller nærmest. \n') 
     slow_type(f'Enkelt forklart fungerer spillet slik:\n')
  
-    slow_type(f'● Før spillet starter må du legge en innsats på bordet. \n')
-    slow_type(f'● Deretter blir det delt ut to kort hver til dealer og spiller.\n')
-    slow_type(f'● Dealeren får ett av sine kort med billedsiden opp. \n')
+    slow_type(f'● Før spillet starter må du legge en bet på bordet. \n')
+    slow_type(f'● Deretter blir det delt ut to kort hver til monsteret og deg.\n')
     slow_type(f'● Etter de to første kortene er delt ut kan du velge om du ønsker å få tildelt et tredje kort. \n')
     slow_type(f'● Utfallet i kortspillet er basert på tilfeldigheter, noe som gjør spillet ekstra spennende. \n')
-    slow_type(f'● Du spiller alene mot dealeren. \n')
+    slow_type(f'● Du spiller alene mot monsteret. \n')
     slow_type(f'● Du kan ikke overstige 21. \n')
-    slow_type(f'● Blackjack kan spilles med to eller flere kortstokker (i noen spillvarianter bruker man opptil åtte kortstokker).\n')
-    slow_type(f'● I mange Blackjack-varianter har du muligheten til å splitte hånden for å unngå å overstige verdien av 21. \n')
- 
-    slow_type(f'Dealeren avslører sine kort til sist, og det er da den som er nærmest 21 som vinner. \n')
- 
-    slow_type(f'Kortverdiene fungerer slik: \n')
- 
+    slow_type(f'● Monsteret avslører sine kort til sist, og det er da den som er nærmest 21 som vinner. \n')
+    slow_type(f'● Dersom begge to har like høy hånd, vinner monsteret. \n')
+    
+    slow_type(f'\n')
+    slow_type(f'VERIDIER PÅ KORT: \n')
     slow_type(f'● Alle tallkort er verdt sin egen verdi \n')
     slow_type(f'● Alle billedkort er verdt 10\n')
-    slow_type(f'● Ess er verdt 1 eller 11, avhengig av spillet\n')
+    slow_type(f'● Ess er verdt 11 når du har en hånd vært under 11, og 1 når hånden din er over 11\n')
+
+    slow_type('\n')
+    slow_type(f'TREKK\n')
+    slow_type(f'I Monster-BlackJack kan du velge ett av disse trekkene når det er din tur:\n')
+    slow_type(f'● Slå: Bruk dette trekket for flere kort.\n')
+    slow_type(f'● Stå: Du avstår fra å få flere kort.\n')
+    slow_type(f'● Avslutt: Du avslutter spillet og forblir evig i monsterverdenen.\n')
+
+    slow_type('\n')
+    slow_type(f'HVORDAN VINNE?\n')
+    slow_type(f'Det finnes tre utfall som gjør at du vinner dette populære kortspillet:\n')
+    slow_type(f'1. Din hånd er høyere enn monsterets hånd til slutt, uten at verdien går over 21.\n')
+    slow_type(f'2. Du får ekte Blackjack/21 før monsteret (ess + 10 eller billedkort).\n')
+    slow_type(f'3. Monsterets hånd overstiger 21. \n')
 
 
 
@@ -365,6 +375,8 @@ while True:
         exit()
     elif starte_spill == "r":
         regler()
+    else:
+        slow_type(f'Du må skrive inn ett av alternativene :) \n')
 
 def game(): #Definerer spillets gang :)
     global vinn
