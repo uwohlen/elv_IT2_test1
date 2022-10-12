@@ -12,7 +12,7 @@ class Food(item.Item):
     def print_info(self):
         util.slow(f"{self.name} gir deg {self.energy} energi")
 
-    def on_consume(self, character):
+    def consume(self, character):
         util.slow(f"Du spiser {self.name}")
         character.change_energy(self.energy)
 
@@ -22,7 +22,7 @@ RASPBERRY = Food("Bringebær", 10, False)
 STRAWBERRY = Food("Jordbær", 10, False)
 BLUEBERRY = Food("Blåbær", 10, False)
 
-RANDOM =        [
+RANDOM = [
     (20, APPLE), 
     (2, MONSTER_MEAT), 
     (10, RASPBERRY), 
