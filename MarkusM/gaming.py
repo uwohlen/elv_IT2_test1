@@ -820,7 +820,7 @@ monsterList.append(monster2)
 monsterList.append(monster3)
 monsterList.append(gammelMann)
 monsterList.append(monster4)
-"""
+
 
 slow_type("Velkommen til dette spillet")
 time.sleep(1)
@@ -847,7 +847,6 @@ hero.inv.append(starterPinne)
 """
 hero.itemAdd(fortniteScar)
 wEventTomtHus.worldEvent()
-
 """
 event1.event()
 if monster1.hp == 0:
@@ -904,7 +903,6 @@ else: #om man ikke velger å sloss mot ninja
             #fighte meg. garantert å tape?
         #else:
             #????
-"""
     
 #legge til at itemet blir deselecta når ett item blir fjernet. - skal være fikset, men vet ikke sikkert
 
