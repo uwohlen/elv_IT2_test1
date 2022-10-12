@@ -110,10 +110,10 @@ valg_muligheter=[]
 """
 funksjon for aa sette startverdier
 dersom spilleren doer, skal:
-alle monstrene resettes
-spilleren skal starte paa starten
-rommene skal tilbakestilles
-spilleren skal faa fullt hp og vaapnene nullstilles
+    alle monstrene resettes
+    spilleren skal starte i rom 1
+    rommene skal tilbakestilles
+    spilleren skal faa fullt hp og vaapnene nullstilles
 """
 def settStartverdier():
     global naa_rom
@@ -160,7 +160,6 @@ def finnretning():
         valg_muligheter.append("venstre")
 
     print(mulige_retninger)
-    
 
 #leter etter objekter i rommet
 def finnVariabel():
