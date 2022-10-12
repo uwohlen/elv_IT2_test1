@@ -3,7 +3,7 @@ import os
 import sys, time
 
 def slow_type(t):
-    typing_speed = 15000 #wpm
+    typing_speed = 1500 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
@@ -55,7 +55,7 @@ while True:
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 vinn = 0
 tap = 0
-penger = 1000
+penger = 1000000
 items = []
 butikk = ["[G]glock9: 50.000$","[A]ammo: 5.000$","[V]vitaminer: 2.500$"]
 bonus = 0
@@ -93,38 +93,53 @@ def play_again(): #Definerer funksjonen for å spille på nytt
             print("Greven var vel for skummel!\n")
             exit()
         elif again == "b":
-            global penger
-            clear()
-            print(f'♣♠♦♥BUTIKK♥♦♠♣            Balanse: {penger}$')
-            for i in range(len(butikk)):
-                print(butikk[i])
-            print("\n")
-            while True:
-                gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-                if gjenstand == "g" and penger >= 50000:
-                    items.append("Glock9")
-                    butikk.pop(g)
-                    penger -= 50000
-                    slow_type("Takk for kjøpet!\n")                        
-                    slow_type(f'Din nye balanse er: {penger}$                                                      \n')
-                    break
-                elif gjenstand == "g" and penger < 50000:
-                    slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
-                    break
-                if gjenstand == "a" and penger >= 5000:
-                    items.append("Ammo")
-                    butikk.pop(a)
-                    penger -= 5000
-                    slow_type("Takk for kjøpet!\n")
-                    slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-                    break
-                elif gjenstand == "a" and penger < 5000:
-                    slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
-                    break
-                elif gjenstand != ("g","a","v"):
-                    slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
-                if gjenstand == "t":
-                    break
+            sjappe()
+
+def sjappe():
+    global penger
+    global bonus
+    clear()
+    print(f'♣♠♦♥BUTIKK♥♦♠♣            Balanse: {penger}$')
+    for i in range(len(butikk)):
+        print(butikk[i])
+    print("\n")
+    while True:
+        gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
+        if gjenstand == "g" and penger >= 50000:
+            items.append("Glock9")
+            butikk.pop(g)
+            penger -= 50000
+            slow_type("Takk for kjøpet!\n")                        
+            slow_type(f'Din nye balanse er: {penger}$                                                      \n')
+            break
+        elif gjenstand == "g" and penger < 50000:
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            break
+        if gjenstand == "a" and penger >= 5000:
+            items.append("Ammo")
+            butikk.pop(a)
+            penger -= 5000
+            slow_type("Takk for kjøpet!\n")
+            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            break
+        elif gjenstand == "a" and penger < 5000:
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            break
+        if gjenstand == "v" and penger >= 2500:
+            items.append("Vitaminer")
+            butikk.pop(v)
+            penger -= 2500
+            bonus += 2
+            slow_type("Takk for kjøpet!\n")
+            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            break
+        elif gjenstand == "v" and penger < 2500:
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            break
+        elif gjenstand != ("g","a","v"):
+            slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+        if gjenstand == "t":
+            break
 
 
                         
@@ -164,8 +179,12 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
 
 
 def DrepeGreven():
-    slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
-    exit()
+    if "Ammo" in items:
+        slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
+        exit()
+    if "Ammo" not in items:
+        slow_type("Du må ha ammo, kan ikke drepe et monster uten kuler :)                                    \n")
+        play_again()
 
 
 
@@ -268,7 +287,14 @@ def game(): #Definerer spillets gang :)
         print(items[i])
     print("\n")
     while True:
-        gamble = int(input(f'Skriv inn mengden $ du vil gamble: '))
+        gyldig = False
+        while not gyldig:
+            gamble = input(f'Skriv inn mengden $ du vil gamble: ')
+            try:
+                gamble = int(gamble)
+                gyldig = True
+            except ValueError:
+                print("Du må skrive inn et heltall din bruh.")
         penger = int(penger)
         if gamble > penger:
             slow_type(f'Skulle ønske du hadde så mye penger lmao\n')
