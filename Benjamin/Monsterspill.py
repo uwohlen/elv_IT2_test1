@@ -57,8 +57,11 @@ vinn = 0
 tap = 0
 penger = 1000
 items = []
-butikk = ["[G]glock9: 10.000$"]
+butikk = ["[G]glock9: 50.000$","[A]ammo: 5.000$","[V]vitaminer: 2.500$"]
 bonus = 0
+g = butikk.index("[G]glock9: 50.000$")
+a = butikk.index("[A]ammo: 5.000$")
+v = butikk.index("[V]vitaminer: 2.500$")
 
 def deal(deck): #Definerer funksjonen for å dele ut kort
     hand = []
@@ -98,28 +101,32 @@ def play_again(): #Definerer funksjonen for å spille på nytt
             print("\n")
             while True:
                 gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-                if "[G]glock9: 10.000$" in butikk:
-                    if gjenstand == "g" and penger >= 10000:
-                        items.append("Glock9")
-                        butikk.pop(0)
-                        penger -= 10000
-                        slow_type("Takk for kjøpet!\n")
-                        slow_type(f'Din nye balanse er: {penger}$                                                      \n')
-                        break
-                    elif gjenstand == "g" and penger < 10000:
-                        slow_type("Du har ikke råd, fattiglus!\n")
-                    elif gjenstand == "t":
-                        break
-                    else:
-                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
-                elif "[G]glock9: 10.000$" not in butikk:
-                    gjenstand = input(f'For å kjøpe gjenstander skriv bokstaven i parantesen til gjenstanden. \nFor å gå tilbake trykk[T]: ').lower()
-                    if gjenstand == "t":
-                        break
-                    if gjenstand == "g":
-                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
-                    else:
-                        slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                if gjenstand == "g" and penger >= 50000:
+                    items.append("Glock9")
+                    butikk.pop(g)
+                    penger -= 50000
+                    slow_type("Takk for kjøpet!\n")                        
+                    slow_type(f'Din nye balanse er: {penger}$                                                      \n')
+                    break
+                elif gjenstand == "g" and penger < 50000:
+                    slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+                    break
+                if gjenstand == "a" and penger >= 5000:
+                    items.append("Ammo")
+                    butikk.pop(a)
+                    penger -= 5000
+                    slow_type("Takk for kjøpet!\n")
+                    slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+                    break
+                elif gjenstand == "a" and penger < 5000:
+                    slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+                    break
+                elif gjenstand != ("g","a","v"):
+                    slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(\n")
+                if gjenstand == "t":
+                    break
+
+
                         
 
 
@@ -262,12 +269,13 @@ def game(): #Definerer spillets gang :)
     print("\n")
     while True:
         gamble = int(input(f'Skriv inn mengden $ du vil gamble: '))
-        if int(gamble) > int(penger):
+        penger = int(penger)
+        if gamble > penger:
             slow_type(f'Skulle ønske du hadde så mye penger lmao\n')
-        elif int(gamble) < 0:
+        elif gamble < 0:
             slow_type(f'Ayo? Du vil at Greven skal spandere betten for deg?\n')
-        elif int(gamble) <= int(penger):
-            penger = int(penger) - int(gamble)
+        elif gamble <= penger:
+            penger = penger - gamble
             slow_type(f'Du betta: {gamble}\n')
             break
     dealer_hand = deal(deck)
