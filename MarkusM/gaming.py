@@ -3,8 +3,6 @@ import random as r
 import sys, time
 import os
 
-
-
 def slow_type(t):
     typing_speed = 300 #wpm
     for l in t:
