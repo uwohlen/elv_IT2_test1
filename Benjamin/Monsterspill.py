@@ -35,7 +35,7 @@ arne = Spiller("Arne",140,1)
 per = Spiller("Per",110,3)
 greven = Monster("Greven",100,1)
 
-slow_type(f'En dag blir du sugd inn i en annen verden, og den eneste måten å komme seg hjem igjen er å spille BlackJack\n')
+slow_type(f'Du har blitt sugd inn i en annen verden, og den eneste måten å komme deg hjem igjen er å spille BlackJack\n')
 slow_type(f'Desverre for deg er du nødt til å bekjempe en rekke monstere for å seire og returnere hjem trygt\n')
 print('\n')
 
@@ -147,13 +147,13 @@ class Gjenstander: #konstruktør for monstere
 
 glock = Gjenstander("[G]Glock9",50000,0,0,0)
 ammo = Gjenstander("[A]Ammo",5000,0,0,0)
-vitaminer = Gjenstander("[V]Vitaminer",2500,0,0,2)
-super_vitaminer = Gjenstander("[S]Super-Vitaminer",25000,0,0,3)
+vitaminer = Gjenstander("[V]Vitaminer",2500,0,0,1)
+super_vitaminer = Gjenstander("[S]Super-Vitaminer",25000,0,0,2)
 iq_tabletter = Gjenstander("[I]IQ-Tabletter",10000,20,0,0)
-guds_vedsignelse = Gjenstander("[GV]Guds-Velsignelse",0,15000,0)
+guds_velsignelse = Gjenstander("[GV]Guds-Velsignelse",15000,0,2,0)
 
 items = []
-butikk = [glock,ammo,vitaminer]
+butikk = [glock,ammo,vitaminer,super_vitaminer,iq_tabletter,guds_velsignelse]
 bonus = 0
 
 def sjappe():
@@ -167,6 +167,12 @@ def sjappe():
         print(f'{ammo.navn}: {ammo.pris}$')
     if vitaminer in butikk:
         print(f'{vitaminer.navn}: {vitaminer.pris}$')
+    if super_vitaminer in butikk:
+        print(f'{super_vitaminer.navn}: {super_vitaminer.pris}$')
+    if iq_tabletter in butikk:
+        print(f'{iq_tabletter.navn}: {iq_tabletter.pris}$')
+    if guds_velsignelse in butikk:
+        print(f'{guds_velsignelse.navn}: {guds_velsignelse.pris}$')
     print("\n")
     print('[T]Tilbake')
     while True:
@@ -178,6 +184,12 @@ def sjappe():
         elif gjenstand == "a" and ammo not in butikk:
             sjappe()
         elif gjenstand == "v" and vitaminer not in butikk:
+            sjappe()
+        elif gjenstand == "s" and super_vitaminer not in butikk:
+            sjappe()
+        elif gjenstand == "i" and iq_tabletter not in butikk:
+            sjappe()
+        elif gjenstand == "gv" and guds_velsignelse not in butikk:
             sjappe()
         elif gjenstand == "g" and penger >= int(glock.pris):
             items.append("Glock9")
@@ -216,12 +228,60 @@ def sjappe():
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
             game()
             break
+        elif gjenstand == "s" and penger >= int(super_vitaminer.pris):
+            items.append("Super Vitaminer")
+            butikk.remove(super_vitaminer)
+            penger -= int(super_vitaminer.pris)
+            bonus += int(super_vitaminer.bonus)
+            slow_type("Takk for kjøpet!\n")
+            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            game()
+            break
+        elif gjenstand == "s" and penger < int(super_vitaminer.pris):
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            game()
+            break
+        elif gjenstand == "i" and penger >= int(iq_tabletter.pris):
+            items.append("Super Vitaminer")
+            butikk.remove(iq_tabletter)
+            penger -= int(iq_tabletter.pris)
+            arne.iq += int(iq_tabletter.iq)
+            per.iq += int(iq_tabletter.iq)
+            slow_type("Takk for kjøpet!\n")
+            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            game()
+            break
+        elif gjenstand == "i" and penger < int(iq_tabletter.pris):
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            game()
+            break
+        elif gjenstand == "gv" and penger >= int(guds_velsignelse.pris):
+            items.append("Guds Velsignelse")
+            butikk.remove(guds_velsignelse)
+            penger -= int(guds_velsignelse.pris)
+            arne.flaks += int(guds_velsignelse.flaks)
+            per.flaks += int(guds_velsignelse.flaks)                
+            slow_type("Takk for kjøpet!\n")
+            slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            game()
+            break
+        elif gjenstand == "gv" and penger < int(guds_velsignelse.pris):
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
+            game()
+            break
         else:
             slow_type("Du skrev ikke inn en bokstav som samsvarer med noen av alternativene :(                                           \n")
             sjappe()
         game()
 
-
+def statistikk():
+    clear()
+    if karakter == "1":
+        print(f'Navn: {arne.navn}\nIQ: {arne.iq}\nFlaks: {arne.flaks}\nBonus Multiplier: {1 + bonus/10}')
+    elif karakter == "2":
+        print(f'Navn: {per.navn}\nIQ: {per.iq}\nFlaks: {per.flaks}\nBonus Multiplier: {1 + bonus/10}')
+    tilbake1 = input(f'Skriv inn et symbol for å gå tilbake: ')
+    game()
 
 def total(hand): #Definerer funksjonen for å finne sum av utdelt kort
     total = 0
@@ -314,13 +374,13 @@ def iq():
     global gamble
     if karakter == "1":
         m = random.randint(1,int(arne.iq))
-        if m > int(arne.iq)*0.7:
+        if m > 100:
             penger -= (1 - (2 * int(arne.iq) / 1000)) * gamble
         else:
             tapepenger()
     if karakter == "2":
         m = random.randint(1,int(per.iq))
-        if m > int(per.iq)*0.7:
+        if m > 100:
             penger -= (1 - (2 * int(per.iq) / 1000)) * gamble
         else:
             tapepenger()
@@ -414,10 +474,8 @@ def game(): #Definerer spillets gang :)
         penger += 100
     print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
     slow_type(f'Balanse: {penger}$     Seiere: {vinn}     Tap: {tap}\n')
-    slow_type(f'[A]Avslutt      [B]Butikk\n')
+    slow_type(f'[A]Avslutt      [B]Butikk      [S]Statistikk\n')
     print("Dine gjenstander:")
-    '''print(arne.flaks)
-    print(per.flaks)'''
     for i in range(len(items)):
         print(items[i])
     print("\n")
@@ -430,6 +488,8 @@ def game(): #Definerer spillets gang :)
             if gamble == "a":
                 slow_type("Greven var vel for skummel!\n")
                 exit()
+            if gamble == "s":
+                statistikk()
             try:
                 gamble = int(gamble)
                 gyldig = True
@@ -484,13 +544,7 @@ def game(): #Definerer spillets gang :)
 if __name__ == "__main__":
     game()
 
-#I fremtiden skal det legges til:
-#oversikt over tap og seiere xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-#Valuta xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-#Valuta kan brukes for å drepe Greven xxxxxxxxxxxxxxxxxxxx
-#Juks, flaks og iq skal spille en rolle
-#Flaks skal gjøre at noen ganger så mister man ikke penger siden greven glemmer å ta dem
-#Iq skal gjøre at man får ekstra bonuser/multipliers for gevinstene sine
+
 #Juksing kan gjøre at greven ikke gir tilbake den summen man skal ha
 #legge til voicelines for Greven basert på randint genererte nummere, disse blir printa etter hvert game
-#legge til en butikk hvor du kan kjøpe oppgraderinger, og glock for å drepe Greven xxxxxxxxxxxxxxxds
+#Man kan bruke glock og ammo for å gjøre skade, ikke nødvendigvis direkte drepe, men greven dør når han er tom for liv
