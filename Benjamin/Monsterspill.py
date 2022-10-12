@@ -55,9 +55,9 @@ while True:
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 vinn = 0
 tap = 0
-penger = 1000000
+penger = 1000
 items = []
-butikk = ["[G]glock9: 50.000$","[A]ammo: 5.000$","[V]vitaminer: 2.500$"]
+butikk = ["[G]glock9: 50.000$","[A]ammo: 5.000$","[V]vitaminer: 2.500$",1]
 bonus = 0
 g = butikk.index("[G]glock9: 50.000$")
 a = butikk.index("[A]ammo: 5.000$")
