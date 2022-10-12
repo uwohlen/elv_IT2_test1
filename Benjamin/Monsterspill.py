@@ -146,8 +146,11 @@ class Gjenstander: #konstruktør for monstere
         self.bonus = bonus
 
 glock = Gjenstander("[G]Glock9",50000,0,0,0)
-ammo = Gjenstander("[A]ammo",5000,0,0,0)
-vitaminer = Gjenstander("[V]vitaminer",2500,0,0,2)
+ammo = Gjenstander("[A]Ammo",5000,0,0,0)
+vitaminer = Gjenstander("[V]Vitaminer",2500,0,0,2)
+super_vitaminer = Gjenstander("[S]Super-Vitaminer",25000,0,0,3)
+iq_tabletter = Gjenstander("[I]IQ-Tabletter",10000,20,0,0)
+guds_vedsignelse = Gjenstander("[GV]Guds-Velsignelse",0,15000,0)
 
 items = []
 butikk = [glock,ammo,vitaminer]
