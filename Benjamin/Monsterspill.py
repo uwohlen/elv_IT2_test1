@@ -532,16 +532,18 @@ def game(): #Definerer spillets gang :)
                 tap += 1
                 penger -= gamble
                 play_again()
-        elif choice == "s":
+        if choice == "s":
             if total(dealer_hand) >= 17:
                 score(dealer_hand,player_hand)
                 play_again()
-            else:
+            elif total(dealer_hand) < 17:
                 while total(dealer_hand) < 17:
                     hit(dealer_hand)
                 score(dealer_hand,player_hand)
                 play_again()
-        elif choice == "a":
+            score(dealer_hand,player_hand)
+            play_again()
+        if choice == "a":
             slow_type("Greven var vel for skummel!\n")
             exit()
         elif choice == "g" and "Glock9" in items:
