@@ -105,7 +105,7 @@ def regler():
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 vinn = 0
 tap = 0
-penger = 50000000
+penger = 1000000
 
 
 
@@ -137,7 +137,7 @@ def play_again(): #Definerer funksjonen for å spille på nytt
         game()
 
 
-class Gjenstander: #konstruktør for monstere
+class Gjenstander: #konstruktør for gjenstander
     def __init__(self,navn,pris,iq,flaks,bonus):
         self.navn = navn
         self.pris = pris
