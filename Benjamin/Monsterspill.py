@@ -17,23 +17,25 @@ def fast_type(t):
         time.sleep(random.random()*10.0/typing_speed)
 
 class Monster: #konstruktør for monstere
-    def __init__(self,navn,iq,juks):
+    def __init__(self,navn,iq,juks,liv):
         self.navn = navn
         self.iq = iq
         self.juks = juks
+        self.liv = liv
 
 class Spiller: #konstruktør for karakterer
-    def __init__(self,navn,iq,flaks):
+    def __init__(self,navn,iq,flaks,liv):
         self.navn = navn
         self.iq = iq
         self.flaks = flaks
+        self.liv = liv
     
     def __str__(self):
         return(slow_type(f'Karakteren {self.navn} har en iq på hele {self.iq}.'))
 
-arne = Spiller("Arne",140,1)
-per = Spiller("Per",110,3)
-greven = Monster("Greven",100,1)
+arne = Spiller("Arne",140,1,100)
+per = Spiller("Per",110,3,100)
+greven = Monster("Greven",100,1,250)
 
 slow_type(f'Du har blitt sugd inn i en annen verden, og den eneste måten å komme deg hjem igjen er å spille BlackJack\n')
 slow_type(f'Desverre for deg er du nødt til å bekjempe en rekke monstere for å seire og returnere hjem trygt\n')
@@ -160,6 +162,8 @@ def sjappe():
     global penger
     global bonus
     clear()
+    if "Ammo" not in items and ammo not in butikk:
+        butikk.append(ammo)
     print(f'♣♠♦♥BUTIKK♥♦♠♣            Balanse: {penger}$')
     if glock in butikk:
         print(f'{glock.navn}: {glock.pris}$')
@@ -192,7 +196,7 @@ def sjappe():
         elif gjenstand == "gv" and guds_velsignelse not in butikk:
             sjappe()
         elif gjenstand == "g" and penger >= int(glock.pris):
-            items.append("Glock9")
+            items.append('Glock9')
             butikk.remove(glock)
             penger -= int(glock.pris)
             slow_type("Takk for kjøpet!\n")                        
@@ -204,7 +208,7 @@ def sjappe():
             game()
             break
         elif gjenstand == "a" and penger >= int(ammo.pris):
-            items.append("Ammo")
+            items.append('Ammo')
             butikk.remove(ammo)
             penger -= int(ammo.pris)
             slow_type("Takk for kjøpet!\n")
@@ -216,7 +220,7 @@ def sjappe():
             game()
             break
         elif gjenstand == "v" and penger >= int(vitaminer.pris):
-            items.append("Vitaminer")
+            items.append('Vitaminer')
             butikk.remove(vitaminer)
             penger -= int(vitaminer.pris)
             bonus += int(vitaminer.bonus)
@@ -229,7 +233,7 @@ def sjappe():
             game()
             break
         elif gjenstand == "s" and penger >= int(super_vitaminer.pris):
-            items.append("Super Vitaminer")
+            items.append('Super-Vitaminer')
             butikk.remove(super_vitaminer)
             penger -= int(super_vitaminer.pris)
             bonus += int(super_vitaminer.bonus)
@@ -242,7 +246,7 @@ def sjappe():
             game()
             break
         elif gjenstand == "i" and penger >= int(iq_tabletter.pris):
-            items.append("Super Vitaminer")
+            items.append('Iq-Tabletter')
             butikk.remove(iq_tabletter)
             penger -= int(iq_tabletter.pris)
             arne.iq += int(iq_tabletter.iq)
@@ -256,7 +260,7 @@ def sjappe():
             game()
             break
         elif gjenstand == "gv" and penger >= int(guds_velsignelse.pris):
-            items.append("Guds Velsignelse")
+            items.append('Guds-Velsignelse')
             butikk.remove(guds_velsignelse)
             penger -= int(guds_velsignelse.pris)
             arne.flaks += int(guds_velsignelse.flaks)
@@ -277,9 +281,9 @@ def sjappe():
 def statistikk():
     clear()
     if karakter == "1":
-        print(f'Navn: {arne.navn}\nIQ: {arne.iq}\nFlaks: {arne.flaks}\nBonus Multiplier: {1 + bonus/10}')
+        print(f'Navn: {arne.navn}\nIQ: {arne.iq}\nFlaks: {arne.flaks}\nBonus Multiplier: {1 + bonus/10}\nLiv: {arne.liv}')
     elif karakter == "2":
-        print(f'Navn: {per.navn}\nIQ: {per.iq}\nFlaks: {per.flaks}\nBonus Multiplier: {1 + bonus/10}')
+        print(f'Navn: {per.navn}\nIQ: {per.iq}\nFlaks: {per.flaks}\nBonus Multiplier: {1 + bonus/10}\nLiv: {per.liv}')
     tilbake1 = input(f'Skriv inn et symbol for å gå tilbake: ')
     game()
 
@@ -314,10 +318,11 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
 
 def DrepeGreven():
     if "Ammo" in items:
-        slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
+
+        '''slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")'''
         exit()
     if "Ammo" not in items:
-        slow_type("Du må ha ammo, kan ikke drepe et monster uten kuler :)                                    \n")
+        slow_type("Du må ha ammo for å bruke glocken, kan ikke drepe et monster uten kuler :)                                    \n")
         play_again()
 
 
@@ -368,7 +373,7 @@ def flaks():
         if n > 2:
             o = (1.1 + (int(per.flaks)/10)) * gamble
             penger += o
-            slow_type(f'Du vant: {0}$+n')
+            slow_type(f'Du vant: {0}$\n')
         else:
             gevinst()
 
@@ -458,7 +463,8 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
     
 
 while True:
-    starte_spill = input(f'Er du opp for utfordringen, eller trenger du kanskje litt regler til Monster-BlackJack først? [J]Ja / [N]Nei / [R]Regler: ').lower()
+    slow_type('Er du opp for utfordringen, eller trenger du kanskje litt regler til Monster-BlackJack først?\n')
+    starte_spill = input(f'[J]Ja / [N]Nei / [R]Regler: ').lower()
     if starte_spill == "j":
         break
     elif starte_spill == "n":
@@ -482,8 +488,7 @@ def game(): #Definerer spillets gang :)
     slow_type(f'Balanse: {penger}$     Seiere: {vinn}     Tap: {tap}\n')
     slow_type(f'[A]Avslutt      [B]Butikk      [S]Statistikk\n')
     print("Dine gjenstander:")
-    for i in range(len(items)):
-        print(items[i])
+    print(*items, sep = ", ")
     print("\n")
     while True:
         gyldig = False
@@ -514,7 +519,7 @@ def game(): #Definerer spillets gang :)
     blackjack(dealer_hand, player_hand)
     slow_type(f'Du fikk kortene: {(player_hand)} som betyr at du har summen: {(total(player_hand))}\n')
     while choice != "a":
-        if "Glock9" not in items:
+        if 'Glock9' not in items:
             choice = input("Vil du: [H]Slå, [S]stå eller [A]Avslutte: ").lower()
         else:
             choice = input("Vil du: [H]Slå, [S]stå, [A]Avslutte eller [G]Glock9: ").lower()
@@ -533,10 +538,7 @@ def game(): #Definerer spillets gang :)
                 penger -= gamble
                 play_again()
         if choice == "s":
-            if total(dealer_hand) >= 17:
-                score(dealer_hand,player_hand)
-                play_again()
-            elif total(dealer_hand) < 17:
+            if total(dealer_hand) < 17:
                 while total(dealer_hand) < 17:
                     hit(dealer_hand)
                 score(dealer_hand,player_hand)
@@ -546,7 +548,7 @@ def game(): #Definerer spillets gang :)
         if choice == "a":
             slow_type("Greven var vel for skummel!\n")
             exit()
-        elif choice == "g" and "Glock9" in items:
+        elif choice == "g" and 'Glock9' in items:
             DrepeGreven()
 
 if __name__ == "__main__":
@@ -556,3 +558,4 @@ if __name__ == "__main__":
 #Juksing kan gjøre at greven ikke gir tilbake den summen man skal ha
 #legge til voicelines for Greven basert på randint genererte nummere, disse blir printa etter hvert game
 #Man kan bruke glock og ammo for å gjøre skade, ikke nødvendigvis direkte drepe, men greven dør når han er tom for liv
+#legge til et interface med info om grevenog at du interacte med han mer
