@@ -339,7 +339,9 @@ def gevinst():
     global penger
     global gamble
     global bonus
-    penger += gamble * (1 + random.randint(0,bonus)/10)
+    r = gamble * (1 + random.randint(0,bonus)/10)
+    penger += r
+    slow_type(f'Du vant: {r}$\n')
     return penger
 
 def tapepenger():
@@ -356,13 +358,17 @@ def flaks():
     if karakter == "1":
         n = random.randint(1,int(arne.flaks))
         if n > 2:
-            penger += (1.1 + (int(arne.flaks)/10)) * gamble
+            o = (1.1 + (int(arne.flaks)/10)) * gamble
+            penger += o
+            slow_type(f'Du vant: {o}$\n')
         else:
             gevinst()
     if karakter == "2":
         n = random.randint(1,int(per.flaks))
         if n > 2:
-            penger += (1.1 + (int(per.flaks)/10)) * gamble
+            o = (1.1 + (int(per.flaks)/10)) * gamble
+            penger += o
+            slow_type(f'Du vant: {0}$+n')
         else:
             gevinst()
 
