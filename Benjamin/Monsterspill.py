@@ -178,7 +178,7 @@ def sjappe():
     while True:
         gjenstand = input(f'Skriv inn tilsvarende symbol: ').lower()
         if gjenstand == "t":
-            break
+            game()
         elif gjenstand == "g" and glock not in butikk:
             sjappe()
         elif gjenstand == "a" and ammo not in butikk:
