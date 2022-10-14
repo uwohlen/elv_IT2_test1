@@ -145,15 +145,15 @@ def finnretning():
                 kolonne_nr = j
                 break
    
-    if (rad_nr == 0) or (rad_nr== 1):
+    if rad_nr < 2:
         mulige_retninger+="opp"
         valg_muligheter.append("opp")
-    if (rad_nr > 0):
+    if rad_nr > 0:
         if "opp" in mulige_retninger:
             mulige_retninger+=", "
         mulige_retninger+="ned"
         valg_muligheter.append("ned")
-    if kolonne_nr<2:
+    if kolonne_nr < 2:
         if "opp" in mulige_retninger or "ned" in mulige_retninger:
             mulige_retninger+=", "
         mulige_retninger+="til hoeyre"
