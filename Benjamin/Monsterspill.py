@@ -152,15 +152,15 @@ class Gjenstander: #konstruktør for gjenstander
         self.skade = skade
         self.liv = liv
 
-glock = Gjenstander("[G]Glock9",50000,0,0,0,20,0)
-ammo = Gjenstander("[A]Ammo",5000,0,0,0,0,0)
-knuckle_busters = Gjenstander("[K]Knuckle-Busters",25000,0,0,0,5,0)
-pigg_sko = Gjenstander("[P]Pigg-Sko",25000,0,0,0,5,0)
+glock = Gjenstander("[G]Glock9",15000,0,0,0,20,0)
+ammo = Gjenstander("[A]Ammo",2500,0,0,0,0,0)
+knuckle_busters = Gjenstander("[K]Knuckle-Busters",5000,0,0,0,5,0)
+pigg_sko = Gjenstander("[P]Pigg-Sko",5000,0,0,0,5,0)
 vitaminer = Gjenstander("[V]Vitaminer",2500,0,0,1,0,0)
-super_vitaminer = Gjenstander("[S]Super-Vitaminer",25000,0,0,2,0,0)
-iq_tabletter = Gjenstander("[I]IQ-Tabletter",10000,20,0,0,0,0)
-guds_velsignelse = Gjenstander("[GV]Guds-Velsignelse",15000,0,2,0,0,0)
-livs_tabletter = Gjenstander("[L]Livs-Tabletter",2500,0,0,0,0,20)
+super_vitaminer = Gjenstander("[S]Super-Vitaminer",4500,0,0,2,0,0)
+iq_tabletter = Gjenstander("[I]IQ-Tabletter",4500,20,0,0,0,0)
+guds_velsignelse = Gjenstander("[GV]Guds-Velsignelse",4500,0,2,0,0,0)
+livs_tabletter = Gjenstander("[L]Livs-Tabletter",2500,0,0,0,0,25)
 
 items = []
 våpen = []
@@ -226,7 +226,7 @@ def sjappe():
             penger -= int(glock.pris)
             slow_type("Takk for kjøpet!\n")                        
             slow_type(f'Din nye balanse er: {penger}$                                                      \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "g" and penger < int(glock.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
@@ -239,6 +239,10 @@ def sjappe():
             penger -= int(ammo.pris)
             slow_type("Takk for kjøpet!\n")
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
+            sjappe()
+            break
+        elif gjenstand == "a" and penger < int(ammo.pris):
+            slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
             game()
             break
         elif gjenstand == "k" and penger >= int(knuckle_busters.pris):
@@ -250,7 +254,7 @@ def sjappe():
             penger -= int(knuckle_busters.pris)
             slow_type("Takk for kjøpet!\n")
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "k" and penger < int(knuckle_busters.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
@@ -265,7 +269,7 @@ def sjappe():
             penger -= int(pigg_sko.pris)
             slow_type("Takk for kjøpet!\n")
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "p" and penger < int(pigg_sko.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
@@ -278,7 +282,7 @@ def sjappe():
             bonus += int(vitaminer.bonus)
             slow_type("Takk for kjøpet!\n")
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "v" and penger < int(vitaminer.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
@@ -291,7 +295,7 @@ def sjappe():
             bonus += int(super_vitaminer.bonus)
             slow_type("Takk for kjøpet!\n")
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "s" and penger < int(super_vitaminer.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
@@ -305,7 +309,7 @@ def sjappe():
             per.iq += int(iq_tabletter.iq)
             slow_type("Takk for kjøpet!\n")
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "i" and penger < int(iq_tabletter.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
@@ -319,14 +323,17 @@ def sjappe():
             per.flaks += int(guds_velsignelse.flaks)                
             slow_type("Takk for kjøpet!\n")
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "gv" and penger < int(guds_velsignelse.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
             game()
             break
         elif gjenstand == "l" and penger >= int(livs_tabletter.pris):
-            if arne.liv >= 100 or per.liv >= 100:
+            if karakter == "1" and arne.liv >= 100:
+                slow_type(f'Du har maks liv og du kan derfor ikke kjøpe mer, gå å kjemp mot greven du :)                                  ')
+                sjappe()
+            elif karakter == "2" and per.liv >= 100:
                 slow_type(f'Du har maks liv og du kan derfor ikke kjøpe mer, gå å kjemp mot greven du :)                                  ')
                 sjappe()
             penger -= int(livs_tabletter.pris)                
@@ -338,7 +345,7 @@ def sjappe():
                 slow_type(f'Ditt liv har gått fra ({per.liv}) til ({arne.liv + livs_tabletter.liv}) ')
                 per.liv += livs_tabletter.liv
             slow_type(f'Din nye balanse er: {penger}$                                                         \n')
-            game()
+            sjappe()
             break
         elif gjenstand == "gv" and penger < int(livs_tabletter.pris):
             slow_type("Du har ikke råd ha deg ut av sjappa mi, fattiglus!                                  \n")
