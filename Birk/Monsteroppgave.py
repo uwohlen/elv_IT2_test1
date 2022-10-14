@@ -57,21 +57,24 @@ def damage_calculator(x, y):
 
 print(damage_calculator(birk.strength, kraftig_kjempe.defense))
 
-battle = False
+battle = True
+birk_turn = False
+kraftig_kjempe_turn = False
+print("Du sloss nå mot", kraftig_kjempe.navn)
 
 while battle == True:
-    birk_turn = False
-    kraftig_kjempe_turn = False
-    print("Du sloss nå mot", kraftig_kjempe.navn)
-    if birk.speed > kraftig_kjempe.speed:
-        birk_tur = True
-    else:
-        kraftig_kjempe_tur = True
-    
-        while birk_turn == True:
-            print("Det er din tur")
-            action = print(input("Hva vil du gjøre? (a = attack, b = block)"))
-            
-            if action.casefold() == "a":
-                print()
+    while birk.speed > kraftig_kjempe.speed:
+        print("Det er din tur")
+        action = print(input("Hva vil du gjøre? (a = attack, b = block)"))
         
+        if action == "a":
+            print(f"Du angriper {kraftig_kjempe.navn}")
+            print(f"Du gjorde",(damage_calculator(birk.strength,kraftig_kjempe.defense)),"mot {kraftig_kjempe.navn}")
+
+        elif action == "b":
+            print(f"Du blokkerer angripet til {kraftig_kjempe}")
+            
+            
+
+# Fulføre kamp system
+# Lage bevegelse system
