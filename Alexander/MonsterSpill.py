@@ -23,10 +23,11 @@ class Game():
         for x in range(0, len(monsters)):
             self.board[monsters[x].pos[0]][monsters[x].pos[1]] = 'M'
         self.board[player.pos[0]][player.pos[1]] = 'P'
-        self.printBoard()
+        self.printBoard(player, monsters)
 
     
-    def printBoard(self): # function for displaying the board to the terminal
+    def printBoard(self, player, monsters): # function for displaying the board to the terminal
+        print("\n" * 20)
         for y in range(0, self.y):
             for i in range(0, self.x * 4 - 3):
                 print('-', end='')
@@ -38,19 +39,28 @@ class Game():
             print('')
         for i in range(0, self.x * 4 - 3):
                 print('-', end='')
-        print('')
+        print(f'\nPlayer Health: {player.health}\nMonster Health: {monsters[0].health}')
         
     def G_round(self, player, monsters):
         action = input("Enter command:\n")
+        
         if action == 'a':
             self.G_P_attack(player, monsters)
         elif action == 'm':
             self.G_P_move(player)
+        elif action == 'e':
+            self.G_P_Inventory(player)
+            self.G_round(player, monsters)
+        else:
+            print("Invalid input")
+            #monsters[0].health = 0
+            #return
+            self.G_round(player, monsters)
             
-        if monsters[0].alive(game) != 1:
+        if monsters[0].alive(game, player, monsters) != 1:
             return
         monster.playRound(player, self)
-        self.printBoard()
+        self.printBoard(player, monsters)
     
     def G_P_attack(self, player, monsters):
         if len(monsters) == 1:
@@ -80,11 +90,20 @@ class Game():
                 print("Invalid direction, only use w, a, s, d!!!")
                 self.G_P_move(player)
         player.move(x, y, self)
-
+    
+    def G_P_Inventory(self, player):
+        print(f"Use the numbers to select a weapon, you currently have: {player.inventory[0]}")
+        for i in weapons:
+            print(f"{list(weapons.keys()).index(i) + 1}. {i}")
+        inp = int(input())
+        player.inventory[0] = list(weapons.keys())[inp - 1]
+        print(f"You selected {list(weapons.keys())[inp - 1]}")
+        
+        
 class Monster():
     
     def __init__(self, xpos, ypos):
-        self.health = 150
+        self.health = 1
         self.pos = [xpos, ypos]
         
     def __len__(self): # used so that length of monster list refers to number of entries
@@ -144,10 +163,10 @@ class Monster():
         else:
             self.move(player, game)
             
-    def alive(self, game):
+    def alive(self, game, player, monsters):
         if self.health <= 0:
             game.board[self.pos[0]][self.pos[1]] = ' '
-            game.printBoard()
+            game.printBoard(player, monsters)
             print("The monster is dead!!! You Win!!!")
             return 0
         else:
@@ -190,10 +209,13 @@ class Player():
         game.board[self.pos[0]][self.pos[1]] = 'P'
         #game.printBoard()
         
-    def alive(self):
+    def alive(self, game, player, monsters):
         if self.health > 0:
             return 1
         else:
+            game.board[self.pos[0]][self.pos[1]] = ' '
+            print("Oh no you died!!!")
+            game.printBoard(player, monsters)
             return 0
    
 print("Monster Spill")
@@ -206,6 +228,8 @@ monster = Monster(4, 0)
 player = Player(4, 9)
 game = Game(10, 10, player, monster)
 game.init([monster], player)
-while player.alive() or monster.alive(game):
-    game.G_round(player, [monster]) 
-print("Oh no you died!!!")
+cont = 1
+while cont: 
+    game.G_round(player, [monster])
+    if not(player.alive(game, player, [monster])) or not(monster.alive(game, player, [monster])):
+        cont = 0

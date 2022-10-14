@@ -118,15 +118,15 @@ dersom spilleren doer, skal:
 def settStartverdier():
     global naa_rom
     #lager monstere
-    monster1 = Monster("Peder", 50, 40)
-    monster2 = Monster("morbius", 169, 60)
+    monster1 = Monster("will smith", 100, 40)
+    monster2 = Monster("morbius", 269, 60)
 
     #legger til egenskaper ved de forskjellige rommene
     rom_liste[0][0].kiste=True
     rom_liste[0][1].felle=True
     rom_liste[0][2].gjenstand=Vaapen("sverd",40)
     rom_liste[1][0].monster=monster1
-    rom_liste[1][1].gjenstand=Vaapen("tazer",50)
+    rom_liste[1][1].gjenstand=Vaapen("tazer",75)
     rom_liste[2][0].gjenstand = Gjenstand("potion of healing")
     rom_liste[2][2].monster = monster2
 
@@ -145,16 +145,21 @@ def finnretning():
                 kolonne_nr = j
                 break
    
-    if (rad_nr == 0) or (rad_nr== 1):
+    if rad_nr < 2:
         mulige_retninger+="opp"
         valg_muligheter.append("opp")
-    if kolonne_nr<2:
+    if rad_nr > 0:
         if "opp" in mulige_retninger:
+            mulige_retninger+=", "
+        mulige_retninger+="ned"
+        valg_muligheter.append("ned")
+    if kolonne_nr < 2:
+        if "opp" in mulige_retninger or "ned" in mulige_retninger:
             mulige_retninger+=", "
         mulige_retninger+="til hoeyre"
         valg_muligheter.append("hoeyre")
     if kolonne_nr > 0:
-        if "hoeyre" in mulige_retninger or "opp" in mulige_retninger:
+        if "hoeyre" in mulige_retninger or "opp" in mulige_retninger or "ned" in mulige_retninger:
             mulige_retninger+=", "
         mulige_retninger+="til venstre"
         valg_muligheter.append("venstre")
@@ -293,6 +298,8 @@ def kjoor():
         else:
             if valg == "opp":
                 rad_nr +=1
+            elif valg == "ned":
+                rad_nr -=1
             elif valg == "hoeyre":
                 kolonne_nr +=1
             elif valg == "venstre":
