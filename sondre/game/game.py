@@ -257,8 +257,9 @@ def fight():
                 read_highscores()
             player.alive = False
             break
+
         # check if monster is alive. If not, grant the player the reward
-        if monster.hitpoints <= 0:
+        if monster.hitpoints <= 0:  # error is a pycharm visual error, does not occur in other editors
             print('The monster has been defeated!')
             # grant player reward
             player.coins += monster.reward
@@ -280,9 +281,11 @@ def fight():
         user_input = input()
         print('')
         # Check what the player wants to do
+
         # access inventory
         if user_input == 'inv':
             check_inventory()
+
         # attack the monster
         elif user_input == 'attack':
             print('You attack the monster')
@@ -294,7 +297,11 @@ def fight():
                 print(f'The monster has {monster.hitpoints} HP left')
 
             time.sleep(1)
-            print(f'You have {player.hitpoints} HP left')
+            if player.hitpoints < 0:
+                print('You have 0 HP left')
+            else:
+                print(f'You have {player.hitpoints} HP left')
+
         # try to seduce the monster
         elif user_input == 'seduce':
             print('You attempt to seduce the monster')
@@ -327,6 +334,7 @@ def fight():
                 print(f'The monster has {monster.hitpoints} HP left')
                 time.sleep(1)
                 print(f'You have {player.hitpoints} HP left')
+
         # run away, player will get nothing
         elif user_input == 'run':
             print('You run away, you get nothing')
@@ -335,6 +343,7 @@ def fight():
             del monster
             # end fight
             break
+
         # prompt user if no valid input is detected
         else:
             print('Please provide a valid option.')
@@ -366,16 +375,8 @@ def new_day():
         elif user_input == 'explore':
             print('You go exploring in the woods.')
             time.sleep(2)
-            # decide if exploration should result in meeting and fighting a monster, finding an item or finding nothing
-            exploration_action = random.randint(1, 10)
-            # meet monster
-            if exploration_action <= 8:
-                fight()
-            # find nothing
-            elif exploration_action < 8:
-                print('You found nothing in the woods.')
-                print('You head home for the day.')
-                time.sleep(1)
+            # initiate fight with monster
+            fight()
         # access shop if player requests so
         elif user_input == 'shop':
             shop()
