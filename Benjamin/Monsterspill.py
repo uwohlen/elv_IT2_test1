@@ -317,13 +317,8 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
 
 
 def DrepeGreven():
-    if "Ammo" in items:
-
-        '''slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")'''
+        slow_type("Du tok frem en glock9 og gætta ned Greven. \nPå grunn av dine handlinger har du nå gjort tre snille barn fatherles :(\n")
         exit()
-    if "Ammo" not in items:
-        slow_type("Du må ha ammo for å bruke glocken, kan ikke drepe et monster uten kuler :)                                    \n")
-        play_again()
 
 
 
@@ -487,7 +482,7 @@ def game(): #Definerer spillets gang :)
     print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
     slow_type(f'Balanse: {penger}$     Seiere: {vinn}     Tap: {tap}\n')
     slow_type(f'[A]Avslutt      [B]Butikk      [S]Statistikk\n')
-    print("Dine gjenstander:")
+    print(f'Dine gjenstander: ',end = '')
     print(*items, sep = ", ")
     print("\n")
     while True:
@@ -523,7 +518,8 @@ def game(): #Definerer spillets gang :)
             choice = input("Vil du: [H]Slå, [S]stå eller [A]Avslutte: ").lower()
         else:
             choice = input("Vil du: [H]Slå, [S]stå, [A]Avslutte eller [G]Glock9: ").lower()
-        clear()
+        if choice == "h" or "s":
+            clear()
         if choice == "h":
             hit(player_hand)
             if total(player_hand) == 21:
@@ -548,6 +544,8 @@ def game(): #Definerer spillets gang :)
         if choice == "a":
             slow_type("Greven var vel for skummel!\n")
             exit()
+        elif choice == "g" and 'Glock9' in items and 'Ammo' not in items:
+            slow_type('Du må ha ammo for å kunne bruke Glocken\n')
         elif choice == "g" and 'Glock9' in items:
             DrepeGreven()
 
