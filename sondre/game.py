@@ -51,9 +51,9 @@ class Monster:
 
 
 def write_highscore():
-    with open('highscores.txt', mode='w') as f:
+    with open('highscores.txt', mode='a') as f:
         highscore = f'{player.name}: {player.score}'
-        f.write(highscore)
+        f.write(f'\n{highscore}')
 
 
 def read_highscores():
@@ -162,7 +162,7 @@ def shop():
     in_stock = {
         'Healing potion': [5, 'inv'],  # Heal player to full hp
         'Sword': [7, 'weapon'],  # Improve attack by 2
-        'Crown of flowers': [7, 'head'],  # improve seduction by 10%
+        'Crown of flowers': [7, 'head'],  # improve seduction by 15%
         'Axe': [15, 'weapon']  # improve attack by 4
     }
 
@@ -288,13 +288,11 @@ def fight():
             print('You attack the monster')
             attack()
             player.hitpoints -= monster.strength
-            # check if monster is alive. if not, pass and wait for loop to be repeated, then reward will be granted
-            # error is a pycharm visual error, does not occur in other editors
-            if monster.hitpoints <= 0:
-                pass
-            else:
+            # check if monster is alive.
+            if not monster.hitpoints <= 0:  # error is a pycharm visual error, does not occur in other editors
                 time.sleep(1)
                 print(f'The monster has {monster.hitpoints} HP left')
+
             time.sleep(1)
             print(f'You have {player.hitpoints} HP left')
         # try to seduce the monster
@@ -303,7 +301,7 @@ def fight():
             # decide if the monster will be seduced, 15% chance of success
             # chance of seduction is 25% if player has 'Crown of flowers' equipped
             if player.head_slot == 'Crown of flowers':
-                seduction_chance = 75
+                seduction_chance = 70
             else:
                 seduction_chance = 85
             if random.randint(0, 100) >= seduction_chance:
@@ -369,16 +367,15 @@ def new_day():
             print('You go exploring in the woods.')
             time.sleep(2)
             # decide if exploration should result in meeting and fighting a monster, finding an item or finding nothing
-            exploration_action = random.randint(1, 1)
+            exploration_action = random.randint(1, 10)
             # meet monster
-            if exploration_action == 1:
+            if exploration_action <= 8:
                 fight()
-            # find an item
-            elif exploration_action == 2:
-                print('You found an item')
             # find nothing
-            elif exploration_action == 3:
-                print('You found nothing')
+            elif exploration_action < 8:
+                print('You found nothing in the woods.')
+                print('You head home for the day.')
+                time.sleep(1)
         # access shop if player requests so
         elif user_input == 'shop':
             shop()
