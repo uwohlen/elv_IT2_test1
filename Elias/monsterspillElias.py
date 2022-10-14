@@ -156,8 +156,6 @@ def finnretning():
     if kolonne_nr<2:
         if "opp" in mulige_retninger or "ned" in mulige_retninger:
             mulige_retninger+=", "
-        elif "ned" in mulige_retninger:
-            mulige_retninger+=", "    
         mulige_retninger+="til hoeyre"
         valg_muligheter.append("hoeyre")
     if kolonne_nr > 0:
