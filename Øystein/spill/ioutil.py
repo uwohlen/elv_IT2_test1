@@ -13,7 +13,10 @@ def slow_input(text, speed = 60):
         sys.stdout.write(char)
         sys.stdout.flush()
         time.sleep(1/speed)
-    return input()
+    string = input()
+    if string == "exit":
+        exit()
+    return string
 
 def choice(choices, text="Hva gjør du?", speed = 60):
     slow(text, speed)
@@ -21,8 +24,33 @@ def choice(choices, text="Hva gjør du?", speed = 60):
     for i, choice in enumerate(choices):
         string += f"{choice} ({i+1}), "
     slow(string[:len(string)-2], speed)
-    choice = int(slow_input("> ", speed))-1
-    return choice
+    choice = 0
+    string = slow_input("> ", speed)
+    while True:
+        try:
+            choice = int(string)
+            if choice < 1 or choice > len(choices):
+                continue
+        except:
+            continue
+        break
+    return choice-1
+
+def range_input(start, end, text="> ", is_float = True, speed = 60):
+    num = 0
+    string = slow_input(text)
+    while True:
+        try:
+            if is_float:
+                num = float(string)
+            else:
+                num = int(string)
+            if num < start or num > end:
+                continue
+        except:
+            continue
+        break
+    return round(num, 1)
 
 def random_choice(probabilities):
     prob = probabilities

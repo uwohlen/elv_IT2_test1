@@ -1,21 +1,18 @@
-import util, player, environment
+import ioutil, player
 
 def main():
-    name = util.slow_input("Navn: ")
+    name = ioutil.slow_input("Navn: ")
     pl = player.Player(name)
-    env = environment.START_ENVIRONMENT
 
     while not pl.dead:
-        actions = ["Let etter mat", "Let etter monster", "Åpne sekken", "Sjekk tilstanden din"]
-        choice = util.choice(actions)
+        actions = ["Let etter monster", "Åpne sekken", "Info om deg selv"]
+        choice = ioutil.choice(actions)
         if choice == 0:
-            pl.look_for_food()
+            pl.look_for_monster()
         elif choice == 1:
-            pl.look_for_monster(env)
-        elif choice == 2:
             pl.open_backpack()
-        elif choice == 3:
-            pl.print_status()
+        elif choice == 2:
+            pl.print_info()
 
 if __name__ == "__main__":
     main()
