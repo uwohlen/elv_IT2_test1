@@ -3,14 +3,14 @@ import os
 import sys, time
 
 def slow_type(t):
-    typing_speed = 1500 #wpm
+    typing_speed = 150 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
         time.sleep(random.random()*10.0/typing_speed)
     
 def fast_type(t):
-    typing_speed = 1500 #wpm
+    typing_speed = 300 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
