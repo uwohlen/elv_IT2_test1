@@ -16,6 +16,12 @@ def fast_type(t):
         sys.stdout.flush()
         time.sleep(random.random()*10.0/typing_speed)
 
+def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
+    if os.name == 'nt':
+        os.system('CLS')
+    if os.name == 'posix':
+        os.system('clear')
+
 class Monster: #konstruktør for monstere
     def __init__(self,navn,iq,juks,liv,skade):
         self.navn = navn
@@ -37,7 +43,7 @@ class Spiller: #konstruktør for karakterer
         return(slow_type(f'Karakteren {self.navn} har en iq på hele {self.iq}.'))
 
 arne = Spiller("Arne",140,1,100,5,5)
-per = Spiller("Per",110,3,100,5,5)
+per = Spiller("Per",90,3,100,5,5)
 greven = Monster("Greven",100,1,250,25)
 
 slow_type(f'Du har blitt sugd inn i en annen verden, og den eneste måten å komme deg hjem igjen er å spille BlackJack\n')
@@ -64,6 +70,7 @@ while True:
     else:
         slow_type("Bruh, du hadde 1 oppgave :/\n")
 
+clear()
 slow_type(f'Ditt første hinder er selveste Greven som er kjent i BlackJack verdenen for å knuse nybegynnere som deg!\n')
 slow_type(f'Det sies at Monster-BlackJack er litt annerledes enn vanlig BlackJack, fordi man vinner kun når man har tatt livet til motstanderen sin\n')
 
@@ -393,13 +400,6 @@ def hit(hand): #Definerer funksjonen for å hitte hånden, altså få et ekstra 
     return hand
 
 
-def clear(): #Definerer funksjonen for å fjerne tekst i terminalen
-    if os.name == 'nt':
-        os.system('CLS')
-    if os.name == 'posix':
-        os.system('clear')
-
-
 
 def print_results(dealer_hand, player_hand): #Definerer funksjonen for å printe ut midlertidlige resultater til terminalen
 	'''clear()'''
@@ -649,8 +649,8 @@ def game(): #Definerer spillets gang :)
     if penger < 50:
         penger += 100
     print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
-    slow_type(f'Balanse: {penger}$     Seiere: {vinn}     Tap: {tap}\n')
-    slow_type(f'[A]Avslutt      [B]Butikk    [F]Fight     [S]Statistikk\n')
+    fast_type(f'Balanse: {penger}$     Seiere: {vinn}     Tap: {tap}\n')
+    fast_type(f'[A]Avslutt      [B]Butikk    [F]Fight     [S]Statistikk')
     print(f'Dine gjenstander: ',end = '')
     print(*items, sep = ", ")
     print("\n")
