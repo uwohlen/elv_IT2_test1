@@ -131,5 +131,5 @@ while birk.influence > 0 and kraftig_kjempe.influence > 0:
             os.system('cls')
             
 
-# Fulføre kamp system
+# Utvikle kamp system
 # Lage bevegelse system
