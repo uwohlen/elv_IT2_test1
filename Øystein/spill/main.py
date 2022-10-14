@@ -1,18 +1,18 @@
-import util, character
+import ioutil, player
 
 def main():
-    name = util.slow_input("Navn: ")
-    player = character.Player(name)
+    name = ioutil.slow_input("Navn: ")
+    pl = player.Player(name)
 
-    while True:
-        actions = ["Let etter mat", "Åpne sekken", "Sjekk tilstanden din"]
-        choice = util.choice(actions)
+    while not pl.dead:
+        actions = ["Let etter monster", "Åpne sekken", "Info om deg selv"]
+        choice = ioutil.choice(actions)
         if choice == 0:
-            player.look_for_food()
+            pl.look_for_monster()
         elif choice == 1:
-            player.open_backpack()
+            pl.open_backpack()
         elif choice == 2:
-            player.print_status()
+            pl.print_info()
 
 if __name__ == "__main__":
     main()
