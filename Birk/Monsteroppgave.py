@@ -130,6 +130,14 @@ while birk.influence > 0 and kraftig_kjempe.influence > 0:
             turn = "Birk"
             os.system('cls')
             
+        elif enemy_action == 20:
+            slow_type(f"\n{kraftig_kjempe.navn} har tatt en overdose av et hemmelig stoff")
+            slow_type(f"\n{kraftig_kjempe.navn} har dødd")
+            kraftig_kjempe.influence = 0
+            time.sleep(2)
+            turn = "Birk"
+            os.system('cls')
+            
 
 # Utvikle kamp system
 # Lage bevegelse system
