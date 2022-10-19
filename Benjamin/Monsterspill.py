@@ -650,7 +650,7 @@ def game(): #Definerer spillets gang :)
         penger += 100
     print("♣♠♦♥GREVENS BLACKJACK♥♦♠♣")
     fast_type(f'Balanse: {penger}$     Seiere: {vinn}     Tap: {tap}\n')
-    fast_type(f'[A]Avslutt      [B]Butikk    [F]Fight     [S]Statistikk')
+    fast_type(f'[A]Avslutt      [B]Butikk    [F]Fight     [S]Statistikk\n')
     print(f'Dine gjenstander: ',end = '')
     print(*items, sep = ", ")
     print("\n")
