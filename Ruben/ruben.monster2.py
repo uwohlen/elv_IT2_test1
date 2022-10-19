@@ -1,4 +1,3 @@
-#Kommentert av Benjamin
 import random
 import time
 
