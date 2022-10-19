@@ -213,7 +213,7 @@ def selveKampen():
             print(f"\nDu kan bruke {', '.join(printVaapen())}. Faar aa bruke gjenstanden skriver du bare inn navnet paa gjenstanden")
             spiller.printEgenskap()
 
-        print(f"Monsteret har {naa_rom.monster.hp} hp og du har {spiller.hp} liv!")
+        print(f"Monsteret har {naa_rom.monster.hp} hp og du har {spiller.hp} hp!")
         slaa_valg=input("Hva velger du?: ")
         if slaa_valg in printVaapen():
             for i in range(len(mulige_vaapen)):
