@@ -123,6 +123,7 @@ class Player(character.Character):
             i = ioutil.range_input(0, len(dead_monster.backpack_items), "> ", False)
             if i == 0:
                 return
+            i -= 1
             remove, add = self.print_item(dead_monster.backpack_items[i])
             if add:
                 self.add_item(dead_monster.backpack_items[i], True)
