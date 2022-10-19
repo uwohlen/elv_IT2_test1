@@ -99,13 +99,17 @@ class Character:
         old_level = self.level
         while self.xp >= self.level * 2:
             self.xp -= self.level * 2
-            self.set_level(self.level + 1)
-        ioutil.slow(f"{self.name} sin XP: {self.xp} (+{opponent.level})")
-        ioutil.slow(f"{self.name} sin level: {self.level} (+{self.level-old_level})")
+            self.set_level(self.level + 1, True)
 
-    def set_level(self, level):
+    def set_level(self, level, print_changes=False):
+        oldlevel = self.level
         self.level = level
+        oldhp = self.max_hp
         self.max_hp = math.ceil(self.start_hp * (self.hp_increase ** (level - 1)))
+        if print_changes:
+            ioutil.slow(f"{self.name} har gått opp i nivå")
+            ioutil.slow(f"Nivå: {oldlevel} -> {self.level}")
+            ioutil.slow(f"HP: {oldhp} -> {self.max_hp}")
 
     def move(self, distance, delta):
         delta = round(max(delta, 0.5-distance), 1)
@@ -123,7 +127,7 @@ class Character:
         ioutil.slow(f"Nivå: {self.level}")
         ioutil.slow(f"HP: {self.hp}")
         ioutil.slow(f"Gangfart: {self.walk_speed}")
-        ioutil.slow(f"Våpen:  {', '.join([w.name for w in self.all_weapons()])}")
+        ioutil.slow(f"Våpen: {', '.join([w.name for w in self.all_weapons()])}")
 
     def attack(self, other):
         pass

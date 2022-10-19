@@ -31,9 +31,9 @@ class Monster(character.Character):
 MONSTERS = [
     (10, Monster("Monster", 5, 2, [], 1)),
     (20, Monster("Sverdmonster", 4, 2, [weapon.BROKEN_SWORD], 2)),
-    (40, Monster("Buemonster", 4, 4, [weapon.WEAK_BOW], 3)),
+    (40, Monster("Buemonster", 4, 4, [weapon.WEAK_BOW] + [weapon.ARROW]*5, 3)),
     (80, Monster("Sverdmonster", 7, 2, [weapon.SWORD], 4)),
-    (160, Monster("Buemonster", 7, 4, [weapon.BOW], 5)),
+    (160, Monster("Buemonster", 7, 4, [weapon.BOW] + [weapon.ARROW]*5, 5)),
     (500, Monster("Stort monster", 10, 4, [weapon.SWORD, weapon.BOW], 7))
 ]
 

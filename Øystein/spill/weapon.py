@@ -29,7 +29,7 @@ class Weapon(item.Item):
 
     def print_info(self):
         ioutil.slow(f"Info om {self.name}")
-        ioutil.slow(f"Skade: {self.damage} (avhenger også av din level)")
+        ioutil.slow(f"Skade: {self.damage} (avhenger også av ditt nivå)")
         ioutil.slow(f"Sjanse for å treffe: {self.hit_probability*100}%")
         ioutil.slow(f"Rekkevidde: {self.range} meter")
         if self.projectile != None:
@@ -42,10 +42,13 @@ class Projectile(item.Item):
         self.weapon = weapon
 
     def print_info(self):
-        ioutil.slow(f"Du trenger {self.name} for å kunne bruke {self.weapon.name}")
+        ioutil.slow(f"Du trenger {self.name} for å kunne bruke {self.weapon}")
+
+ARROW = Projectile("Pil", 10, "Bue")
 
 FIST = Weapon("Knyttneve", 1, 1, 0.9, 0.7)
 BROKEN_SWORD = Weapon("Ødelagt sverd", 3, 1, 0.75, 1)
 SWORD = Weapon("Sverd", 5, 1, 0.7, 1.5)
-WEAK_BOW = Weapon("Svak bue", 1, 0, 0.6, 8)
-BOW = Weapon("Bue", 3, 0, 0.7, 20)
+WEAK_BOW = Weapon("Svak bue", 1, 0, 0.6, 8, ARROW)
+BOW = Weapon("Bue", 3, 0, 0.7, 20, ARROW)
+

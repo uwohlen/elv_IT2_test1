@@ -38,8 +38,8 @@ def choice(choices, text="Hva gjør du?", speed = 60):
 
 def range_input(start, end, text="> ", is_float = True, speed = 60):
     num = 0
-    string = slow_input(text)
     while True:
+        string = slow_input(text)
         try:
             if is_float:
                 num = float(string)
