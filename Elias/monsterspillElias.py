@@ -177,7 +177,7 @@ def finnVariabel():
 def plukkOppGjenstand():
     if finnVariabel()=="gjenstand":
         spiller.gjenstander.append(naa_rom.gjenstand)
-        print(f"{naa_rom.gjenstand.navn} er plukket opp")
+        print(f"\n{naa_rom.gjenstand.navn} er plukket opp")
 
 #funksjon for aa aapne en kiste 
 def aapneKiste():
