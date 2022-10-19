@@ -16,7 +16,7 @@ comp_mana = 0
 class Player(): 
     # Angrep for klassen:
     def light_atk(self):
-        attack = random.randint(1, 20) # Gir en verdi mellom 1 og 19
+        attack = random.randint(1, 20) # Gir en verdi mellom 1 og 20
         return attack 
    
     def heavy_attack(self):
@@ -65,7 +65,7 @@ while player_HP > 0 and comp_HP > 0:
         if action == 1:
             player_light_attack = player.light_atk() # Lager en ny variabel returnert fra angrepet
             comp_HP = comp_HP - player_light_attack # Regner hvor ut mye liv motstander har igjen etter angrepet
-            player_mana += 10 # Man får mana 10 hver gang man bruker «Light attack»
+            player_mana += 10 # Man får 10 mana hver gang man bruker «Light attack»
             time.sleep(1)
             print(f"\n{name} just did {player_light_attack} damage!")
             print(f"{name} now has {player_HP} health and {player_mana} mana")
@@ -86,7 +86,7 @@ while player_HP > 0 and comp_HP > 0:
         
         elif action == 3 and player_mana >= 15: # Fungerer bare med 15 mana eller mer
             player_heal = player.heal()
-            player_HP += player_heal # Regner hvor mye ditt er helbredet
+            player_HP += player_heal # Regner hvor mye livet ditt er helbredet
             player_mana -= 15 # 15 mana per bruk
             time.sleep(1)
             print(f"\n{name} just healed themselves for {player_heal}")
