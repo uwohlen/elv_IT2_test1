@@ -981,6 +981,8 @@ else: #om man ikke velger å sloss mot ninja
     if monster4.hp <= 0:
         wEventBandittSverd.worldEvent() #bandittsverd
     time.sleep(2)
+    clear()
+    print("Dette er desverre slutten på spillet intil videre. Sloss med ninja for å unlocke ending")
     
     #butikk. Kjøpe eller snakke med inbyggere
     #if fight med shopkeeper and badomen == True:
