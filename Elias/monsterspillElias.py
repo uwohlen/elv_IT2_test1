@@ -2,9 +2,8 @@ import random
 
 print("Velkommen til dette spillet")
 print("Maalet med spillet er å komme deg gjennom et hus")
-print("I huset kan du finne vaapen, gjenstander, og monster :o")
+print("I huset kan du finne vaapen, gjenstander og monstre :o")
 print("For å bevege deg skriver du enten inn opp, ned, hoeyre, venstre")
-print("Dersom du kommer i et rom med en gjenstand kan du skrive 'grip' for å plukke det opp eller bruke det")
 print("I rom med monster foelger egen instruks")
 navn_spiller = input("\nFoer du begynner må du skrive inn navnet ditt: ").capitalize()
 
@@ -248,7 +247,7 @@ def kjoor():
     global sant, naa_rom, rad_nr, kolonne_nr, valg_muligheter
     while sant==True:
         valg_muligheter = [] #nullstiller valgmuligheter for hver iterasjon
-        print(f"\n{navn_spiller} er rom nr {naa_rom.romnummer}")
+        print(f"\n{navn_spiller} er i rom nr {naa_rom.romnummer}")
         
         #sjekker om rommet har en gjenstand
         #printer hvilken gjenstand det, og hva den gjør
