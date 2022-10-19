@@ -103,7 +103,7 @@ class Game():
 class Monster():
     
     def __init__(self, xpos, ypos):
-        self.health = 1
+        self.health = 150
         self.pos = [xpos, ypos]
         
     def __len__(self): # used so that length of monster list refers to number of entries
