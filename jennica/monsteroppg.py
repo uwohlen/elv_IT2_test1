@@ -1,4 +1,3 @@
-#kommentar fra Elias
 import sys 
 import os
 import random
