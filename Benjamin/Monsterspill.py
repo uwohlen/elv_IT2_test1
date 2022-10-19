@@ -1,3 +1,5 @@
+#xianzai wo you bingqilin
+
 import random
 import os
 import sys, time
