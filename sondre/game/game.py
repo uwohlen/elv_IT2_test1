@@ -30,7 +30,7 @@ class Monster:
 
     def spawn_monster(self):
         # Dict with monster name as key, Hitpoints, strength and coins rewarded as values
-        monster_names_dict = {
+        monster_dict = {
             'Ancient dragon': [35, 11, 25],
             'Bat': [3, 1, 2],
             'Rat': [2, 2, 3],
@@ -40,11 +40,15 @@ class Monster:
             'Orc': [5, 3, 4],
             'Shadow': [8, 1, 4],
             'Zombie': [6, 2, 6],
+            'Vampire': [10, 5, 7],
+            'Angry farmer': [12, 7, 2],
+            'Metapod': [9, 6, 8],
+            'Mark Zuckerberg': [12, 6, 9],
             'Mystic': [random.randint(1, 15), random.randint(1, 6), random.randint(1, 10)]
         }
         # select a random monster, give the monster values for name, hitpoints and strength
-        self.name = random.choice(list(monster_names_dict))
-        hitpoints_strength_reward = monster_names_dict.get(self.name)
+        self.name = random.choice(list(monster_dict))
+        hitpoints_strength_reward = monster_dict.get(self.name)
         self.hitpoints = hitpoints_strength_reward[0]
         self.strength = hitpoints_strength_reward[1]
         self.reward = hitpoints_strength_reward[2]

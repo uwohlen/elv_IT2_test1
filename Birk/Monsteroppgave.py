@@ -1,13 +1,12 @@
-import sys, time, random
+import os, sys, time, random
+from turtle import clear
 
 def slow_type(t):
-    typing_speed = 100 #wpm
+    typing_speed = 150 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
         time.sleep(random.random() * 10.0 / typing_speed)
-
-
 
 class Player:
     def __init__(self, navn, level, influence, strength, defense, speed, luck, talent_fragments_red, talent_fragments_blue, talent_fragments_green):
@@ -28,12 +27,7 @@ class Player:
     def __str__(self):
         return f"{self.navn} Level = {self.level} Influence = {self.influence} Strength = {self.strength} Defense = {self.defense} Speed = {self.speed} Luck = {self.luck} Red talent fragments = {self.red} Blue talent fragments = {self.blue} Green talent fragments = {self.green}"
     
-birk = Player("Birk", 1, 9, 15, 5, 10, 9, 0, 0, 0)
-birk.funksjon()
-
-birk.level = 1
-
-print(birk)
+birk = Player("Birk", 1, 30, 15, 5, 10, 9, 0, 0, 0)
 
 class Monster:
     def __init__(self, navn, level, influence, strength, defense, speed, luck):
@@ -50,28 +44,100 @@ class Monster:
     
 kraftig_kjempe = Monster("Kraftig kjempe", 1, 20, 9, 10, 1, 3)
 
-print(kraftig_kjempe)
-
 def damage_calculator(x, y):
     return 2.8 ** (x / y)
 
-print(damage_calculator(birk.strength, kraftig_kjempe.defense))
+def block_damage_calculator(x, y):
+    return (2.8 ** (x / y)) * 0.25
 
-battle = False
-
-while battle == True:
-    birk_turn = False
-    kraftig_kjempe_turn = False
-    print("Du sloss nå mot", kraftig_kjempe.navn)
-    if birk.speed > kraftig_kjempe.speed:
-        birk_tur = True
-    else:
-        kraftig_kjempe_tur = True
+if birk.speed > kraftig_kjempe.speed:
+    turn = "Birk"
     
-        while birk_turn == True:
-            print("Det er din tur")
-            action = print(input("Hva vil du gjøre? (a = attack, b = block)"))
+else:
+    turn = "Enemy"
+
+while birk.influence > 0 and kraftig_kjempe.influence > 0:
+    enemy_action = None
+
+    if turn == "Birk":
+        print(f"[Liv igjen: {birk.influence}] \t [Fiendes liv igjen: {kraftig_kjempe.influence}] \n \n")
+        slow_type("Det er din tur")
+        player_action = input(slow_type("\nHva vil du gjøre?\nAttack (a)\nBlock (b)"))
+        birk.influence = round(birk.influence)
+
+        if player_action == "a":
+            os.system('cls')
+            slow_type(f"Du angriper {kraftig_kjempe.navn}")
+            time.sleep(1)
             
-            if action.casefold() == "a":
-                print()
+            if enemy_action == "b":
+                slow_type(f"Du gjør {round(block_damage_calculator(birk.strength, kraftig_kjempe.defense))} skade")
+                kraftig_kjempe.influence -= round(block_damage_calculator(birk.strength, kraftig_kjempe.defense))
+                slow_type(f"{kraftig_kjempe.navn} har {round(kraftig_kjempe.influence)} liv igjen")
+                time.sleep(2)
+                turn = "Enemy"
+                os.system('cls')
+
+            else:
+                slow_type(f"\nDu gjør {round(damage_calculator(birk.strength, kraftig_kjempe.defense))} skade")
+                kraftig_kjempe.influence -= round(damage_calculator(birk.strength, kraftig_kjempe.defense))
+                slow_type(f"\n{kraftig_kjempe.navn} har {round(kraftig_kjempe.influence)} liv igjen")
+                time.sleep(2)
+                turn = "Enemy"
+                os.system('cls')
         
+        elif player_action == "b":
+            os.system('cls')
+            slow_type(f"\nDu gjør deg klar for angrepet til {kraftig_kjempe.navn}")
+            time.sleep(2)
+            turn = "Enemy"
+            os.system('cls')
+
+        else:
+            os.system('cls')
+            slow_type(f"Skriv inn en gyldig handling")
+            time.sleep(2)
+    
+    else:
+        print(f"[Liv igjen: {birk.influence}] \t [Liv igjen: {kraftig_kjempe.influence}] \n \n")
+        slow_type(f"Det er {kraftig_kjempe.navn} sin tur")
+        enemy_action = random.randint(1, 20)
+        kraftig_kjempe.influence = round(kraftig_kjempe.influence)
+
+        if enemy_action <= 15:
+            slow_type(f"\n{kraftig_kjempe.navn} angriper deg")
+            
+            if player_action == "b":
+                slow_type(f"\n{kraftig_kjempe.navn} gjør {round(block_damage_calculator(kraftig_kjempe.strength, birk.defense))} skade på deg")
+                birk.influence -= round(block_damage_calculator(kraftig_kjempe.strength, birk.defense))
+                slow_type(f"\nDu har {round(birk.influence)} liv igjen")
+                time.sleep(2)
+                turn = "Birk"
+                os.system('cls')
+            
+            else:
+                slow_type(f"\n{kraftig_kjempe.navn} gjør {round(damage_calculator(kraftig_kjempe.strength, birk.defense))} skade på deg")
+                birk.influence -= round(damage_calculator(kraftig_kjempe.strength, birk.defense))
+                slow_type(f"\nDu har {round(birk.influence)} liv igjen")
+                time.sleep(2)
+                turn = "Birk"
+                os.system('cls')
+        
+        elif enemy_action > 15:
+            enemy_action = "b"
+            slow_type(f"\n{kraftig_kjempe.navn} gjør seg klar for angrepet ditt")
+            time.sleep(2)
+            turn = "Birk"
+            os.system('cls')
+            
+        elif enemy_action == 20:
+            slow_type(f"\n{kraftig_kjempe.navn} har tatt en overdose av et hemmelig stoff")
+            slow_type(f"\n{kraftig_kjempe.navn} har dødd")
+            kraftig_kjempe.influence = 0
+            time.sleep(2)
+            turn = "Birk"
+            os.system('cls')
+            
+
+# Utvikle kamp system
+# Lage bevegelse system

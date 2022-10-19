@@ -25,8 +25,8 @@ def choice(choices, text="Hva gjør du?", speed = 60):
         string += f"{choice} ({i+1}), "
     slow(string[:len(string)-2], speed)
     choice = 0
-    string = slow_input("> ", speed)
     while True:
+        string = slow_input("> ", speed)
         try:
             choice = int(string)
             if choice < 1 or choice > len(choices):
@@ -38,8 +38,8 @@ def choice(choices, text="Hva gjør du?", speed = 60):
 
 def range_input(start, end, text="> ", is_float = True, speed = 60):
     num = 0
-    string = slow_input(text)
     while True:
+        string = slow_input(text)
         try:
             if is_float:
                 num = float(string)
