@@ -27,6 +27,7 @@ class Player:
     def __str__(self):
         return f"{self.navn} Level = {self.level} Influence = {self.influence} Strength = {self.strength} Defense = {self.defense} Speed = {self.speed} Luck = {self.luck} Red talent fragments = {self.red} Blue talent fragments = {self.blue} Green talent fragments = {self.green}"
     
+#Test player
 birk = Player("Birk", 1, 30, 15, 5, 10, 9, 0, 0, 0)
 
 class Monster:
@@ -42,6 +43,7 @@ class Monster:
     def __str__(self):
         return f"{self.navn} Level = {self.level} Influence = {self.influence} Strength = {self.strength} Defense = {self.defense} Speed = {self.speed} Luck = {self.luck}"
     
+#Test monster    
 kraftig_kjempe = Monster("Kraftig kjempe", 1, 20, 9, 10, 1, 3)
 
 def damage_calculator(x, y):
@@ -56,13 +58,14 @@ if birk.speed > kraftig_kjempe.speed:
 else:
     turn = "Enemy"
 
+#Test battle system
 while birk.influence > 0 and kraftig_kjempe.influence > 0:
     enemy_action = None
 
     if turn == "Birk":
         print(f"[Liv igjen: {birk.influence}] \t [Fiendes liv igjen: {kraftig_kjempe.influence}] \n \n")
         slow_type("Det er din tur")
-        player_action = input(slow_type("\nHva vil du gjøre?\nAttack (a)\nBlock (b)"))
+        player_action = input("\nHva vil du gjøre?\nAttack (a)\nBlock (b)")
         birk.influence = round(birk.influence)
 
         if player_action == "a":

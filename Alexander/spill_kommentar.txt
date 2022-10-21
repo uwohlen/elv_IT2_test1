@@ -1,0 +1,3 @@
+Dette spillet byr på taktisk gameplay, hvor man må spillet gjennom spillet flere ganger før man klarer å slå det.
+Koden er solid og strukturert på en god måte ved bruk av klasser.
+En ide til videre utvikling av spillet er å plassere ting i området som spilleren kan plukke opp.
