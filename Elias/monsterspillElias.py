@@ -1,3 +1,4 @@
+#kommentar fra Jennica
 import random 
 
 print("Velkommen til dette spillet")
