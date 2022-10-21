@@ -96,9 +96,8 @@ class Character:
 
     def add_xp(self, opponent):
         self.xp += opponent.level
-        old_level = self.level
-        while self.xp >= self.level * 2:
-            self.xp -= self.level * 2
+        while self.xp >= self.level:
+            self.xp -= self.level
             self.set_level(self.level + 1, True)
 
     def set_level(self, level, print_changes=False):

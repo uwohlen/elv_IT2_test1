@@ -90,7 +90,6 @@ class Player(character.Character):
                     ioutil.slow("Monsteret oppdaget deg")
                     character.combat(monster_found, self, distance)
                     combat = True
-                    return
             if not combat:
                 character.combat(self, monster_found, desired_distance)
                 combat = True
