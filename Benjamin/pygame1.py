@@ -1,4 +1,5 @@
 import pygame as pg
+import math as ma
 
 # Initialiserer/starter pygame
 pg.init()
@@ -9,6 +10,32 @@ VINDU_HOYDE  = 720
 vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 
 print(type(vindu))
+
+class Ball:
+  """Klasse for å representere en ball"""
+  def __init__(self, x, y, fart, radius, vindusobjekt):
+    """Konstruktør"""
+    self.x = x
+    self.y = y
+    self.fart = fart
+    self.radius = radius
+    self.vindusobjekt = vindusobjekt
+  
+  def tegn(self):
+    """Metode for å tegne ballen"""
+    pg.draw.circle(self.vindusobjekt, (255, 69, 0), (self.x, self.y), self.radius) 
+
+  def flytt(self):
+    """Metode for å flytte ballen"""
+    # Sjekker om ballen er utenfor høyre/venstre kant
+    if ((self.x - self.radius) <= 0) or ((self.x + self.radius) >= self.vindusobjekt.get_width()):
+      self.fart = -self.fart
+    
+    # Flytter ballen
+    self.x += self.fart
+
+# Lager et Ball-objekt
+ball = Ball(250, 250, 0.1, 20, vindu)
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24)
@@ -38,6 +65,12 @@ while fortsett:
     # Lager en tekst i form av et bilde og legger til bildet i vinduet
     '''bilde = font.render("Heisann!", True, (50, 50, 50))
     vindu.blit(bilde, (400, 20))'''
+    # Tegner og flytter ballen
+    ball.tegn()
+    ball.flytt()
+
+    # Oppdaterer alt innholdet i vinduet
+    pg.display.flip()
 
     # Oppdaterer alt innholdet i vinduet
     pg.display.flip()
