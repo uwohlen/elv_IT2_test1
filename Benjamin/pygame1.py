@@ -13,11 +13,12 @@ print(type(vindu))
 
 class Ball:
   """Klasse for å representere en ball"""
-  def __init__(self, x, y, fart, radius, vindusobjekt):
+  def __init__(self, x, y, fartx, farty, radius, vindusobjekt):
     """Konstruktør"""
     self.x = x
     self.y = y
-    self.fart = fart
+    self.fart = fartx
+    self.fart = farty
     self.radius = radius
     self.vindusobjekt = vindusobjekt
   
@@ -29,10 +30,12 @@ class Ball:
     """Metode for å flytte ballen"""
     # Sjekker om ballen er utenfor høyre/venstre kant
     if ((self.x - self.radius) <= 0) or ((self.x + self.radius) >= self.vindusobjekt.get_width()):
-      self.fart = -self.fart
-    
+      self.fartx = -self.fartx
+    elif ((self.y - self.radius) <= 0) or ((self.y + self.radius) >= self.vindusobjekt.get_height()):
+      self.farty = -self.farty
     # Flytter ballen
-    self.x += self.fart
+    self.x += self.fartx
+    self.y += self.farty
 
 # Lager et Ball-objekt
 ball = Ball(250, 250, 0.1, 20, vindu)
