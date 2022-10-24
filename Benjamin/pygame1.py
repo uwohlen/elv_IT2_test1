@@ -17,8 +17,8 @@ class Ball:
     """Konstruktør"""
     self.x = x
     self.y = y
-    self.fart = fartx
-    self.fart = farty
+    self.fartx = fartx
+    self.farty = farty
     self.radius = radius
     self.vindusobjekt = vindusobjekt
   
@@ -38,7 +38,7 @@ class Ball:
     self.y += self.farty
 
 # Lager et Ball-objekt
-ball = Ball(250, 250, 0.1, 20, vindu)
+ball = Ball(250, 250, 0.1, 0.1, 20, vindu)
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24)
