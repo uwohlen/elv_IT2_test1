@@ -75,5 +75,5 @@ while fortsett:
     # Oppdaterer alt innholdet i vinduet
     pg.display.flip()
 
-# Avslutter pygamesscxds
+# Avslutter pygamesscxdsjghghg
 pg.quit()
