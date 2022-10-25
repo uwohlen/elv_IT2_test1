@@ -2,6 +2,7 @@ import pygame as pg
 import random as r
 import sys, time
 import os
+from pygame.locals import *
 
 pg.init() #starter pygame
 
@@ -12,9 +13,9 @@ pg.display.set_caption('gaming')
 font = pg.font.SysFont("Arial", 24)
 gifList = []
 
-for i in range(43):
-    gifList.append(pg.image.load(f"ELV_IT2_UW/MarkusM/gif_test/breaking-bad-money-{i}.png"))
-    
+for i in range(44):
+    gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
+
 
 print(type(window))
 
@@ -23,6 +24,8 @@ clock = pg.time.Clock()
 currentFps = 0
 averageFps = 0
 frames_counter = 0
+typetest = []
+keypressed = False
 
 def fps():
 	fps = str(int(clock.get_fps()))
@@ -38,6 +41,10 @@ while True: #displayLoop
         if event.type == pg.QUIT:
             sys.exit()
 
+        if event.type == pg.KEYUP:
+            if event.key == pg.K_w:
+                keypressed = False
+
             
     #frames_counter +=1
     #if frames_counter == 61 or frames_counter >= 61:
@@ -47,12 +54,14 @@ while True: #displayLoop
     #else:
     #    window.fill((0,0,0))
     #print(frames_counter)
+    if frames_counter == 44:
+        frames_counter =0
+
     window.fill((255,255,255))
+    window.blit(gifList[frames_counter],(0,0))
     
     frames_counter +=1
 
-    if frames_counter == 45:
-        frames_counter =0
     
 
 
@@ -63,11 +72,23 @@ while True: #displayLoop
     #else:
 
     window.blit(fps(),(20,20))
-    
+
+    keyPress = pg.key.get_pressed()
 
 
+    if keyPress[K_w] and keypressed == False:
+        typetest.append(("W"))
+        keypressed = True
+    if keyPress[K_RETURN]:
+        typetest.clear()
 
-    clock.tick(60)
+
+    for i in range(len(typetest)):
+        window.blit(font.render(str(typetest[i]),True,(0,0,0)),(20*i,200))
+        
+
+
+    clock.tick(24)
     pg.display.flip()
 
     
