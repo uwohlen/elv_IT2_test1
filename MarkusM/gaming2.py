@@ -3,7 +3,7 @@ import random as r
 import sys, time
 import os
 from pygame.locals import *
-
+"""
 pg.init() #starter pygame
 
 window_width = 1080
@@ -11,17 +11,30 @@ window_height = 720
 window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
 pg.display.set_caption('gaming')
 font = pg.font.SysFont("Arial", 24)
+"""
 gifList = []
 keyIndex = 0
 
 #acceptedKeys = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
+def keyCheck():
+    if keyList.count(str(id)) == True:
+        return True
+def findKeyID():
+    return True
+
+    
+
+
+
+def keyPress(id):
+        if keyList[id].pressed == False:
+            keyList[id].pressed = True
+
 class key:
     def __init__(self,key,pressed):
         self.key = key
         self.pressed = pressed
-    def keyPress(self,id):
-        print("")
         
 
 k_a = key(1,False)
@@ -53,16 +66,14 @@ k_z = key(26,False)
 k_æ = key(27,False)
 k_ø = key(28,False)
 k_å = key(29,False)
-KeyList = [k_a,k_b,k_c,k_d,k_e,k_f,k_g,k_h,k_i,k_j,k_k,k_l,k_m,k_n,k_o,k_p,k_q,k_r,k_s,k_t,k_u,k_v,k_w,k_x,k_y,k_z,k_æ,k_ø,k_å]
-
+keyList = [k_a,k_b,k_c,k_d,k_e,k_f,k_g,k_h,k_i,k_j,k_k,k_l,k_m,k_n,k_o,k_p,k_q,k_r,k_s,k_t,k_u,k_v,k_w,k_x,k_y,k_z,k_æ,k_ø,k_å]
 
 
 for i in range(44):
     gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
 
 
-print(type(window))
-
+"""
 #fps
 clock = pg.time.Clock() 
 currentFps = 0
@@ -142,3 +153,4 @@ while True: #displayLoop
     pg.display.flip()
 
     
+"""
