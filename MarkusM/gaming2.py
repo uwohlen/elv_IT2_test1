@@ -12,6 +12,50 @@ window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
 pg.display.set_caption('gaming')
 font = pg.font.SysFont("Arial", 24)
 gifList = []
+keyIndex = 0
+
+#acceptedKeys = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+
+class key:
+    def __init__(self,key,pressed):
+        self.key = key
+        self.pressed = pressed
+    def keyPress(self,id):
+        print("")
+        
+
+k_a = key(1,False)
+k_b = key(2,False)
+k_c = key(3,False)
+k_d = key(4,False)
+k_e = key(5,False)
+k_f = key(6,False)
+k_g = key(7,False)
+k_h = key(8,False)
+k_i = key(9,False)
+k_j = key(10,False)
+k_k = key(11,False)
+k_l = key(12,False)
+k_m = key(13,False)
+k_n = key(14,False)
+k_o = key(15,False)
+k_p = key(16,False)
+k_q = key(18,False)
+k_r = key(18,False)
+k_s = key(19,False)
+k_t = key(20,False)
+k_u = key(21,False)
+k_v = key(22,False)
+k_w = key(23,False)
+k_x = key(24,False)
+k_y = key(25,False)
+k_z = key(26,False)
+k_æ = key(27,False)
+k_ø = key(28,False)
+k_å = key(29,False)
+KeyList = [k_a,k_b,k_c,k_d,k_e,k_f,k_g,k_h,k_i,k_j,k_k,k_l,k_m,k_n,k_o,k_p,k_q,k_r,k_s,k_t,k_u,k_v,k_w,k_x,k_y,k_z,k_æ,k_ø,k_å]
+
+
 
 for i in range(44):
     gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
@@ -40,9 +84,14 @@ while True: #displayLoop
     for event in pg.event.get():
         if event.type == pg.QUIT:
             sys.exit()
+        
+        if event.type == pg.KEYDOWN:
+            print("")
+            #finne hvilken som er trykket
 
         if event.type == pg.KEYUP:
             if event.key == pg.K_w:
+                #finne hvilken som er trykket
                 keypressed = False
 
             
@@ -54,6 +103,7 @@ while True: #displayLoop
     #else:
     #    window.fill((0,0,0))
     #print(frames_counter)
+
     if frames_counter == 44:
         frames_counter =0
 
