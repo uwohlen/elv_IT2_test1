@@ -3,6 +3,7 @@ import random as r
 import sys, time
 import os
 from pygame.locals import *
+import fbib
 
 pg.init() #starter pygame
 
@@ -47,6 +48,10 @@ for i in range(44):
     gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
 
 
+#farger
+black = (255,255,255)
+red = (255,0,0)
+green = (0,255,0)
 
 #fps
 clock = pg.time.Clock() 
@@ -67,7 +72,10 @@ def fps():
 windowFPS = 30 #hvor mange frames pr sekund som blir rendera
 counter = 0
 typetest = str()
-task = "hei"
+task = "Hei på deg banan"
+
+correct = str()
+wrong = str()
 
 while True: #displayLoop
 
@@ -83,7 +91,6 @@ while True: #displayLoop
                     i = keyInit.index(pg.key.name(event.key))
                     typetest += keyInit[i].upper()
 
-                    
                 else:
                     i = keyInit.index(pg.key.name(event.key))
                     typetest += keyInit[i]
@@ -100,7 +107,7 @@ while True: #displayLoop
                 #hvis man holder i fler frames, sletter den fortere
             if event.key == pg.K_SPACE:
                 typetest = typetest + str(" ")
-            
+
             #finne hvilken som er trykket
 
         #if event.type == pg.KEYUP:
@@ -138,13 +145,32 @@ while True: #displayLoop
 
     #for i in range(len(typetest)):
     #    window.blit(font.render(str(typetest[i]),True,(0,0,0)),(10*i,200))
+    taskRender = font.render(str(task),True,(0,0,0))
+    taskRect = taskRender.get_rect(center=((window_width/2),(window_height/2)-200))
+    window.blit(taskRender,taskRect)
 
-    window.blit(font.render(str(task),True,(0,0,0)),(window_width/2,window_height/2-200))
     typeText = font.render(str(typetest),True,(0,0,0))
     typeRect = typeText.get_rect(center=(window_width/2,window_height/2))
-    window.blit(typeText,typeRect)
+    for i in range(len(typetest)):
 
-    #lage en metode for å ender farge hvis det man skriver er riktig
+        textprev = font.render(str(typetest[0:i]),True,(0,0,0)) #finne lengde av teksten før
+        textPrevLength = textprev.get_width() #lagre lengden
+        charPosx, charPosy = typeRect.midleft #lagre koordiatene til rektangelet
+
+        try:
+            if not typetest[i] == task[i]:
+                charRender = font.render(str(typetest[i]),True,red)
+                window.blit(charRender,((charPosx+textPrevLength,charPosy)))
+            
+            else:
+                charRender = font.render(str(typetest[i]),True,green)
+                window.blit(charRender,((charPosx + textPrevLength),charPosy))
+        except:
+            charRender = font.render(str(typetest[i]),True,red)
+            window.blit(charRender,((charPosx+textPrevLength,charPosy)))
+        
+    
+    
 
     clock.tick(windowFPS) #Oppdaterer skjermen og teller hvilken frame vi er på
     pg.display.flip() 
@@ -153,8 +179,6 @@ while True: #displayLoop
     #print(counter)
     if counter == windowFPS:
         counter = 0
-
     
-
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
