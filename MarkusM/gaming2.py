@@ -50,8 +50,8 @@ for i in range(44):
 
 #farger
 black = (255,255,255)
-red = (255,0,0)
-green = (0,255,0)
+red = (200,0,0)
+green = (100,200,100)
 
 #fps
 clock = pg.time.Clock() 
@@ -60,7 +60,6 @@ currentFps = 0
 averageFps = 0
 frames_counter = 0
 typetest = []
-keypressed = False
 
 def fps():
 	fps = str(int(clock.get_fps()))
@@ -72,7 +71,8 @@ def fps():
 windowFPS = 30 #hvor mange frames pr sekund som blir rendera
 counter = 0
 typetest = str()
-task = "Hei på deg banan"
+task = ["Hei", "Kul"]
+tasknr = 0
 
 correct = str()
 wrong = str()
@@ -99,7 +99,13 @@ while True: #displayLoop
             except:
                 pass
             if event.key == pg.K_RETURN:
-                typetest = str()
+                if typetest == task[tasknr]:
+                    tasknr +=1
+                    typetest = str()
+                    #spill funny sound effect
+                else:
+                    #spill funny sound effect
+                    pass
 
             if event.key == pg.K_BACKSPACE:
                 typetest = typetest[0:-1]
@@ -145,7 +151,7 @@ while True: #displayLoop
 
     #for i in range(len(typetest)):
     #    window.blit(font.render(str(typetest[i]),True,(0,0,0)),(10*i,200))
-    taskRender = font.render(str(task),True,(0,0,0))
+    taskRender = font.render(str(task[tasknr]),True,(0,0,0))
     taskRect = taskRender.get_rect(center=((window_width/2),(window_height/2)-200))
     window.blit(taskRender,taskRect)
 
@@ -158,7 +164,7 @@ while True: #displayLoop
         charPosx, charPosy = typeRect.midleft #lagre koordiatene til rektangelet
 
         try:
-            if not typetest[i] == task[i]:
+            if not typetest[i] == task[tasknr][i]:
                 charRender = font.render(str(typetest[i]),True,red)
                 window.blit(charRender,((charPosx+textPrevLength,charPosy)))
             
@@ -170,7 +176,7 @@ while True: #displayLoop
             window.blit(charRender,((charPosx+textPrevLength,charPosy)))
         
     
-    
+
 
     clock.tick(windowFPS) #Oppdaterer skjermen og teller hvilken frame vi er på
     pg.display.flip() 
