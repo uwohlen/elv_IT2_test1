@@ -8,7 +8,7 @@ from pygame.locals import *
 try:
     from PIL import Image, ImageDraw
 except:
-    sys.exit("Pil trengs for å kjøre spillet. pip install pillow")
+    sys.exit("Pil trengs for å kjøre spillet. pip (pip3 på mac) install pillow, eller pip -U install pillow --user")
 
 pg.init() #starter pygame
 
@@ -75,16 +75,14 @@ def fps():
 
 """
 windowFPS = 60 #hvor mange frames pr sekund som blir rendera
-counter = 0
-typetest = str()
-task = ["Hei på deg", "Kul","Onomatepoetikon"," ","Iridocyclitis","agmaign"]
+
 
 
 def main():
 
     counter = 0
     typetest = str()
-    task = ["Hei på deg", "Kul","Onomatepoetikon"," ","Iridocyclitis","agmaign"]    
+    task = ["Kul","Hei","Onomatepoetikon"," ","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis"]    
     tasknr = 0
 
     sec = 0
@@ -245,12 +243,9 @@ def main():
             gameFail()
             break
 
-
-
-
-
-
-
+def menu():
+    while True:
+        pg.display.flip()
 while True: #displayLoop
 
     # Sjekker om brukeren har lukket vinduet
