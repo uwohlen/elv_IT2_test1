@@ -44,3 +44,6 @@ while fortsett:
 
 # Avslutter pygamesscxdsjghghg
 pg.quit()
+
+#https://www.cleverpdf.com/gif-to-png
+#https://www.dafont.com/top.php
