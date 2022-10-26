@@ -13,7 +13,7 @@ print(type(vindu))
 
 class Ball:
   """Klasse for å representere en ball"""
-  def __init__(self, x, y, fartx, farty, radius, vindusobjekt):
+  def __init__(self, x, y, fartx, farty, radius, vindusobjekt, farge):
     """Konstruktør"""
     self.x = x
     self.y = y
@@ -21,24 +21,44 @@ class Ball:
     self.farty = farty
     self.radius = radius
     self.vindusobjekt = vindusobjekt
+    self.farge = farge
   
   def tegn(self):
     """Metode for å tegne ballen"""
-    pg.draw.circle(self.vindusobjekt, (255, 69, 0), (self.x, self.y), self.radius) 
+    pg.draw.circle(ball.vindusobjekt, ball.farge, (ball.x, ball.y), ball.radius)
+    pg.draw.circle(ball2.vindusobjekt, ball2.farge, (ball2.x, ball2.y), ball2.radius)
+    pg.draw.circle(ball3.vindusobjekt, ball3.farge, (ball3.x, ball3.y), ball3.radius)
 
   def flytt(self):
     """Metode for å flytte ballen"""
     # Sjekker om ballen er utenfor høyre/venstre kant
-    if ((self.x - self.radius) <= 0) or ((self.x + self.radius) >= self.vindusobjekt.get_width()):
-      self.fartx = -self.fartx
-    elif ((self.y - self.radius) <= 0) or ((self.y + self.radius) >= self.vindusobjekt.get_height()):
-      self.farty = -self.farty
+    if ((ball.x - ball.radius) <= 0) or ((ball.x + ball.radius) >= ball.vindusobjekt.get_width()):
+      ball.fartx = -ball.fartx
+    elif ((ball.y - ball.radius) <= 0) or ((ball.y + ball.radius) >= ball.vindusobjekt.get_height()):
+      ball.farty = -ball.farty
     # Flytter ballen
-    self.x += self.fartx
-    self.y += self.farty
+    ball.x += ball.fartx
+    ball.y += ball.farty
+    if ((ball2.x - ball2.radius) <= 0) or ((ball2.x + ball2.radius) >= ball2.vindusobjekt.get_width()):
+      ball2.fartx = -ball2.fartx
+    elif ((ball2.y - ball2.radius) <= 0) or ((ball2.y + ball2.radius) >= ball2.vindusobjekt.get_height()):
+      ball2.farty = -ball2.farty
+    # Flytter ballen
+    ball2.x += ball2.fartx
+    ball2.y += ball2.farty
+    if ((ball3.x - ball3.radius) <= 0) or ((ball3.x + ball3.radius) >= ball3.vindusobjekt.get_width()):
+      ball3.fartx = -ball3.fartx
+    elif ((ball3.y - ball3.radius) <= 0) or ((ball3.y + ball3.radius) >= ball3.vindusobjekt.get_height()):
+      ball3.farty = -ball3.farty
+    # Flytter ballen
+    ball3.x += ball3.fartx
+    ball3.y += ball3.farty
+
 
 # Lager et Ball-objekt
-ball = Ball(250, 250, 0.1, 0.1, 20, vindu)
+ball = Ball(360, 360, 0, 0, 0, vindu, (0,0,0))
+ball2 = Ball(360, 360, 0.5, 0, 20, vindu, (0,0,0))
+ball3 = Ball(360, 360, 0, 0.5, 20, vindu, (0,0,0))
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24)
@@ -56,11 +76,14 @@ while fortsett:
     vindu.fill((255, 255, 255))
 
     # Tegner en sirkel
-    pg.draw.circle(vindu, (255, 100, 50), (645, 360), 150)
+    '''pg.draw.circle(vindu, (255, 100, 50), (645, 360), 150)'''
     # Tegner et rektangel
-    pg.draw.rect(vindu, (0, 255, 0), (0, 0, 384, 384))
-    pg.draw.rect(vindu, (0, 255, 0), (0, 0, 384, 720))
-    # Tegner en ellipse
+    pg.draw.rect(vindu, (255, 0, 0), (0, 0, 1280, 270))
+    pg.draw.rect(vindu, (255, 0, 0), (0, 450, 1280, 720))
+    pg.draw.rect(vindu, (255, 255, 255), (270, 0, 180, 720))
+    pg.draw.rect(vindu, (0, 0, 255), (0, 315, 1280, 90))
+    pg.draw.rect(vindu, (0, 0, 255), (315, 0, 90, 720))
+    # Tegner en ellipse 
     '''pg.draw.ellipse(vindu, (0, 0, 255), (300, 250, 90, 60))'''
     # Tegner en linje
     '''pg.draw.line(vindu, (200, 0, 200), (400, 100), (420, 400), 5)'''
