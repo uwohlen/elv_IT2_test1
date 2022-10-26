@@ -30,18 +30,6 @@ while fortsett:
         if event.type == pg.QUIT:
             fortsett = False
 
-    # Farger bakgrunnen hvit
-    vindu.fill((255, 255, 255))
-
-    # Tegner en sirkel
-    '''pg.draw.circle(vindu, (255, 100, 50), (645, 360), 150)
-    # Tegner et rektangel
-    pg.draw.rect(vindu, (0, 255, 0), (0, 520, 1280, 720))
-    pg.draw.rect(vindu, (0, 255, 0), (0, 0, 1280, 200))'''
-    # Tegner en ellipse
-    '''mittBilde = pg.image.load("Benjamin/pngs/måneskin.gif")
-    vindu.blit(mittBilde, (0, 0))
-        vindu.blit(måne, (0, 0))'''
     clock.tick(2)
     vindu.blit(gifList[counter],(0, 0))
     counter += 1
