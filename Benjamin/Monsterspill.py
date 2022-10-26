@@ -4,14 +4,14 @@ import sys, time
 
 
 def slow_type(t):
-    typing_speed = 150 #wpm
+    typing_speed = 300 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
         time.sleep(random.random()*10.0/typing_speed)
     
 def fast_type(t):
-    typing_speed = 300 #wpm
+    typing_speed = 450 #wpm
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
@@ -421,6 +421,7 @@ def tapepenger():
     global gamble
     global bonus
     penger -= gamble
+    slow_type(f'Du tapte: {gamble}$\n')
     return penger
 
 
@@ -454,12 +455,14 @@ def iq():
         m = random.randint(1,int(arne.iq))
         if m > 100:
             penger -= (1 - (2 * int(arne.iq) / 1000)) * gamble
+            slow_type(f'Du tapte: {round((1 - (2 * int(per.iq) / 1000)) * gamble,1)}$\n')
         else:
             tapepenger()
     if karakter == "2":
         m = random.randint(1,int(per.iq))
         if m > 100:
             penger -= (1 - (2 * int(per.iq) / 1000)) * gamble
+            slow_type(f'Du tapte: {round((1 - (2 * int(per.iq) / 1000)) * gamble,1)}$\n')
         else:
             tapepenger()
 
