@@ -1,4 +1,6 @@
 import sys as sys
+import time
+import random as r
 
 def sistenummer(inum:int) -> int:
     """Finner det siste sifferet i ett nummer"""
@@ -53,7 +55,18 @@ def split(iliste:list,o) -> tuple:
         hs = hs + liste[i]
     return (vs,hs)
 
-    
+def slow_type(t):
+    typing_speed = 300 #wpm
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+        time.sleep(r.random()*10.0/typing_speed)
+
+def slower_type(t,speed):
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+
 
 
 
