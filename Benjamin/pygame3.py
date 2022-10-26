@@ -38,7 +38,7 @@ while fortsett:
     pg.draw.rect(vindu, (0, 255, 0), (0, 520, 1280, 720))
     pg.draw.rect(vindu, (0, 255, 0), (0, 0, 1280, 200))
     # Tegner en ellipse
-    mittBilde = pg.image.load("måneskin")
+    mittBilde = pg.image.load("bruhgangster2.jpg")
     vindu.blit(mittBilde, (640, 360))
 
     # Oppdaterer alt innholdet i vinduet
