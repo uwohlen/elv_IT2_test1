@@ -99,13 +99,18 @@ while True: #displayLoop
             except:
                 pass
             if event.key == pg.K_RETURN:
+                pg.mixer.Sound.stop
+
                 if typetest == task[tasknr]:
                     tasknr +=1
                     typetest = str()
+                    win = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
+                    pg.mixer.Sound.play(win)
                     #spill funny sound effect
                 else:
                     #spill funny sound effect
-                    pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.waw")
+                    fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
+                    pg.mixer.Sound.play(fail)
                     pass
 
             if event.key == pg.K_BACKSPACE:
