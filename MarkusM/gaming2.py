@@ -105,6 +105,7 @@ while True: #displayLoop
                     #spill funny sound effect
                 else:
                     #spill funny sound effect
+                    pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.waw")
                     pass
 
             if event.key == pg.K_BACKSPACE:
