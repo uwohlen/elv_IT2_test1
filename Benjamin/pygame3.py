@@ -17,7 +17,8 @@ vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 print(type(vindu))
 
 
-
+for i in range(0,1):
+    måne = gifList.append(pg.image.load(f"Benjamin/pngs/måneskin/måneskin-{i}.png"))
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24)
 
@@ -40,10 +41,8 @@ while fortsett:
     pg.draw.rect(vindu, (0, 255, 0), (0, 0, 1280, 200))'''
     # Tegner en ellipse
     '''mittBilde = pg.image.load("Benjamin/pngs/måneskin.gif")
-    vindu.blit(mittBilde, (0, 0))'''
-    for i in range(0,1):
-        måne = gifList.append(pg.image.load(f"Benjamin/pngs/måneskin/måneskin-{i}.png"))
-        '''vindu.blit(måne, (0, 0))'''
+    vindu.blit(mittBilde, (0, 0))
+        vindu.blit(måne, (0, 0))'''
 
     # Oppdaterer alt innholdet i vinduet
     pg.display.flip()
