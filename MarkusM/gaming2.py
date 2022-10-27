@@ -20,6 +20,7 @@ pg.display.set_caption('gaming')
 font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
 font2 = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 80)
 menyFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Black_PERSONAL USE.otf",80)
+timerFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Regular_PERSONAL USE.otf",80)
 
 gifList = []
 keyIndex = 0
@@ -62,6 +63,7 @@ def fps():
 windowFPS = 60 #hvor mange frames pr sekund som blir rendera
 
 def typeGame():
+    answerTime = 6
     typeMusic = pg.mixer.Sound(f"MarkusM/sounds/main_music.wav")
     typeMusic.set_volume(0.5)
     MusicChannel.play(typeMusic)
@@ -214,7 +216,7 @@ def typeGame():
             #window.blit(circleDraw2,circlerect)
             window.blit(circleDraw,circlerect) #tegne sirkelen
 
-            timerRender = font2.render(str(round(((360/windowFPS)-sec),1)),True,green)
+            timerRender = timerFont.render(str(round((answerTime-sec),1)),True,green)
             timerRect = timerRender.get_rect(center=((window_width/2),(window_height/2)+200))
             window.blit(timerRender,timerRect) #tegne timer
 
@@ -222,7 +224,7 @@ def typeGame():
         clock.tick(windowFPS) #Oppdaterer skjermen og teller hvilken frame vi er på
         pg.display.flip() 
 
-        timer +=1 #for å kontrolerer tid
+        timer += (360/windowFPS)/answerTime #for å kontrolerer tid
 
         counter +=1
         sec += 1/windowFPS
@@ -230,7 +232,7 @@ def typeGame():
         #if counter == windowFPS:
         #    sec +=1
         #    counter = 0
-        if timer == 360:
+        if timer == 360 or timer > 360:
             gameFail()
             break
 
