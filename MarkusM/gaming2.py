@@ -8,14 +8,14 @@ from pygame.locals import *
 try:
     from PIL import Image, ImageDraw
 except:
-    sys.exit("Pil trengs for å kjøre spillet. pip (pip3 på mac) install pillow, eller pip -U install pillow --user")
+    sys.exit("PIL trengs for å kjøre spillet. pip (pip3 på mac) install pillow, eller pip -U install pillow --user")
 
 pg.init() #starter pygame
 
 window_width = 1080
 window_height = 720
-#window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
-window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
+window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
+#window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
 pg.display.set_caption('gaming')
 font = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 40)
 font2 = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 80)
@@ -24,31 +24,8 @@ gifList = []
 keyIndex = 0
 
 #acceptedKeys = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-
-def gameFail():
-    fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
-    pg.mixer.Sound.play(fail)
     
-
-class key:
-    def __init__(self,key,pressed):
-        self.key = key
-        self.pressed = pressed
-
-    def keyPress(self):
-        self.pressed = True
-
-    def keyUp(self):
-        self.pressed = False
-
-
-
 keyInit = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","æ","ø","å"]
-keyList = []
-#SpecialKeys = ["Return","Backspace"]
-
-for i in range(len(keyInit)):
-    keyList.append(key(keyInit[i],False))
 
 for i in range(44):
     gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
@@ -60,8 +37,15 @@ red = (200,0,0)
 green = (100,200,100)
 grey = (100,100,100)
 light_grey = (220,220,220)
+
 #fps
 clock = pg.time.Clock() 
+
+#lyder
+SoundEffectChannel = pg.mixer.Channel(1)
+SoundEffectChannel2 = pg.mixer.Channel(2)
+MusicChannel = pg.mixer.Channel(3)
+
 """
 currentFps = 0
 averageFps = 0
@@ -77,7 +61,10 @@ def fps():
 
 windowFPS = 30 #hvor mange frames pr sekund som blir rendera
 
-def main():
+def typeGame():
+    typeMusic = pg.mixer.Sound(f"MarkusM/sounds/main_music.wav")
+    typeMusic.set_volume(0.5)
+    MusicChannel.play(typeMusic)
 
     counter = 0
     typetest = str()
@@ -111,15 +98,17 @@ def main():
                     if typetest == task[tasknr]:
                         tasknr +=1
                         typetest = str()
+                        SoundEffectChannel.stop()
                         win = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
-                        pg.mixer.Sound.play(win)
+                        SoundEffectChannel.play(win)
                         sec = 0
                         timer = 0
                         #spill funny sound effect
                     else:
                         #spill funny sound effect
+                        SoundEffectChannel.stop()
                         fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
-                        pg.mixer.Sound.play(fail)
+                        SoundEffectChannel.play(fail)
                         pass
 
                 if event.key == pg.K_BACKSPACE:
@@ -246,20 +235,56 @@ def main():
             break
 
 def menu():
-    while True:
+
+    loop = True
+    while loop:
         #quitButton = pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
             if event.type == MOUSEBUTTONDOWN:
+                left,middle,right = pg.mouse.get_pressed()
                 mousepos = pg.mouse.get_pos()
-                #if quitButton.rect.collidepoint(pg.mouse.get_pos()):
+                if left:
+                    if quitBox.collidepoint(mousepos):
+                        sys.exit()
+                    if startBox.collidepoint(mousepos):
+                        loop = False
+                
+
                 
             if event.type == KEYDOWN:
                 if event.key ==pg.K_ESCAPE:
                     sys.exit()
         window.fill((255,255,255))
-        pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
+
+        centerx,centery = findCenter() #finne senter av skjermen
+
+        quitBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
+        quitBox.center = (centerx+window_width/4,centery) #posisjonere rektangel
+        pg.draw.rect(window,light_grey,quitBox) #tegne rektangel
+        
+        quitText = font2.render(str("QUIT"),True,black) #definere tekst
+        quitTextBox = quitText.get_rect() #definere hvor stor teksten er
+        quitTextBox.center = quitBox.center #sentrere teksten i boksen
+        window.blit(quitText,quitTextBox) #render
+
+        startBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
+        startBox.center = (centerx-window_width/4,centery) #posisjonere rektangel
+        pg.draw.rect(window,light_grey,startBox) #tegne rektangel
+
+        startText = font2.render(str("START"),True,black) #definere tekst
+        startTextBox = startText.get_rect() #definere hvor stor teksten er
+        startTextBox.center = startBox.center #sentrere teksten i boksen
+        window.blit(startText,startTextBox) #render
+
+        #tittel
+        title = font2.render(str("GAMING"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/2)-(window_height/4)))
+        window.blit(title,titleBox) #render
+
+
+        #window.blit(quitBox,(centerPosx-90,centerPosy))
         #window.blit(quitButton, (0,0))
 
         
@@ -269,16 +294,33 @@ def menu():
         pg.display.flip()
 
 
+def findCenter():
+    return window_width/2,window_height/2
 
 def gjettHvor():
     while True:
         pg.display.flip()
-while True: #displayLoop
 
-    # Sjekker om brukeren har lukket vinduet
-    #main()
+def introduction():
+    pass
+
+def gd():
+    while True:
+        pg.display.flip()
+
+def gameFail():
+    SoundEffectChannel.stop()
+    fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
+    SoundEffectChannel.play(fail)
+    MusicChannel.stop()
+
+while True: #displayLoop
     menu()
+    introduction()
+    typeGame()
     time.sleep(2)
+
+#lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
