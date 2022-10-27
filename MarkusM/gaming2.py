@@ -17,8 +17,9 @@ window_height = 720
 window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
 #window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
 pg.display.set_caption('gaming')
-font = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 40)
-font2 = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 80)
+font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
+font2 = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 80)
+menyFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Black_PERSONAL USE.otf",80)
 
 gifList = []
 keyIndex = 0
@@ -29,7 +30,6 @@ keyInit = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","
 
 for i in range(44):
     gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
-
 
 #farger
 black = (0,0,0)
@@ -59,7 +59,7 @@ def fps():
 """
 
 
-windowFPS = 30 #hvor mange frames pr sekund som blir rendera
+windowFPS = 60 #hvor mange frames pr sekund som blir rendera
 
 def typeGame():
     typeMusic = pg.mixer.Sound(f"MarkusM/sounds/main_music.wav")
@@ -68,7 +68,7 @@ def typeGame():
 
     counter = 0
     typetest = str()
-    task = ["Kul","Hei","Onomatepoetikon"," ","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis"]    
+    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
     tasknr = 0
 
     sec = 0
@@ -238,6 +238,11 @@ def menu():
 
     loop = True
     while loop:
+        if MusicChannel.get_busy() == False:
+            menuMusic = pg.mixer.Sound(f"MarkusM/sounds/MenuMusic.mp3")
+            menuMusic.set_volume(0.5)
+            MusicChannel.play(menuMusic)
+            
         #quitButton = pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -264,7 +269,7 @@ def menu():
         quitBox.center = (centerx+window_width/4,centery) #posisjonere rektangel
         pg.draw.rect(window,light_grey,quitBox) #tegne rektangel
         
-        quitText = font2.render(str("QUIT"),True,black) #definere tekst
+        quitText = menyFont.render(str("QUIT"),True,black) #definere tekst
         quitTextBox = quitText.get_rect() #definere hvor stor teksten er
         quitTextBox.center = quitBox.center #sentrere teksten i boksen
         window.blit(quitText,quitTextBox) #render
@@ -308,7 +313,7 @@ def gd():
     while True:
         pg.display.flip()
 
-def gameFail():
+def gameFail(): 
     SoundEffectChannel.stop()
     fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
     SoundEffectChannel.play(fail)
