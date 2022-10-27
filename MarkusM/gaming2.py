@@ -72,7 +72,7 @@ def typeGame():
     typetest = str()
     task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
     tasknr = 0
-
+    timerPlayed = False
     sec = 0
     timer = 0
 
@@ -103,6 +103,7 @@ def typeGame():
                         SoundEffectChannel.stop()
                         win = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
                         SoundEffectChannel.play(win)
+                        timerPlayed = False
                         sec = 0
                         timer = 0
                         #spill funny sound effect
@@ -187,6 +188,12 @@ def typeGame():
         
     
     #timerender
+        if timer < 240 and timerPlayed == False:
+            SoundEffectChannel.stop()
+            timer = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
+            SoundEffectChannel.play(win)
+            timerPlayed = True
+
         if timer <360: #tegne sirkel når man har tid igjen
 
             pil_size = 450
@@ -219,12 +226,13 @@ def typeGame():
             timerRender = timerFont.render(str(round((answerTime-sec),1)),True,green)
             timerRect = timerRender.get_rect(center=((window_width/2),(window_height/2)+200))
             window.blit(timerRender,timerRect) #tegne timer
-
+        else:
+            timerRender = timerFont.render(str(round((answerTime-sec),1)),True,red)
+            timerRect = timerRender.get_rect(center=((window_width/2),(window_height/2)+200))
+            window.blit(timerRender,timerRect) #tegne timer
 
         clock.tick(windowFPS) #Oppdaterer skjermen og teller hvilken frame vi er på
         pg.display.flip() 
-
-        timer += (360/windowFPS)/answerTime #for å kontrolerer tid
 
         counter +=1
         sec += 1/windowFPS
@@ -235,6 +243,7 @@ def typeGame():
         if timer == 360 or timer > 360:
             gameFail()
             break
+        timer += (360/windowFPS)/answerTime #for å kontrolerer tid
 
 def menu():
 
