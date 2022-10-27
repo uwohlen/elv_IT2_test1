@@ -14,7 +14,8 @@ pg.init() #starter pygame
 
 window_width = 1080
 window_height = 720
-window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
+#window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
+window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
 pg.display.set_caption('gaming')
 font = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 40)
 font2 = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 80)
@@ -71,12 +72,10 @@ def fps():
 	fps = str(int(clock.get_fps()))
 	fps_text = font.render(fps, True, (0,0,0))
 	return fps_text
-
-
 """
-windowFPS = 60 #hvor mange frames pr sekund som blir rendera
 
 
+windowFPS = 30 #hvor mange frames pr sekund som blir rendera
 
 def main():
 
@@ -129,6 +128,9 @@ def main():
                     #hvis man holder i fler frames, sletter den fortere
                 if event.key == pg.K_SPACE:
                     typetest = typetest + str(" ")
+                
+                if event.key ==pg.K_ESCAPE:
+                    sys.exit()
 
             #finne hvilken som er trykket
 
@@ -200,26 +202,26 @@ def main():
             pil_image = Image.new("RGBA",(pil_size,pil_size))
             pil_draw = ImageDraw.Draw(pil_image)
 
-            pil_image2 = Image.new("RGBA",(pil_size,pil_size))
-            pil_draw2 = ImageDraw.Draw(pil_image2)
+            #pil_image2 = Image.new("RGBA",(pil_size,pil_size))
+            #pil_draw2 = ImageDraw.Draw(pil_image2)
 
             pil_draw.pieslice((0,0,pil_size-1,pil_size-1),360,359-timer,fill=light_grey) #definere sirkel
-            pil_draw2.pieslice((0,0,pil_size-1,pil_size-1),0,360,fill=light_grey)
+            #pil_draw2.pieslice((0,0,pil_size-1,pil_size-1),0,360,fill=light_grey)
 
             circleMode = pil_image.mode
             circleSize = pil_image.size
             circleData = pil_image.tobytes()
             circleDraw = pg.image.fromstring(circleData,circleSize,circleMode) #gjøre om fra PIL til pygame
 
-            circleMode2 = pil_image2.mode
-            circleSize2 = pil_image2.size
-            circleData2 = pil_image2.tobytes()
-            circleDraw2 = pg.image.fromstring(circleData2,circleSize2,circleMode2) #gjøre om fra PIL til pygame
+            #circleMode2 = pil_image2.mode
+            #circleSize2 = pil_image2.size
+            #circleData2 = pil_image2.tobytes()
+            #circleDraw2 = pg.image.fromstring(circleData2,circleSize2,circleMode2) #gjøre om fra PIL til pygame
 
             circleDraw = pg.transform.rotozoom(circleDraw,90,1/3) #downscale for å få bedre kvalitet og rotere
-            circleDraw2 = pg.transform.rotozoom(circleDraw2,0,1/3)
+            #circleDraw2 = pg.transform.rotozoom(circleDraw2,0,1/3)
 
-            circlerect = circleDraw2.get_rect(center=((window_width/2),(window_height/2)+200))
+            circlerect = circleDraw.get_rect(center=((window_width/2),(window_height/2)+200))
             #window.blit(circleDraw2,circlerect)
             window.blit(circleDraw,circlerect) #tegne sirkelen
 
@@ -245,11 +247,37 @@ def main():
 
 def menu():
     while True:
+        #quitButton = pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                mousepos = pg.mouse.get_pos()
+                #if quitButton.rect.collidepoint(pg.mouse.get_pos()):
+                
+            if event.type == KEYDOWN:
+                if event.key ==pg.K_ESCAPE:
+                    sys.exit()
+        window.fill((255,255,255))
+        pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
+        #window.blit(quitButton, (0,0))
+
+        
+        
+
+
+        pg.display.flip()
+
+
+
+def gjettHvor():
+    while True:
         pg.display.flip()
 while True: #displayLoop
 
     # Sjekker om brukeren har lukket vinduet
-    main()
+    #main()
+    menu()
     time.sleep(2)
 
 #https://www.cleverpdf.com/gif-to-png
