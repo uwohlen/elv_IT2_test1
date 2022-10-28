@@ -428,7 +428,7 @@ class player:
 
 
     def jump(self):
-        self.momentum = 1
+        self.momentum = 1.5
 
     def render(self):
         self.posy = self.posy-self.momentum
@@ -436,7 +436,7 @@ class player:
         
 
         if not safeColissionCheck():
-            self.momentum -=0.003
+            self.momentum -=0.005
         else:
             self.momentum = 0
         
@@ -451,13 +451,39 @@ blockList = []
 triangleList = []
 
 lvl = """
-           xxx ^
+           xxx^^
 """
 
 x = 0
 for char in lvl:
     if char == "x":
         blockList.append(block(100,x*100+540,window_height-100))
+    elif char == "^":
+        triangleList.append(triangle(50,x*100+540,window_height-50))
+    x +=1
+
+lvl = """
+                x   
+"""
+x = 0
+#          xxx^^
+for char in lvl:
+    if char == "x":
+        blockList.append(block(100,x*100+540,window_height-200))
+    elif char == "^":
+        triangleList.append(triangle(50,x*100+540,window_height-150))
+    x +=1
+
+lvl = """
+                   ^x
+"""
+
+x = 0
+for char in lvl:
+    if char == "x":
+        blockList.append(block(100,x*100+540,window_height-300))
+    elif char == "^":
+        triangleList.append(triangle(50,x*100+540,window_height-250))
     x +=1
 
 lvl = """
@@ -467,10 +493,10 @@ x = 0
 #          xxx
 for char in lvl:
     if char == "x":
-        blockList.append(block(100,x*100+540,window_height-200))
+        blockList.append(block(100,x*100+540,window_height-400))
+    elif char == "^":
+        triangleList.append(triangle(50,x*100+540,window_height-350))
     x +=1
-
-
 
 
 
@@ -522,10 +548,10 @@ def gameFail():
     MusicChannel.stop()
 
 while True: #displayLoop
-    #gd()
-    menu()
+    gd()
+    #menu()
     #introduction()
-    typeGame()
+    #typeGame()
 
     #time.sleep(2)
 
