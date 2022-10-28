@@ -5,6 +5,7 @@ import random as r
 import sys, time
 import os
 from pygame.locals import *
+import math as math
 
 try:
     from PIL import Image, ImageDraw
@@ -331,13 +332,46 @@ class block:
 
         
     def safeCollision(self):
-        pass
-        safeLine = pg.Rect(0,0,self.width,0)
+        safeLine = pg.Rect(0,0,self.width,1)
+        topCoords = self.rect.midtop
+        safeLine.midtop = topCoords
+
+        if pg.Rect.colliderect(player.rect,safeLine):
+            return True
+    
+    def harmCollision(self):
+        harmLine = pg.Rect(0,0,1,self.height/1.2)
+        topCoords = self.rect.midleft
+        harmLine.midleft = topCoords
+
+        if pg.Rect.colliderect(harmLine,player.rect):
+            return True
 
     def render(self,levelSpeed,counter):
         self.rect.center = (self.centerposx-(levelSpeed*counter),self.centerposy)
 
         pg.draw.rect(window,grey,self.rect)
+print(math.tan(math.radians(30)))
+
+class triangle:
+    def __init__(self,size,centerposx,centerposy):
+        self.size = size
+        self.centerposx = centerposx
+        self.centerposy = centerposy
+        self.heightRatio = 1.4
+
+    def draw(self,speed,counter):
+        newCenterPosx = self.centerposx -(speed*counter)
+
+        self.leftPoint = newCenterPosx-self.size,self.centerposy
+        self.rightPoint = newCenterPosx+self.size,self.centerposy
+        self.topPoint = newCenterPosx,self.centerposy-math.tan(math.radians(30))*(self.size*2*self.heightRatio)
+        
+        self.polygon = pg.draw.polygon(window,grey, ((self.topPoint),(self.leftPoint),(self.rightPoint)))
+    
+    def harmCollision(self):
+        if pg.Rect.colliderect(self.polygon,player.rect): #dårlig collision
+            return True
 
 class border:
     def __init__(self,height,width):
@@ -360,14 +394,20 @@ class border:
 
         if pg.Rect.colliderect(player.rect,safeline):
             return True
-
+        
+def harmcolissionCheck():
+    for i in range(len(blockList)):
+        if blockList[i].harmCollision():
+            return True
+    for i in range(len(triangleList)):
+        if triangleList[i].harmCollision():
+            return True
 
 def safeColissionCheck():
     for i in range(len(blockList)):
         if blockList[i].safeCollision():
             return True
     if lower_border.safeCollision():
-        print("")
         return True
     else:
         return False #ved collision problemer sjekk denne. Kan hende for-løkken ikke stopper etter return
@@ -378,7 +418,7 @@ class player:
         global window_width
         global window_height
 
-        self.momentum = 1
+        self.momentum = 0
         self.length = length
         self.posx = window_width/2
         self.posy = window_height-borderHeight
@@ -396,25 +436,55 @@ class player:
         
 
         if not safeColissionCheck():
-            self.momentum -=0.001
+            self.momentum -=0.003
         else:
             self.momentum = 0
         
         pg.draw.rect(window,green,self.rect)
+def gdGameOver():
+    sys.exit()
 
-        
 borderHeight = 50
 player = player(100,borderHeight) #bredde gd blokk
 lower_border = border(borderHeight,window_width)
 blockList = []
+triangleList = []
 
+lvl = """
+           xxx ^
+"""
+
+x = 0
+for char in lvl:
+    if char == "x":
+        blockList.append(block(100,x*100+540,window_height-100))
+    x +=1
+
+lvl = """
+           xx
+"""
+#          xxx
+for char in lvl:
+    if char == "x":
+        blockList.append(block(100,x*100+540,window_height-400))
+    x +=1
+
+
+
+
+
+triangle2 = triangle(50,window_width+200,window_height-borderHeight)
 block2 = block(100,window_width,window_height-borderHeight-50)
 block3 = block(100,window_width+100,window_height-borderHeight-50)
 blockList.append(block2)
 blockList.append(block3)
-
+triangleList.append(triangle2)
+print(blockList[0].centerposy)
+print(block2.centerposy)
+print(blockList[0].centerposx)
+print(block3.centerposx)
 def gd():
-    levelSpeed = 0.2
+    levelSpeed = 0.5
     counter = 0
     while True:
         for event in pg.event.get():
@@ -424,15 +494,23 @@ def gd():
             if event.type == MOUSEBUTTONDOWN:
                 left,middle,right = pg.mouse.get_pressed()
                 if left:
-                    player.jump()
+                    if safeColissionCheck():
+                        player.jump()
         
         window.fill((255,255,255))
 
+        #render
         for i in range(len(blockList)):
             blockList[i].render(levelSpeed,counter)
+        for i in range(len(triangleList)):
+            triangleList[i].draw(levelSpeed,counter)
         lower_border.render()
+
         player.render()
         pg.display.flip()
+
+        if harmcolissionCheck():
+            gdGameOver()
 
         counter+=1
 
