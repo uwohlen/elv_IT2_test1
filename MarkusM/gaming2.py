@@ -352,18 +352,21 @@ class border:
         pg.draw.rect(window,black,self.rect)
 
     def safeCollision(self):
-        global window_width
-        global window_width
+        x0,y0 = 
+        x1,x0 = 
 
-        safeline = pg.Rect(0,0,self.width,10) #linje med 0 bredde
-        safeline.midbottom = (window_width/2,window_height+self.height) #lagre 
-        return safeline.colliderect(player.rect)
+        offset = (x0-x1,y0-y1)
+        safemask = pg.mask.from_surface(self.rect)
+        if player.mask.overla(safemask,offset):
+            return True
+
 
 def safeColissionCheck():
     for i in range(len(blockList)):
         if blockList[i].safeCollision():
             return True
     if lower_border.safeCollision():
+        print("")
         return True
     else:
         return False #ved collision problemer sjekk denne. Kan hende for-løkken ikke stopper etter return
@@ -418,7 +421,6 @@ def gd():
                 left,middle,right = pg.mouse.get_pressed()
                 if left:
                     player.jump()
-            
         
         window.fill((255,255,255))
 
