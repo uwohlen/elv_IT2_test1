@@ -8,50 +8,29 @@ from pygame.locals import *
 try:
     from PIL import Image, ImageDraw
 except:
-    sys.exit("Pil trengs for å kjøre spillet. pip (pip3 på mac) install pillow, eller pip -U install pillow --user")
+    sys.exit("PIL trengs for å kjøre spillet. pip (pip3 på mac) install pillow, eller pip -U install pillow --user")
 
 pg.init() #starter pygame
 
 window_width = 1080
 window_height = 720
 window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
+#window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
 pg.display.set_caption('gaming')
-font = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 40)
-font2 = pg.font.SysFont("MarkusM/font_test/coolvetica rg.otf", 80)
+font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
+font2 = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 80)
+menyFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Black_PERSONAL USE.otf",80)
+timerFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Regular_PERSONAL USE.otf",80)
 
 gifList = []
 keyIndex = 0
 
 #acceptedKeys = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-
-def gameFail():
-    fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
-    pg.mixer.Sound.play(fail)
     
-
-class key:
-    def __init__(self,key,pressed):
-        self.key = key
-        self.pressed = pressed
-
-    def keyPress(self):
-        self.pressed = True
-
-    def keyUp(self):
-        self.pressed = False
-
-
-
 keyInit = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","æ","ø","å"]
-keyList = []
-#SpecialKeys = ["Return","Backspace"]
-
-for i in range(len(keyInit)):
-    keyList.append(key(keyInit[i],False))
 
 for i in range(44):
     gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
-
 
 #farger
 black = (0,0,0)
@@ -59,8 +38,15 @@ red = (200,0,0)
 green = (100,200,100)
 grey = (100,100,100)
 light_grey = (220,220,220)
+
 #fps
 clock = pg.time.Clock() 
+
+#lyder
+SoundEffectChannel = pg.mixer.Channel(1)
+SoundEffectChannel2 = pg.mixer.Channel(2)
+MusicChannel = pg.mixer.Channel(3)
+
 """
 currentFps = 0
 averageFps = 0
@@ -71,20 +57,22 @@ def fps():
 	fps = str(int(clock.get_fps()))
 	fps_text = font.render(fps, True, (0,0,0))
 	return fps_text
-
-
 """
+
+
 windowFPS = 60 #hvor mange frames pr sekund som blir rendera
 
-
-
-def main():
+def typeGame():
+    answerTime = 6
+    typeMusic = pg.mixer.Sound(f"MarkusM/sounds/main_music.wav")
+    typeMusic.set_volume(0.5)
+    MusicChannel.play(typeMusic)
 
     counter = 0
     typetest = str()
-    task = ["Kul","Hei","Onomatepoetikon"," ","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis"]    
+    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
     tasknr = 0
-
+    timerPlayed = False
     sec = 0
     timer = 0
 
@@ -112,15 +100,18 @@ def main():
                     if typetest == task[tasknr]:
                         tasknr +=1
                         typetest = str()
+                        SoundEffectChannel.stop()
                         win = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
-                        pg.mixer.Sound.play(win)
+                        SoundEffectChannel.play(win)
+                        timerPlayed = False
                         sec = 0
                         timer = 0
                         #spill funny sound effect
                     else:
                         #spill funny sound effect
+                        SoundEffectChannel.stop()
                         fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
-                        pg.mixer.Sound.play(fail)
+                        SoundEffectChannel.play(fail)
                         pass
 
                 if event.key == pg.K_BACKSPACE:
@@ -129,6 +120,9 @@ def main():
                     #hvis man holder i fler frames, sletter den fortere
                 if event.key == pg.K_SPACE:
                     typetest = typetest + str(" ")
+                
+                if event.key ==pg.K_ESCAPE:
+                    sys.exit()
 
             #finne hvilken som er trykket
 
@@ -194,44 +188,51 @@ def main():
         
     
     #timerender
+        if timer < 240 and timerPlayed == False:
+            SoundEffectChannel.stop()
+            timer = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
+            SoundEffectChannel.play(win)
+            timerPlayed = True
+
         if timer <360: #tegne sirkel når man har tid igjen
 
             pil_size = 450
             pil_image = Image.new("RGBA",(pil_size,pil_size))
             pil_draw = ImageDraw.Draw(pil_image)
 
-            pil_image2 = Image.new("RGBA",(pil_size,pil_size))
-            pil_draw2 = ImageDraw.Draw(pil_image2)
+            #pil_image2 = Image.new("RGBA",(pil_size,pil_size))
+            #pil_draw2 = ImageDraw.Draw(pil_image2)
 
             pil_draw.pieslice((0,0,pil_size-1,pil_size-1),360,359-timer,fill=light_grey) #definere sirkel
-            pil_draw2.pieslice((0,0,pil_size-1,pil_size-1),0,360,fill=light_grey)
+            #pil_draw2.pieslice((0,0,pil_size-1,pil_size-1),0,360,fill=light_grey)
 
             circleMode = pil_image.mode
             circleSize = pil_image.size
             circleData = pil_image.tobytes()
             circleDraw = pg.image.fromstring(circleData,circleSize,circleMode) #gjøre om fra PIL til pygame
 
-            circleMode2 = pil_image2.mode
-            circleSize2 = pil_image2.size
-            circleData2 = pil_image2.tobytes()
-            circleDraw2 = pg.image.fromstring(circleData2,circleSize2,circleMode2) #gjøre om fra PIL til pygame
+            #circleMode2 = pil_image2.mode
+            #circleSize2 = pil_image2.size
+            #circleData2 = pil_image2.tobytes()
+            #circleDraw2 = pg.image.fromstring(circleData2,circleSize2,circleMode2) #gjøre om fra PIL til pygame
 
             circleDraw = pg.transform.rotozoom(circleDraw,90,1/3) #downscale for å få bedre kvalitet og rotere
-            circleDraw2 = pg.transform.rotozoom(circleDraw2,0,1/3)
+            #circleDraw2 = pg.transform.rotozoom(circleDraw2,0,1/3)
 
-            circlerect = circleDraw2.get_rect(center=((window_width/2),(window_height/2)+200))
+            circlerect = circleDraw.get_rect(center=((window_width/2),(window_height/2)+200))
             #window.blit(circleDraw2,circlerect)
             window.blit(circleDraw,circlerect) #tegne sirkelen
 
-            timerRender = font2.render(str(round(((360/windowFPS)-sec),1)),True,green)
+            timerRender = timerFont.render(str(round((answerTime-sec),1)),True,green)
+            timerRect = timerRender.get_rect(center=((window_width/2),(window_height/2)+200))
+            window.blit(timerRender,timerRect) #tegne timer
+        else:
+            timerRender = timerFont.render(str(round((answerTime-sec),1)),True,red)
             timerRect = timerRender.get_rect(center=((window_width/2),(window_height/2)+200))
             window.blit(timerRender,timerRect) #tegne timer
 
-
         clock.tick(windowFPS) #Oppdaterer skjermen og teller hvilken frame vi er på
         pg.display.flip() 
-
-        timer +=1 #for å kontrolerer tid
 
         counter +=1
         sec += 1/windowFPS
@@ -239,18 +240,103 @@ def main():
         #if counter == windowFPS:
         #    sec +=1
         #    counter = 0
-        if timer == 360:
+        if timer == 360 or timer > 360:
             gameFail()
             break
+        timer += (360/windowFPS)/answerTime #for å kontrolerer tid
 
 def menu():
+
+    loop = True
+    while loop:
+        if MusicChannel.get_busy() == False:
+            menuMusic = pg.mixer.Sound(f"MarkusM/sounds/MenuMusic.mp3")
+            menuMusic.set_volume(0.5)
+            MusicChannel.play(menuMusic)
+            
+        #quitButton = pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                left,middle,right = pg.mouse.get_pressed()
+                mousepos = pg.mouse.get_pos()
+                if left:
+                    if quitBox.collidepoint(mousepos):
+                        sys.exit()
+                    if startBox.collidepoint(mousepos):
+                        loop = False
+                
+
+                
+            if event.type == KEYDOWN:
+                if event.key ==pg.K_ESCAPE:
+                    sys.exit()
+        window.fill((255,255,255))
+
+        centerx,centery = findCenter() #finne senter av skjermen
+
+        quitBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
+        quitBox.center = (centerx+window_width/4,centery) #posisjonere rektangel
+        pg.draw.rect(window,light_grey,quitBox) #tegne rektangel
+        
+        quitText = menyFont.render(str("QUIT"),True,black) #definere tekst
+        quitTextBox = quitText.get_rect() #definere hvor stor teksten er
+        quitTextBox.center = quitBox.center #sentrere teksten i boksen
+        window.blit(quitText,quitTextBox) #render
+
+        startBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
+        startBox.center = (centerx-window_width/4,centery) #posisjonere rektangel
+        pg.draw.rect(window,light_grey,startBox) #tegne rektangel
+
+        startText = font2.render(str("START"),True,black) #definere tekst
+        startTextBox = startText.get_rect() #definere hvor stor teksten er
+        startTextBox.center = startBox.center #sentrere teksten i boksen
+        window.blit(startText,startTextBox) #render
+
+        #tittel
+        title = font2.render(str("GAMING"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/2)-(window_height/4)))
+        window.blit(title,titleBox) #render
+
+
+        #window.blit(quitBox,(centerPosx-90,centerPosy))
+        #window.blit(quitButton, (0,0))
+
+        
+        
+
+
+        pg.display.flip()
+
+
+def findCenter():
+    return window_width/2,window_height/2
+
+def gjettHvor():
     while True:
         pg.display.flip()
-while True: #displayLoop
 
-    # Sjekker om brukeren har lukket vinduet
-    main()
+def introduction():
+    pass
+
+def gd():
+    while True:
+        pg.display.flip()
+
+def gameFail(): 
+    SoundEffectChannel.stop()
+    fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
+    SoundEffectChannel.play(fail)
+    MusicChannel.stop()
+
+while True: #displayLoop
+    menu()
+    introduction()
+    typeGame()
     time.sleep(2)
+
+#lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
