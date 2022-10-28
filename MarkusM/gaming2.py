@@ -1,3 +1,4 @@
+from re import S
 from turtle import circle, width
 import pygame as pg
 import random as r
@@ -352,12 +353,12 @@ class border:
         pg.draw.rect(window,black,self.rect)
 
     def safeCollision(self):
-        x0,y0 = 
-        x1,x0 = 
+        global window_width
+        global window_height
+        safeline = pg.Rect(0,0,self.width,1)
+        safeline.midbottom = (window_width/2,window_height-self.height)
 
-        offset = (x0-x1,y0-y1)
-        safemask = pg.mask.from_surface(self.rect)
-        if player.mask.overla(safemask,offset):
+        if pg.Rect.colliderect(player.rect,safeline):
             return True
 
 
@@ -381,6 +382,7 @@ class player:
         self.length = length
         self.posx = window_width/2
         self.posy = window_height-borderHeight
+        #self.safeRect = pg.Rect(0,0,self.length,self.length)
 
         self.rect = pg.Rect(0,0,self.length,self.length)
 
@@ -390,12 +392,14 @@ class player:
 
     def render(self):
         self.posy = self.posy-self.momentum
+        self.rect.midbottom = (self.posx,self.posy)
+        
+
         if not safeColissionCheck():
             self.momentum -=0.001
         else:
             self.momentum = 0
         
-        self.rect.midbottom = (self.posx,self.posy)
         pg.draw.rect(window,green,self.rect)
 
         
