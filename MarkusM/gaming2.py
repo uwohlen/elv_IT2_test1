@@ -1,4 +1,4 @@
-from turtle import circle
+from turtle import circle, width
 import pygame as pg
 import random as r
 import sys, time
@@ -188,10 +188,10 @@ def typeGame():
         
     
     #timerender
-        if timer < 240 and timerPlayed == False:
+        if timer > 300 and timerPlayed == False:
             SoundEffectChannel.stop()
-            timer = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
-            SoundEffectChannel.play(win)
+            clock_tick = pg.mixer.Sound(f"MarkusM/sounds/clock_tick.wav")
+            SoundEffectChannel2.play(clock_tick)
             timerPlayed = True
 
         if timer <360: #tegne sirkel når man har tid igjen
@@ -320,9 +320,115 @@ def gjettHvor():
 def introduction():
     pass
 
+class block:
+    def __init__(self,length,centerposx,centerposy):
+        self.width = length
+        self.height = length
+        self.centerposx = centerposx
+        self.centerposy = centerposy
+        self.rect = pg.Rect(0,0,self.width,self.height)
+
+        
+    def safeCollision(self):
+        pass
+        safeLine = pg.Rect(0,0,self.width,0)
+
+    def render(self,levelSpeed,counter):
+        self.rect.center = (self.centerposx-(levelSpeed*counter),self.centerposy)
+
+        pg.draw.rect(window,grey,self.rect)
+
+class border:
+    def __init__(self,height,width):
+        self.height = height
+        self.width = width
+        self.rect = pg.Rect(0,0,self.width,self.height)
+
+    def render(self):
+        global window_width
+        global window_width
+
+        self.rect.midbottom = (window_width/2,window_height)
+        pg.draw.rect(window,black,self.rect)
+
+    def safeCollision(self):
+        global window_width
+        global window_width
+
+        safeline = pg.Rect(0,0,self.width,10) #linje med 0 bredde
+        safeline.midbottom = (window_width/2,window_height+self.height) #lagre 
+        return safeline.colliderect(player.rect)
+
+def safeColissionCheck():
+    for i in range(len(blockList)):
+        if blockList[i].safeCollision():
+            return True
+    if lower_border.safeCollision():
+        return True
+    else:
+        return False #ved collision problemer sjekk denne. Kan hende for-løkken ikke stopper etter return
+    
+    
+class player:
+    def __init__(self,length,borderHeight):
+        global window_width
+        global window_height
+
+        self.momentum = 1
+        self.length = length
+        self.posx = window_width/2
+        self.posy = window_height-borderHeight
+
+        self.rect = pg.Rect(0,0,self.length,self.length)
+
+
+    def jump(self):
+        self.momentum = 1
+
+    def render(self):
+        self.posy = self.posy-self.momentum
+        if not safeColissionCheck():
+            self.momentum -=0.001
+        else:
+            self.momentum = 0
+        
+        self.rect.midbottom = (self.posx,self.posy)
+        pg.draw.rect(window,green,self.rect)
+
+        
+borderHeight = 50
+player = player(100,borderHeight) #bredde gd blokk
+lower_border = border(borderHeight,window_width)
+blockList = []
+
+block2 = block(100,window_width,window_height-borderHeight-50)
+block3 = block(100,window_width+100,window_height-borderHeight-50)
+blockList.append(block2)
+blockList.append(block3)
+
 def gd():
+    levelSpeed = 0.2
+    counter = 0
     while True:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                sys.exit()
+            
+            if event.type == MOUSEBUTTONDOWN:
+                left,middle,right = pg.mouse.get_pressed()
+                if left:
+                    player.jump()
+            
+        
+        window.fill((255,255,255))
+
+        for i in range(len(blockList)):
+            blockList[i].render(levelSpeed,counter)
+        lower_border.render()
+        player.render()
         pg.display.flip()
+
+        counter+=1
 
 def gameFail(): 
     SoundEffectChannel.stop()
@@ -331,10 +437,12 @@ def gameFail():
     MusicChannel.stop()
 
 while True: #displayLoop
-    menu()
-    introduction()
-    typeGame()
-    time.sleep(2)
+    gd()
+    #menu()
+    #introduction()
+    #typeGame()
+
+    #time.sleep(2)
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 
