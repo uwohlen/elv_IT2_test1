@@ -461,12 +461,13 @@ for char in lvl:
     x +=1
 
 lvl = """
-           xx
+            xx
 """
+x = 0
 #          xxx
 for char in lvl:
     if char == "x":
-        blockList.append(block(100,x*100+540,window_height-400))
+        blockList.append(block(100,x*100+540,window_height-200))
     x +=1
 
 
@@ -521,10 +522,10 @@ def gameFail():
     MusicChannel.stop()
 
 while True: #displayLoop
-    gd()
-    #menu()
+    #gd()
+    menu()
     #introduction()
-    #typeGame()
+    typeGame()
 
     #time.sleep(2)
 
