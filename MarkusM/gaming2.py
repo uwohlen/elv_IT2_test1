@@ -511,7 +511,7 @@ print(block2.centerposy)
 print(blockList[0].centerposx)
 print(block3.centerposx)
 def gd():
-    gdMusic = pg.mixer.Sound(f"MarkusM/sounds/gd_music.mp3")
+    gdMusic = pg.mixer.Sound(f"MarkusM/sounds/hamood habbibi remix shortened.mp3")
     gdMusic.set_volume(0.5)
     MusicChannel.play(gdMusic)
     levelSpeed = 0.5
