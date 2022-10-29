@@ -722,4 +722,4 @@ if __name__ == "__main__":
 
 #Juksing kan gjøre at greven ikke gir tilbake den summen man skal ha
 #legge til voicelines for Greven basert på randint genererte nummere, disse blir printa etter hvert game
-#legge til et interface med info om grevenog at du interacte med han mer
+#legge til et interface med info om grevenog at du interacte med han merdsd
