@@ -42,6 +42,7 @@ grey = (100,100,100)
 light_grey = (220,220,220)
 gdred = (235, 88, 52)
 gdwhite = (100,100,100)
+triangleBlue = (1,28,116)
 
 #fps
 clock = pg.time.Clock() 
@@ -375,8 +376,13 @@ class triangle:
             self.rightPoint = newCenterPosx+self.size,self.centerposy
             self.topPoint = newCenterPosx,self.centerposy-math.tan(math.radians(30))*(self.size*2*self.heightRatio)
         
-            self.polygon = pg.draw.polygon(window,grey, ((self.topPoint),(self.leftPoint),(self.rightPoint)))
+            self.polygon = pg.draw.polygon(window,triangleBlue, ((self.topPoint),(self.leftPoint),(self.rightPoint)))
             self.storedMid = newCenterPosx
+
+            #pg.draw.line(window,gdwhite,self.leftPoint,self.rightPoint)
+            #pg.draw.line(window,gdwhite,self.leftPoint,self.topPoint)
+            #pg.draw.line(window,gdwhite,self.topPoint,self.rightPoint)
+
         else:
             self.polygon = None
     
