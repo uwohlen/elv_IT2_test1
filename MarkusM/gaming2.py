@@ -487,7 +487,7 @@ for char in lvl:
     x +=1
 
 lvl = """
-            xx
+            x
 """
 x = 0
 #          xxx
@@ -516,7 +516,10 @@ def gd():
     MusicChannel.play(gdMusic)
     levelSpeed = 0.5
     counter = 0
+    background = pg.image.load("MarkusM/images/gdBackground.png")
     while True:
+        
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
@@ -528,7 +531,7 @@ def gd():
                         player.jump()
         
         window.fill((255,255,255))
-
+        window.blit(background,(0,0))
         #render
         for i in range(len(blockList)):
             blockList[i].render(levelSpeed,counter)
@@ -560,6 +563,8 @@ while True: #displayLoop
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 #Lage en bakgrunn som beveger seg
+#Hvis man klikker et par frames før, hopper karakteren alikavel. En countdown.
+#Performance. Lage en løkke som sjekker om elementer er av skjermen, og velger å ikke blitte.
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
