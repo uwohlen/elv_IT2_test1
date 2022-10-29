@@ -545,6 +545,7 @@ lvl="""
            xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x
 
 """
+
 lvl = lvl.split("\n")
 lvl.reverse()
 for line in lvl:
@@ -641,7 +642,6 @@ while True: #displayLoop
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 #Performance. Lage en løkke som sjekker om elementer er av skjermen, og velger å ikke blitte.
-#
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
