@@ -377,6 +377,7 @@ class triangle:
 class border:
     def __init__(self,height,width):
         self.texture = pg.image.load("MarkusM\images\gdBorder2.png")
+        
         self.height = height
         self.width = width
         self.rect = pg.Rect(0,0,self.width,self.height)
