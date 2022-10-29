@@ -334,15 +334,17 @@ class block:
 
         
     def safeCollision(self):
-        safeLine = pg.Rect(0,0,self.width,1)
+        safeLine = pg.Rect(0,0,self.width,4)
         topCoords = self.rect.midtop
         safeLine.midtop = topCoords
 
-        if pg.Rect.colliderect(player.rect,safeLine):
+        if pg.Rect.colliderect(player.rect,self.rect):
+            x,y = self.rect.midtop
+            player.posy = y+1
             return True
     
     def harmCollision(self):
-        harmLine = pg.Rect(0,0,1,self.height/1.2)
+        harmLine = pg.Rect(0,0,1,self.height/1.5)
         topCoords = self.rect.midleft
         harmLine.midleft = topCoords
 
@@ -371,12 +373,16 @@ class triangle:
             self.topPoint = newCenterPosx,self.centerposy-math.tan(math.radians(30))*(self.size*2*self.heightRatio)
         
             self.polygon = pg.draw.polygon(window,grey, ((self.topPoint),(self.leftPoint),(self.rightPoint)))
+            self.storedMid = newCenterPosx
         else:
             self.polygon = None
     
     def harmCollision(self):
         if not self.polygon == None:
-            if pg.Rect.colliderect(self.polygon,player.rect): #dårlig collision
+
+            collideRect = pg.Rect(0,0,self.size/2,1.4*self.size)
+            collideRect.midbottom = (self.storedMid,self.centerposy)
+            if pg.Rect.colliderect(collideRect,player.rect): #bedre collision
                 return True
 
 class border:
@@ -433,8 +439,10 @@ class border:
         #safeline.midbottom = (window_width/2,window_height-self.height)
 
         if pg.Rect.colliderect(player.rect,self.rect1) or pg.Rect.colliderect(player.rect,self.rect2):
+            x,y = self.rect1.midtop
+            player.posy = y+1
             return True
-        
+                
 def harmcolissionCheck():
     for i in range(len(blockList)):
         if blockList[i].harmCollision():
@@ -474,7 +482,7 @@ class player:
 
 
     def jump(self):
-        self.momentum = 2
+        self.momentum = 15
 
     def render(self):
         self.posy = self.posy-self.momentum
@@ -482,7 +490,7 @@ class player:
         
 
         if not safeColissionCheck():
-            self.momentum -=0.008
+            self.momentum -=0.6
         else:
             self.momentum = 0
         
@@ -510,10 +518,10 @@ triangleList = []
 #level layout
 x,y = 0,0
 lvl="""
-            x          x
-                   ^x v           xx   xxx
-                x        ^    xx
-           xxx^^        ^xxx    ^^^^^^^^^^
+            x          x                                                                      ^                     xx^^^^
+                   ^x ^           xx   xxx                                                    x                xx     xxxxxxx    x     x
+                x        ^    xx                                                    ^       xxx           xx               
+           xxx^^        ^xxx    ^^^^^^^^^^            ^     ^^       x^^^         xxx  x             xx     ^^^^^            ^^^^
 
 """
 lvl = lvl.split("\n")
@@ -543,9 +551,14 @@ def gd():
     gdMusic = pg.mixer.Sound(f"MarkusM/sounds/gdMusic.mp3")
     gdMusic.set_volume(0.5)
     MusicChannel.play(gdMusic)
-    levelSpeed = 0.6
+    levelSpeed = 8 #ganges med 0,008/0,6 for å finne jump velocity
     counter = 0
+    renderCounter = 0
+
+    backgroundRect = pg.Rect(0,0,window_width,window_height)
     background = pg.image.load("MarkusM/images/gdBackground.png")
+    backgrundRender = pg.Surface((window_width,window_height)) #performance
+    backgrundRender.blit(background,backgroundRect)
     run = True
     while run:
         
@@ -557,7 +570,7 @@ def gd():
             if event.type == MOUSEBUTTONDOWN:
                 left,middle,right = pg.mouse.get_pressed()
                 if left:
-                    jumpBuffer = 50
+                    jumpBuffer = 15
 
         if safeColissionCheck() and jumpBuffer > 0:
             player.jump()
@@ -566,23 +579,30 @@ def gd():
             jumpBuffer -=1
         
         #window.fill((255,255,255))
-        window.blit(background,(0,0))
 
         #render
-        for i in range(len(blockList)):
-            blockList[i].render(levelSpeed,counter)
-        for i in range(len(triangleList)):
-            triangleList[i].draw(levelSpeed,counter)
-        lower_border.render(levelSpeed)
 
-        player.render()
-        pg.display.flip()
-        clock.tick()
-        if harmcolissionCheck():
-            gdGameOver()
-            run = False
+        if renderCounter == 0:
+            window.blit(backgrundRender,(0,0))
+            for i in range(len(blockList)):
+                blockList[i].render(levelSpeed,counter)
+            for i in range(len(triangleList)):
+                triangleList[i].draw(levelSpeed,counter)
+            lower_border.render(levelSpeed)
+            player.render()
+            pg.display.flip()
+            counter+=1
+            if harmcolissionCheck():
+                gdGameOver()
+                run = False
 
-        counter+=1
+        if renderCounter == 1:
+            renderCounter = -1
+        renderCounter +=1
+
+        clock.tick(windowFPS*4)
+        #clock.tick(60)
+
 
 def gameFail(): 
     SoundEffectChannel.stop()
