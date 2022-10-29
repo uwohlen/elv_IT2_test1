@@ -40,6 +40,7 @@ red = (200,0,0)
 green = (100,200,100)
 grey = (100,100,100)
 light_grey = (220,220,220)
+gdred = (235, 88, 52)
 
 #fps
 clock = pg.time.Clock() 
@@ -351,7 +352,6 @@ class block:
         self.rect.center = (self.centerposx-(levelSpeed*counter),self.centerposy)
 
         pg.draw.rect(window,grey,self.rect)
-print(math.tan(math.radians(30)))
 
 class triangle:
     def __init__(self,size,centerposx,centerposy):
@@ -384,7 +384,7 @@ class border:
         global window_width
 
         self.rect.midbottom = (window_width/2,window_height)
-        pg.draw.rect(window,black,self.rect)
+        pg.draw.rect(window,gdred,self.rect)
 
     def safeCollision(self):
         global window_width
@@ -428,21 +428,31 @@ class player:
 
 
     def jump(self):
-        self.momentum = 1.5
+        self.momentum = 2
 
-    def render(self):
+    def render(self,icon):
         self.posy = self.posy-self.momentum
         self.rect.midbottom = (self.posx,self.posy)
         
 
         if not safeColissionCheck():
-            self.momentum -=0.005
+            self.momentum -=0.008
         else:
             self.momentum = 0
         
-        pg.draw.rect(window,green,self.rect)
+        window.blit(icon,self.rect)
+
+
 def gdGameOver():
-    sys.exit()
+    SoundEffectChannel.stop()
+    fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
+    SoundEffectChannel.play(fail)
+    MusicChannel.stop()
+def gdWin():
+    pass
+    #play gd win sound
+    #proceed
+
 
 borderHeight = 50
 player = player(100,borderHeight) #bredde gd blokk
@@ -506,18 +516,18 @@ block3 = block(100,window_width+100+1080,window_height-borderHeight-50)
 blockList.append(block2)
 blockList.append(block3)
 triangleList.append(triangle2)
-print(blockList[0].centerposy)
-print(block2.centerposy)
-print(blockList[0].centerposx)
-print(block3.centerposx)
+
 def gd():
     gdMusic = pg.mixer.Sound(f"MarkusM/sounds/gdMusic.mp3")
     gdMusic.set_volume(0.5)
     MusicChannel.play(gdMusic)
-    levelSpeed = 0.5
+    levelSpeed = 0.6
     counter = 0
+    playerIconRaw = pg.image.load("MarkusM/images/gdPlayer.png")
+    playerIcon = pg.transform.scale(playerIconRaw,(100,100))
     background = pg.image.load("MarkusM/images/gdBackground.png")
-    while True:
+    run = True
+    while run:
         
 
         for event in pg.event.get():
@@ -539,14 +549,14 @@ def gd():
             triangleList[i].draw(levelSpeed,counter)
         lower_border.render()
 
-        player.render()
+        player.render(playerIcon)
         pg.display.flip()
 
         if harmcolissionCheck():
             gdGameOver()
+            run = False
 
         counter+=1
-
 def gameFail(): 
     SoundEffectChannel.stop()
     fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
@@ -554,8 +564,8 @@ def gameFail():
     MusicChannel.stop()
 
 while True: #displayLoop
+    menu()
     gd()
-    #menu()
     #introduction()
     #typeGame()
 
