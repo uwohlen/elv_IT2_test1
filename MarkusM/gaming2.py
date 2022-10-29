@@ -332,6 +332,12 @@ class block:
         self.centerposx = centerposx
         self.centerposy = centerposy
         self.rect = pg.Rect(0,0,self.width,self.height)
+        texture = pg.image.load("MarkusM\images\gdBlock.png")
+
+        self.preTexture = pg.Surface((self.width,self.height)) #performance
+        self.preTexture.blit(texture,self.rect)
+
+
 
         
     def safeCollision(self):
@@ -357,8 +363,10 @@ class block:
 
     def render(self,levelSpeed,counter):
         self.rect.center = (self.centerposx-(levelSpeed*counter),self.centerposy)
+        x,y = self.rect.center
 
-        pg.draw.rect(window,grey,self.rect)
+        if x > -self.width and x < window_width+self.width: #ikke rendere utenfor skjermen
+            window.blit(self.preTexture,self.rect)
 
 class triangle:
     def __init__(self,size,centerposx,centerposy):
@@ -369,7 +377,7 @@ class triangle:
 
     def draw(self,speed,counter):
         newCenterPosx = self.centerposx -(speed*counter)
-        if newCenterPosx > 0 and newCenterPosx < window_width+self.size: #ikke rendere utenfor skjemen
+        if newCenterPosx > -self.size and newCenterPosx < window_width+self.size: #ikke rendere utenfor skjermen
 
 
             self.leftPoint = newCenterPosx-self.size,self.centerposy
@@ -532,8 +540,8 @@ triangleList = []
 x,y = 0,0
 lvl="""
             x          x                                                                      ^                     xx^^^^
-                   ^x^^           xx   x                                                      x                xx     xxxxxxx    x         ^x
-                x  xxxx  ^    xx                                                    ^       xxx           xx                             xxx
+                   ^x^^           xx   x                                                      x                xx     xxxxxxx    x          ^x^
+                x  xxxx  ^    xx                                                    ^       xxx           xx                              xxx
            xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x
 
 """
