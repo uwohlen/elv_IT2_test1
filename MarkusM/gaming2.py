@@ -376,20 +376,34 @@ class triangle:
 
 class border:
     def __init__(self,height,width):
+        self.texture = pg.image.load("MarkusM\images\gdBorder2.png")
         self.height = height
         self.width = width
         self.rect = pg.Rect(0,0,self.width,self.height)
 
-    def render(self):
+        self.rect1 = self.rect
+        self.rect2 = self.rect
+
+        self.rendercounter = 0
+
+    def render(self,speed):
         global window_width
         global window_width
+        #pg.draw.rect(window,gdred,self.rect)
 
-        self.rect.midbottom = (window_width/2,window_height)
-        pg.draw.rect(window,gdred,self.rect)
+        #må bevege seg, og rendre ny texture etter. Import counter og levelspeed
+        #lage metode for å bare rendre texures som er i frame. 
+        
+        bottompos = (window_width-(speed*self.rendercounter),window_height)
 
-        jumLine = pg.Rect(0,0,self.width,2)
-        jumLine.midtop = (window_width/2,window_height-self.height)
-        pg.draw.rect(window,gdwhite,jumLine)
+        self.rect1.bottomright = bottompos
+        #self.rect2.bottomright = (window_width,windiow_height)
+
+        window.blit(self.texture,self.rect1)
+
+        self.rendercounter += 1
+        if self.rendercounter == 200:
+            self.rendercouner = 0
 
     def safeCollision(self):
         global window_width
@@ -559,7 +573,7 @@ def gd():
             blockList[i].render(levelSpeed,counter)
         for i in range(len(triangleList)):
             triangleList[i].draw(levelSpeed,counter)
-        lower_border.render()
+        lower_border.render(levelSpeed,counter)
 
         player.render(playerIcon)
         pg.display.flip()
