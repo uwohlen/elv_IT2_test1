@@ -457,9 +457,9 @@ lvl = """
 x = 0
 for char in lvl:
     if char == "x":
-        blockList.append(block(100,x*100+540,window_height-100))
+        blockList.append(block(100,x*100+1600,window_height-100))
     elif char == "^":
-        triangleList.append(triangle(50,x*100+540,window_height-50))
+        triangleList.append(triangle(50,x*100+1600,window_height-50))
     x +=1
 
 lvl = """
@@ -469,9 +469,9 @@ x = 0
 #          xxx^^
 for char in lvl:
     if char == "x":
-        blockList.append(block(100,x*100+540,window_height-200))
+        blockList.append(block(100,x*100+1600,window_height-200))
     elif char == "^":
-        triangleList.append(triangle(50,x*100+540,window_height-150))
+        triangleList.append(triangle(50,x*100+1600,window_height-150))
     x +=1
 
 lvl = """
@@ -481,9 +481,9 @@ lvl = """
 x = 0
 for char in lvl:
     if char == "x":
-        blockList.append(block(100,x*100+540,window_height-300))
+        blockList.append(block(100,x*100+1600,window_height-300))
     elif char == "^":
-        triangleList.append(triangle(50,x*100+540,window_height-250))
+        triangleList.append(triangle(50,x*100+1600,window_height-250))
     x +=1
 
 lvl = """
@@ -493,16 +493,16 @@ x = 0
 #          xxx
 for char in lvl:
     if char == "x":
-        blockList.append(block(100,x*100+540,window_height-400))
+        blockList.append(block(100,x*100+1600,window_height-400))
     elif char == "^":
-        triangleList.append(triangle(50,x*100+540,window_height-350))
+        triangleList.append(triangle(50,x*100+1600,window_height-350))
     x +=1
 
 
 
-triangle2 = triangle(50,window_width+200,window_height-borderHeight)
-block2 = block(100,window_width,window_height-borderHeight-50)
-block3 = block(100,window_width+100,window_height-borderHeight-50)
+triangle2 = triangle(50,window_width+200+1080,window_height-borderHeight)
+block2 = block(100,window_width+1080,window_height-borderHeight-50)
+block3 = block(100,window_width+100+1080,window_height-borderHeight-50)
 blockList.append(block2)
 blockList.append(block3)
 triangleList.append(triangle2)
@@ -511,7 +511,7 @@ print(block2.centerposy)
 print(blockList[0].centerposx)
 print(block3.centerposx)
 def gd():
-    gdMusic = pg.mixer.Sound(f"MarkusM/sounds/hamood habbibi remix shortened.mp3")
+    gdMusic = pg.mixer.Sound(f"MarkusM/sounds/gdMusic.mp3")
     gdMusic.set_volume(0.5)
     MusicChannel.play(gdMusic)
     levelSpeed = 0.5
