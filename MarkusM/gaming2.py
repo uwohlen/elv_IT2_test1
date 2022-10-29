@@ -41,6 +41,7 @@ green = (100,200,100)
 grey = (100,100,100)
 light_grey = (220,220,220)
 gdred = (235, 88, 52)
+gdwhite = (100,100,100)
 
 #fps
 clock = pg.time.Clock() 
@@ -386,6 +387,10 @@ class border:
         self.rect.midbottom = (window_width/2,window_height)
         pg.draw.rect(window,gdred,self.rect)
 
+        jumLine = pg.Rect(0,0,self.width,2)
+        jumLine.midtop = (window_width/2,window_height-self.height)
+        pg.draw.rect(window,gdwhite,jumLine)
+
     def safeCollision(self):
         global window_width
         global window_height
@@ -518,6 +523,7 @@ blockList.append(block3)
 triangleList.append(triangle2)
 
 def gd():
+    jumpBuffer = 0
     gdMusic = pg.mixer.Sound(f"MarkusM/sounds/gdMusic.mp3")
     gdMusic.set_volume(0.5)
     MusicChannel.play(gdMusic)
@@ -537,11 +543,17 @@ def gd():
             if event.type == MOUSEBUTTONDOWN:
                 left,middle,right = pg.mouse.get_pressed()
                 if left:
-                    if safeColissionCheck():
-                        player.jump()
+                    jumpBuffer = 50
+
+        if safeColissionCheck() and jumpBuffer > 0:
+            player.jump()
+        
+        if jumpBuffer > 0:
+            jumpBuffer -=1
         
         window.fill((255,255,255))
         window.blit(background,(0,0))
+
         #render
         for i in range(len(blockList)):
             blockList[i].render(levelSpeed,counter)
@@ -557,6 +569,7 @@ def gd():
             run = False
 
         counter+=1
+
 def gameFail(): 
     SoundEffectChannel.stop()
     fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
