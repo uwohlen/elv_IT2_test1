@@ -559,6 +559,7 @@ while True: #displayLoop
     #time.sleep(2)
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
+#Lage en bakgrunn som beveger seg
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
