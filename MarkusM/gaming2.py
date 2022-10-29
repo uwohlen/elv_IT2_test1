@@ -342,13 +342,16 @@ class block:
             x,y = self.rect.midtop
             player.posy = y+1
             return True
-    
-    def harmCollision(self):
-        harmLine = pg.Rect(0,0,1,self.height/1.5)
-        topCoords = self.rect.midleft
-        harmLine.midleft = topCoords
 
-        if pg.Rect.colliderect(harmLine,player.rect):
+    def harmCollision(self):
+        harmLine = pg.Rect(0,0,1,self.height/1.5)   
+        lower_harmLime = pg.Rect(0,0,self.width,1)
+        topCoords = self.rect.midleft
+        lowCoords = self.rect.midbottom
+        harmLine.midleft = topCoords
+        lower_harmLime.midbottom = lowCoords
+
+        if pg.Rect.colliderect(harmLine,player.rect) or pg.Rect.colliderect(lower_harmLime,player.rect):
             return True
 
     def render(self,levelSpeed,counter):
@@ -460,7 +463,6 @@ def safeColissionCheck():
     else:
         return False #ved collision problemer sjekk denne. Kan hende for-løkken ikke stopper etter return
     
-    
 class player:
     def __init__(self,length,borderHeight):
         global window_width
@@ -493,15 +495,20 @@ class player:
             self.momentum -=0.6
         else:
             self.momentum = 0
-        
-        window.blit(self.preTexture,self.rect)
+            self.posy = self.posy-self.momentum
+            if harmcolissionCheck():
+                pass
+            else:
+                self.rect.midbottom = (self.posx,self.posy)
 
+        window.blit(self.preTexture,self.rect)
 
 def gdGameOver():
     SoundEffectChannel.stop()
     fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
     SoundEffectChannel.play(fail)
     MusicChannel.stop()
+
 def gdWin():
     pass
     #play gd win sound
@@ -519,9 +526,9 @@ triangleList = []
 x,y = 0,0
 lvl="""
             x          x                                                                      ^                     xx^^^^
-                   ^x ^           xx   xxx                                                    x                xx     xxxxxxx    x     x
-                x        ^    xx                                                    ^       xxx           xx               
-           xxx^^        ^xxx    ^^^^^^^^^^            ^     ^^       x^^^         xxx  x             xx     ^^^^^            ^^^^
+                   ^x^^           xx   x                                                      x                xx     xxxxxxx    x         ^x
+                x  xxxx  ^    xx                                                    ^       xxx           xx                             xxx
+           xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x
 
 """
 lvl = lvl.split("\n")
