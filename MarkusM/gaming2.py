@@ -1,5 +1,4 @@
 from re import S
-from turtle import circle, width
 import pygame as pg
 import random as r
 import sys, time
@@ -16,8 +15,9 @@ pg.init() #starter pygame
 
 window_width = 1080
 window_height = 720
-window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE)
+window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE,DOUBLEBUF)
 #window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
+window.set_alpha(None)
 pg.display.set_caption('gaming')
 font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
 font2 = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 80)
@@ -363,16 +363,21 @@ class triangle:
 
     def draw(self,speed,counter):
         newCenterPosx = self.centerposx -(speed*counter)
+        if newCenterPosx > 0 and newCenterPosx < window_width+self.size: #ikke rendere utenfor skjemen
 
-        self.leftPoint = newCenterPosx-self.size,self.centerposy
-        self.rightPoint = newCenterPosx+self.size,self.centerposy
-        self.topPoint = newCenterPosx,self.centerposy-math.tan(math.radians(30))*(self.size*2*self.heightRatio)
+
+            self.leftPoint = newCenterPosx-self.size,self.centerposy
+            self.rightPoint = newCenterPosx+self.size,self.centerposy
+            self.topPoint = newCenterPosx,self.centerposy-math.tan(math.radians(30))*(self.size*2*self.heightRatio)
         
-        self.polygon = pg.draw.polygon(window,grey, ((self.topPoint),(self.leftPoint),(self.rightPoint)))
+            self.polygon = pg.draw.polygon(window,grey, ((self.topPoint),(self.leftPoint),(self.rightPoint)))
+        else:
+            self.polygon = None
     
     def harmCollision(self):
-        if pg.Rect.colliderect(self.polygon,player.rect): #dårlig collision
-            return True
+        if not self.polygon == None:
+            if pg.Rect.colliderect(self.polygon,player.rect): #dårlig collision
+                return True
 
 class border:
     def __init__(self,height,width):
@@ -384,8 +389,17 @@ class border:
 
         self.rect1 = pg.Rect(0,0,self.width,self.height) #kan ikke skrive self.rect = self.rect2 fordi python
         self.rect2 = pg.Rect(0,0,self.width,self.height)
-        self.rect1counter = 0
-        self.rect2counter = 0
+
+        self.preTexture = pg.Surface((self.width,self.height)) #BIG FPS. gikk fra 25 til 60 😃
+        self.preTexture.blit(self.texture,self.rect)
+        print(self.preTexture.get_size())
+        print(self.rect1.size)
+        self.rect1.bottomright = (window_width, window_height)
+        self.rect2.bottomright = (window_width*2, window_height)
+
+        self.rect1coords = self.rect1.bottomright
+        self.rect2coords = self.rect2.bottomright
+
 
     def render(self,speed):
         global window_width
@@ -394,28 +408,31 @@ class border:
 
         #må bevege seg, og rendre ny texture etter. Import counter og levelspeed
         #lage metode for å bare rendre texures som er i frame. 
-        
-        self.rect1.bottomright = (window_width-(speed*self.rect1counter),window_height)
-        self.rect2.bottomright = (window_width-(speed*self.rect2counter)+self.width,window_height)
 
-        window.blit(self.texture,self.rect1)
-        window.blit(self.texture,self.rect2)
+        x1,y1 = self.rect1coords
+        x1 = x1-speed
+        if x1 <=0:
+            x1 = window_width*2
+        self.rect1coords = (x1,y1)
+        self.rect1.bottomright = (self.rect1coords)
 
-        self.rect1counter +=1
-        self.rect2counter +=1
+        x2,y2 = self.rect2coords
+        x2 = x2-speed
+        if x2 <=0:
+            x2 = window_width*2
+        self.rect2coords = (x2,y2)
+        self.rect2.bottomright = (self.rect2coords)
 
-        print(self.rect.size)
-
-        if x == 0:
-            self.rect1counter = 0       
+        window.blit(self.preTexture,self.rect1)
+        window.blit(self.preTexture,self.rect2)
 
     def safeCollision(self):
-        global window_width
-        global window_height
-        safeline = pg.Rect(0,0,self.width,1)
-        safeline.midbottom = (window_width/2,window_height-self.height)
+        #global window_width
+        #global window_height
+        #safeline = pg.Rect(0,0,self.width,1)
+        #safeline.midbottom = (window_width/2,window_height-self.height)
 
-        if pg.Rect.colliderect(player.rect,safeline):
+        if pg.Rect.colliderect(player.rect,self.rect1) or pg.Rect.colliderect(player.rect,self.rect2):
             return True
         
 def harmcolissionCheck():
@@ -449,11 +466,17 @@ class player:
 
         self.rect = pg.Rect(0,0,self.length,self.length)
 
+        playerIconRaw = pg.image.load("MarkusM/images/gdPlayer.png")
+        playerIcon = pg.transform.scale(playerIconRaw,(100,100))
+
+        self.preTexture = pg.Surface((self.length,self.length)) #performance
+        self.preTexture.blit(playerIcon,self.rect)
+
 
     def jump(self):
         self.momentum = 2
 
-    def render(self,icon):
+    def render(self):
         self.posy = self.posy-self.momentum
         self.rect.midbottom = (self.posx,self.posy)
         
@@ -463,7 +486,7 @@ class player:
         else:
             self.momentum = 0
         
-        window.blit(icon,self.rect)
+        window.blit(self.preTexture,self.rect)
 
 
 def gdGameOver():
@@ -483,53 +506,26 @@ lower_border = border(borderHeight,window_width)
 blockList = []
 triangleList = []
 
-lvl = """
-           xxx^^
+
+#level layout
+x,y = 0,0
+lvl="""
+            x          x
+                   ^x v           xx   xxx
+                x        ^    xx
+           xxx^^        ^xxx    ^^^^^^^^^^
+
 """
-
-x = 0
-for char in lvl:
-    if char == "x":
-        blockList.append(block(100,x*100+1600,window_height-100))
-    elif char == "^":
-        triangleList.append(triangle(50,x*100+1600,window_height-50))
-    x +=1
-
-lvl = """
-                x   
-"""
-x = 0
-#          xxx^^
-for char in lvl:
-    if char == "x":
-        blockList.append(block(100,x*100+1600,window_height-200))
-    elif char == "^":
-        triangleList.append(triangle(50,x*100+1600,window_height-150))
-    x +=1
-
-lvl = """
-                   ^x
-"""
-
-x = 0
-for char in lvl:
-    if char == "x":
-        blockList.append(block(100,x*100+1600,window_height-300))
-    elif char == "^":
-        triangleList.append(triangle(50,x*100+1600,window_height-250))
-    x +=1
-
-lvl = """
-            x
-"""
-x = 0
-#          xxx
-for char in lvl:
-    if char == "x":
-        blockList.append(block(100,x*100+1600,window_height-400))
-    elif char == "^":
-        triangleList.append(triangle(50,x*100+1600,window_height-350))
-    x +=1
+lvl = lvl.split("\n")
+lvl.reverse()
+for line in lvl:
+    for char in line:
+        if char == "x":
+            blockList.append(block(100,x*100+2000,window_height-100*y+100))
+        elif char == "^":
+            triangleList.append(triangle(50,x*100+2000,window_height-100*y+150))
+        x +=1
+    x,y = 0,y+1
 
 
 
@@ -549,8 +545,6 @@ def gd():
     MusicChannel.play(gdMusic)
     levelSpeed = 0.6
     counter = 0
-    playerIconRaw = pg.image.load("MarkusM/images/gdPlayer.png")
-    playerIcon = pg.transform.scale(playerIconRaw,(100,100))
     background = pg.image.load("MarkusM/images/gdBackground.png")
     run = True
     while run:
@@ -571,7 +565,7 @@ def gd():
         if jumpBuffer > 0:
             jumpBuffer -=1
         
-        window.fill((255,255,255))
+        #window.fill((255,255,255))
         window.blit(background,(0,0))
 
         #render
@@ -581,9 +575,9 @@ def gd():
             triangleList[i].draw(levelSpeed,counter)
         lower_border.render(levelSpeed)
 
-        player.render(playerIcon)
+        player.render()
         pg.display.flip()
-
+        clock.tick()
         if harmcolissionCheck():
             gdGameOver()
             run = False
@@ -605,9 +599,8 @@ while True: #displayLoop
     #time.sleep(2)
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
-#Lage en bakgrunn som beveger seg
-#Hvis man klikker et par frames før, hopper karakteren alikavel. En countdown.
 #Performance. Lage en løkke som sjekker om elementer er av skjermen, og velger å ikke blitte.
+#
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
