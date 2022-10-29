@@ -376,16 +376,16 @@ class triangle:
 
 class border:
     def __init__(self,height,width):
-        self.texture = pg.image.load("MarkusM\images\gdBorder2.png")
-        
+        self.texture = pg.image.load("MarkusM\images\gdBorder3.png")
+
         self.height = height
         self.width = width
         self.rect = pg.Rect(0,0,self.width,self.height)
 
-        self.rect1 = self.rect
-        self.rect2 = self.rect
-
-        self.rendercounter = 0
+        self.rect1 = pg.Rect(0,0,self.width,self.height) #kan ikke skrive self.rect = self.rect2 fordi python
+        self.rect2 = pg.Rect(0,0,self.width,self.height)
+        self.rect1counter = 0
+        self.rect2counter = 0
 
     def render(self,speed):
         global window_width
@@ -395,16 +395,19 @@ class border:
         #må bevege seg, og rendre ny texture etter. Import counter og levelspeed
         #lage metode for å bare rendre texures som er i frame. 
         
-        bottompos = (window_width-(speed*self.rendercounter),window_height)
-
-        self.rect1.bottomright = bottompos
-        #self.rect2.bottomright = (window_width,windiow_height)
+        self.rect1.bottomright = (window_width-(speed*self.rect1counter),window_height)
+        self.rect2.bottomright = (window_width-(speed*self.rect2counter)+self.width,window_height)
 
         window.blit(self.texture,self.rect1)
+        window.blit(self.texture,self.rect2)
 
-        self.rendercounter += 1
-        if self.rendercounter == 200:
-            self.rendercouner = 0
+        self.rect1counter +=1
+        self.rect2counter +=1
+
+        print(self.rect.size)
+
+        if x == 0:
+            self.rect1counter = 0       
 
     def safeCollision(self):
         global window_width
@@ -538,6 +541,8 @@ blockList.append(block3)
 triangleList.append(triangle2)
 
 def gd():
+    lower_border.rect1counter = 0
+    lower_border.rect2counter = 0
     jumpBuffer = 0
     gdMusic = pg.mixer.Sound(f"MarkusM/sounds/gdMusic.mp3")
     gdMusic.set_volume(0.5)
@@ -574,7 +579,7 @@ def gd():
             blockList[i].render(levelSpeed,counter)
         for i in range(len(triangleList)):
             triangleList[i].draw(levelSpeed,counter)
-        lower_border.render(levelSpeed,counter)
+        lower_border.render(levelSpeed)
 
         player.render(playerIcon)
         pg.display.flip()
