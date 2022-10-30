@@ -516,7 +516,6 @@ class player:
                 self.rect.midbottom = (self.posx,self.posy)
 
         window.blit(self.preTexture,self.rect)
-
 def gdGameOver():
     SoundEffectChannel.stop()
     fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
@@ -539,13 +538,13 @@ triangleList = []
 #level layout
 x,y = 0,0
 lvl="""
-            x          x                                                                      ^                     xx^^^^
-                   ^x^^           xx   x                                                      x                xx     xxxxxxx    x          ^x^
-                x  xxxx  ^    xx                                                    ^       xxx           xx                              xxx
-           xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x
+            x          x                                                                      ^                     xx^^^^                       ^                                    x
+                   ^x^^           xx   x                                                      x                xx     xxxxxxx    x          ^x^                               x^^^x^^^x
+                x  xxxx  ^    xx                                                    ^       xxx           xx                              xxx                ^^           x
+           xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x         xx^^^^xx^^xx  xx^^^xxx^^^^^^^^    ^^^^^^^^^ w 
 
 """
-
+win = 0
 lvl = lvl.split("\n")
 lvl.reverse()
 for line in lvl:
@@ -554,10 +553,12 @@ for line in lvl:
             blockList.append(block(100,x*100+2000,window_height-100*y+100))
         elif char == "^":
             triangleList.append(triangle(50,x*100+2000,window_height-100*y+150))
+        elif char == "w":
+            win = x*100+2000
         x +=1
     x,y = 0,y+1
 
-
+print(win)
 
 triangle2 = triangle(50,window_width+200+1080,window_height-borderHeight)
 block2 = block(100,window_width+1080,window_height-borderHeight-50)
@@ -565,6 +566,11 @@ block3 = block(100,window_width+100+1080,window_height-borderHeight-50)
 blockList.append(block2)
 blockList.append(block3)
 triangleList.append(triangle2)
+
+def gdWin():
+    #geometry dash win sound effect
+    #animasjon?
+    MusicChannel.stop()
 
 def gd():
     lower_border.rect1counter = 0
@@ -617,7 +623,9 @@ def gd():
             if harmcolissionCheck():
                 gdGameOver()
                 run = False
-
+        if win <= levelSpeed*counter:
+            gdWin()
+            run = False
         if renderCounter == 1:
             renderCounter = -1
         renderCounter +=1
