@@ -538,10 +538,10 @@ triangleList = []
 #level layout
 x,y = 0,0
 lvl="""
-            x          x                                                                      ^                     xx^^^^                       ^                                    x
-                   ^x^^           xx   x                                                      x                xx     xxxxxxx    x          ^x^                               x^^^x^^^x
-                x  xxxx  ^    xx                                                    ^       xxx           xx                              xxx                ^^           x
-           xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x         xx^^^^xx^^xx  xx^^^xxx^^^^^^^^    ^^^^^^^^^ w 
+            x          x                                                                      ^                     xx^^^^                       ^                          xxxx^^^^
+                   ^x^^           xx   x                                                      x                xx     xxxxxxx    x          ^x^                  x^^^^^x^^^^x
+                x  xxxx  ^    xx                                                    ^       xxx           xx                              x^xxx              x
+           xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x  xxxxx^^xx^^^^xxx^^^^^^^^    ^^^^^^^^^          w 
 
 """
 win = 0
@@ -650,6 +650,7 @@ while True: #displayLoop
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 #Performance. Lage en løkke som sjekker om elementer er av skjermen, og velger å ikke blitte.
+#endre resolution til 1280x720 eller 1920x1080
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
