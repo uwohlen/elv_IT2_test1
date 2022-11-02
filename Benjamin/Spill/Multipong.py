@@ -93,5 +93,5 @@ while fortsett:
     # Oppdaterer alt innholdet i vinduet
     pg.display.flip()
 
-# Avslutter pygame
+# Avslutter pygameas
 pg.quit()
