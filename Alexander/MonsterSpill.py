@@ -18,7 +18,7 @@ class Game():
         self.x += 1
         self.board = np.empty((self.x, self.y), dtype='str')
         
-    def init(self, monsters, player): # initialise the game board by setting up pieces
+    def init(self, monsters, player): # initialise the monster_game board by setting up pieces
         self.board.fill(' ')
         for x in range(0, len(monsters)):
             self.board[monsters[x].pos[0]][monsters[x].pos[1]] = 'M'
@@ -141,7 +141,7 @@ class Monster():
                 distance.remove(distance[x])
                 self.pos[1 - x] += int(distance[0] / abs(distance[0]))
                 game.board[self.pos[0]][self.pos[1]] = 'M'
-                #game.printBoard()
+                #monster_game.printBoard()
                 return
 
         # make a unit vector with direction towards the player and magnitude of 1           
@@ -154,7 +154,7 @@ class Monster():
         else:
             self.pos[1] += int(distance[1])
         game.board[self.pos[0]][self.pos[1]] = 'M'
-        #game.printBoard()
+        #monster_game.printBoard()
         
     def playRound(self, player, game):
         prange = round(np.sqrt((player.pos[0] - self.pos[0]) ** 2 + (player.pos[1] - self.pos[1]) ** 2), 0)
@@ -207,7 +207,7 @@ class Player():
         self.pos[0] += x
         self.pos[1] -= y
         game.board[self.pos[0]][self.pos[1]] = 'P'
-        #game.printBoard()
+        #monster_game.printBoard()
         
     def alive(self, game, player, monsters):
         if self.health > 0:
