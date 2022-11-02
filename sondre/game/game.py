@@ -138,6 +138,7 @@ def add_to_slot(item, slot, price):
             player.inventory.append(player.weapon_slot)
             payment('weapon')
             print(f'{player.inventory[-1]} has been added to your inventory.')
+        return
     # check if item is a hat
     if slot == 'head':
         # if a hat is not equipped, buy and equip hat
