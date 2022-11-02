@@ -1,4 +1,4 @@
-import ioutil, player
+import ioutil, player, weapon
 
 def main():
     name = ioutil.slow_input("Navn: ")
