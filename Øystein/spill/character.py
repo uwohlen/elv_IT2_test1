@@ -64,6 +64,7 @@ class Character:
     def remove_single_item(self, item, backpack=False):
         if backpack:
             for i in range(len(self.backpack_items)-1, -1, -1):
+                print(self.backpack_items[i], item)
                 if self.backpack_items[i] == item:
                     self.backpack_stacks[i] -= 1
                     if self.backpack_stacks[i] == 0:
