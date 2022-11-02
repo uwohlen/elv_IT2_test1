@@ -140,7 +140,7 @@ def battle():
         # that the monster has been defeated. It then adds the monsters reward to the players cash. It
         # then prints out a message saying that the monster dropped the reward and how much cash the
         # player now has. It then checks if the player has more than 1000 cash, and if they do, it
-        # calls the winner function and exits the game. It then deletes the monster object.
+        # calls the winner function and exits the monster_game. It then deletes the monster object.
         if monster.hp <= 0:
             print('The monster has been defeated!')
             player.cash += monster.reward
@@ -171,7 +171,7 @@ def battle():
         # It then subtracts the monsters attack from the players health. It then checks if the monster
         # has been defeated, and if it has, it does nothing. It then checks if the player has been
         # defeated, and if they have, it prints out a message saying that the player has died. It then
-        # prints out a message saying that the game is over. It then exits the game. It then prints
+        # prints out a message saying that the monster_game is over. It then exits the monster_game. It then prints
         # out a message saying how much health the monster has left. It then prints out a message
         # saying how much health the player has left.
         elif user_input == 'attack':
@@ -263,7 +263,7 @@ def new_day():
             print('Options: inv, explore, shop')
 
 
-#This function prints out a message and plays a sound when the player wins the game
+#This function prints out a message and plays a sound when the player wins the monster_game
 def winner():
         print('GG')
         print('You have successfully fought your way through the forrest')
