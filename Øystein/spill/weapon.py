@@ -14,7 +14,7 @@ class Weapon(item.Item):
     def attack(self, attacker, defender, distance):
         ioutil.slow(f"{attacker.name} bruker {self.name} på {defender.name}")
         if self.projectile != None:
-            if not attacker.remove_single_item(self.projectile):
+            if not attacker.remove_single_item(self.projectile, True):
                 ioutil.slow(f"{attacker.name} mangler {self.projectile.name}")
                 return
         if distance > self.range:
@@ -36,15 +36,16 @@ class Weapon(item.Item):
             ioutil.slow(f"Du trenger {self.projectile.name} for å kunne bruke {self.name}")
 
 class Projectile(item.Item):
-    def __init__(self, name, max_stack, weapon):
+    def __init__(self, name, max_stack, weapon_name):
         super().__init__(name)
+        self.stackable = True
         self.max_stack = max_stack
-        self.weapon = weapon
+        self.weapon_name = weapon_name
 
     def print_info(self):
-        ioutil.slow(f"Du trenger {self.name} for å kunne bruke {self.weapon}")
+        ioutil.slow(f"Du trenger {self.name} for å kunne bruke {self.weapon_name}")
 
-ARROW = Projectile("Pil", 10, "Bue")
+ARROW = Projectile("Pil", 8, "Bue")
 
 FIST = Weapon("Knyttneve", 1, 1, 0.9, 0.7)
 BROKEN_SWORD = Weapon("Ødelagt sverd", 3, 1, 0.75, 1)
