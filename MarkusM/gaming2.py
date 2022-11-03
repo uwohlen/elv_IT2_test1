@@ -14,8 +14,8 @@ pg.init() #starter pygame
 
 window_width = 1280
 window_height = 720
-window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE,DOUBLEBUF)
-#window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
+#window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE,DOUBLEBUF)
+window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
 window.set_alpha(None)
 pg.display.set_caption('gaming')
 font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
@@ -75,7 +75,7 @@ def typeGame():
 
     counter = 0
     typetest = str()
-    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
+    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Superoptikjempefantafenomenalistisk","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
     tasknr = 0
     timerPlayed = False
     sec = 0
@@ -663,13 +663,13 @@ class card():
         self.posy = y+oy
         delta = 1.2
 
-        if ox>delta+1:
+        if ox>delta/2+1:
             ox = ox/delta
         elif ox<-(delta+1):
             ox = ox/delta
         else:
             ox = 0
-        if oy>delta+1:
+        if oy>delta/2+1:
             oy = oy/delta
         elif oy<-(delta+1):
             oy = oy/delta
@@ -712,10 +712,35 @@ def cardMove():
     if cardSelected == 1:
         card1.move()
 
-def mouseHoveer():
+def mouseHover():
     #hvis mus ligger over kort, forstørre kortet. Både for hånd og for kort på bordet
     #Hvis ett kort er higligha allerede, ikke higlight flere kort
     pass
+
+class cardSlot:
+    def __init__(self,centerposx,centerposy):
+        self.centerposx = centerposx
+        self.centerposy = centerposy
+        self.vacant = None
+
+        self.rect = pg.Rect(0,0,card1.width,card1.height)
+        self.rect.center = (centerposx,centerposy)
+
+
+    def render(self):
+        #kun for testing. I spillet burde slottet være usynlig
+        pg.draw.rect(window,red,self.rect)
+
+    def dropCheck(self):
+        if self.vacant == None:
+            x,y = pg.mouse.get_pos()
+            if self.rect.collidepoint((x,y)):
+                card1.posx = self.centerposx
+                card1.posy = self.centerposy
+                #self.vacant = True
+
+cardslot1 = cardSlot(200,200)
+cardslot2 = cardSlot(800,200)
 
 def cardGame():
     run = True
@@ -732,25 +757,28 @@ def cardGame():
                 if left:
                     cardInterract()
 
-            if event.type ==MOUSEBUTTONUP:
+            if event.type == MOUSEBUTTONUP:
                 #Regne ut nærmeste sted kortet kan gå
+                cardslot1.dropCheck()
+                cardslot2.dropCheck()
                 pass
 
         left,middle,right = pg.mouse.get_pressed()
         if left:
             cardMove()
         
-            
 
+        cardslot1.render()
+        cardslot2.render()
         card1.render()
         pg.display.flip()
         clock.tick(windowFPS)
 while True: #
-    #menu()
+    menu()
     #gd()
     #introduction()
-    #typeGame()
-    cardGame()
+    typeGame()
+    #cardGame()
 
     #time.sleep(2)
 

@@ -1,4 +1,3 @@
-from turtle import window_height, window_width
 import pygame as pg
 import math
 import random as r
@@ -20,7 +19,6 @@ while run:
     for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
-
 
 
 
