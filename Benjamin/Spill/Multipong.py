@@ -46,12 +46,15 @@ class Pong:
 
 
   def flytt(self):
+    global fortsett
     """Metode for å flytte kvadratene"""
     # Sjekker om ballen er utenfor høyre/venstre kant
     if ((pong1.x) <= arena.x) or ((pong1.x + pong1.bredde) >= arena.x + arena.bredde):
       pong1.fartx = -pong1.fartx
-    elif ((pong1.y) <= arena.y) or ((pong1.y + pong1.bredde) >= arena.høyde):
+    elif ((pong1.y) <= arena.y):
       pong1.farty = -pong1.farty
+    elif ((pong1.y + pong1.høyde) >= arena.høyde):
+      fortsett = False
     elif plate.x < (pong1.x) < (plate.x + plate.bredde) and (plate.y - 1) < (pong1.y + pong1.høyde) < (plate.y + 1) or plate.x < (pong1.x + pong1.bredde) < (plate.x + plate.bredde) and (plate.y - 1) < (pong1.y + pong1.høyde) < (plate.y + 1):
       pong1.farty = -pong1.farty
     # Flytter pong1en
