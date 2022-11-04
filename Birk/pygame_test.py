@@ -1,47 +1,81 @@
-import os, sys, time, random, pygame, pylab, pandas
-
 import pygame as pg
 
 # Initialiserer/starter pygame
 pg.init()
 
-# Oppretter et vindu der vi skal "tegne" innholdet vårt
-VINDU_BREDDE = 1366
-VINDU_HOYDE  = 768
-vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
+#Oppretter et vindu der innholdet blir "tegnet"
+window_surface = pg.display.set_mode((800, 600))
 
-print(type(vindu))
+print(type(window_surface))
 
-# Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
-font = pg.font.SysFont("Arial", 30)
+FPS = 60 # frames per second setting
+fpsClock = pg.time.Clock()
+
+# Angir hvilken skrifttype og skriftstørrelse som skal brukes på teksten
+font = pg.font.SysFont("dejavuserif", 30)
+
+class Ball:
+    # Klasse for å representere en ball
+    def __init__(self, x, y, radius, farge, vindusobjekt):
+        # Konstruktør
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.farge = farge
+        self.vindusobjekt = vindusobjekt
+  
+    def tegn(self):
+        # Metode for å tegne ballen
+        pg.draw.circle(self.vindusobjekt, self.farge, (self.x, self.y), self.radius) 
+
+class Spiller(Ball):
+  #Klasse for å representere et hinder
+  def __init__(self, x, y, radius, farge, vindusobjekt, xFart, yFart):
+    super().__init__(x, y, radius, farge, vindusobjekt)
+    self.xFart = xFart
+    self.yFart = yFart
+
+  def flytt(self):
+    #Metode for å flytte hinderet
+    # Sjekker om hinderet er utenfor høyre/venstre kant
+    if ((self.x - self.radius) <= 0) or ((self.x + self.radius) >= self.vindusobjekt.get_width()):
+      self.xFart = -self.xFart
+    
+    # Sjekker om hinderet er utenfor øvre/nedre kant
+    if ((self.y - self.radius) <= 0) or ((self.y + self.radius) >= self.vindusobjekt.get_height()):
+      self.yFart = -self.yFart
+
+    # Flytter hinderet
+    self.x += self.xFart
+    self.y += self.yFart
+
+# Lager et Hinder-objekt
+spiller = Spiller(150, 250, 20, (0, 0, 255), window_surface, 5.0, 5.0)
 
 # Gjenta helt til brukeren lukker vinduet
 fortsett = True
 while fortsett:
-
+    
     # Sjekker om brukeren har lukket vinduet
     for event in pg.event.get():
         if event.type == pg.QUIT:
             fortsett = False
-
-    # Farger bakgrunnen hvit
-    vindu.fill((255, 255, 255))
-
-    # Tegner en sirkel
-    pg.draw.circle(vindu, (255, 50, 2), (200, 250), 90)
-    # Tegner et rektangel
-    pg.draw.rect(vindu, (0, 255, 0), (200, 250, 70, 90))
-    # Tegner en ellipse
-    pg.draw.ellipse(vindu, (0, 0, 255), (300, 250, 90, 60))
-    # Tegner en linje
-    pg.draw.line(vindu, (90, 10, 150), (200, 100), (420, 400), 5)
-
-    # Lager en tekst i form av et bilde og legger til bildet i vinduet
-    bilde = font.render("buger king!", True, (100, 50, 50))
-    vindu.blit(bilde, (400, 90))
-
-    # Oppdaterer alt innholdet i vinduet
+            
+    # Farger bakgrunnen svart
+    window_surface.fill((0, 0, 0))
+    
+    text = font.render("Abacus", True, (255, 255, 255))
+    window_surface.blit(text, (100, 100))
+    
+    # Tegner og flytter ballen
+    spiller.tegn()
+    spiller.flytt()
+    
+    # Oppdaterer alt innholdet på vinduet
     pg.display.flip()
-
+    
+    # FPS
+    fpsClock.tick(FPS)
+    
 # Avslutter pygame
 pg.quit()
