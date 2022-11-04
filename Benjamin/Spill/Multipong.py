@@ -44,6 +44,7 @@ class Pong:
     pg.draw.rect(pong1.vindusobjekt, pong1.farge, (pong1.x, pong1.y, pong1.bredde, pong1.bredde))
     pg.draw.rect(plate.vindusobjekt, plate.farge, (plate.x, plate.y, plate.bredde, plate.høyde))
 
+
   def flytt(self):
     """Metode for å flytte kvadratene"""
     # Sjekker om ballen er utenfor høyre/venstre kant
@@ -51,14 +52,18 @@ class Pong:
       pong1.fartx = -pong1.fartx
     elif ((pong1.y) <= arena.y) or ((pong1.y + pong1.bredde) >= arena.høyde):
       pong1.farty = -pong1.farty
+    elif plate.x < (pong1.x) < (plate.x + plate.bredde) and (plate.y - 1) < (pong1.y + pong1.høyde) < (plate.y + 1) or plate.x < (pong1.x + pong1.bredde) < (plate.x + plate.bredde) and (plate.y - 1) < (pong1.y + pong1.høyde) < (plate.y + 1):
+      pong1.farty = -pong1.farty
     # Flytter pong1en
     pong1.x += pong1.fartx
     pong1.y += pong1.farty
 
-pong1 = Pong(540, 540, 0.1, 0.1, 45, 45, vindu, (255,255,255))
+
+pong1 = Pong(540, 540, 0.3, 0.3, 45, 45, vindu, (255,255,255))
 pong2 = Pong(360, 360, 0.5, 0, 20,0, vindu, (0,0,0))
 pong3 = Pong(360, 360, 0, 0.5, 20,0, vindu, (0,0,0))
-plate = Pong(595,650,0.15,0,90,10,vindu,(255,255,255))
+plate = Pong(595,650,0.4,0,90,10,vindu,(255,255,255))
+platebox = Pong(685,650,0.4,0,0,0,vindu,(255,255,255))
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24) 
@@ -80,9 +85,15 @@ while fortsett:
 
     # Tegner et rektangel
     pg.draw.rect(vindu, (0, 0, 0), (360, 0, 560, 1280))
+
+    # styrer platen
     if trykkede_taster[K_LEFT]:
+      if plate.x < arena.x:
+        plate.x += plate.fartx
       plate.x -= plate.fartx
     if trykkede_taster[K_RIGHT]:
+      if (plate.x + plate.bredde) > (arena.x + arena.bredde):
+        plate.x -= plate.fartx
       plate.x += plate.fartx
     pong1.tegn()
     pong1.flytt()
