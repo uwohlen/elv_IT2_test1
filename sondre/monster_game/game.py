@@ -43,7 +43,7 @@ class Monster:
             'Vampire': [10, 5, 7],
             'Angry farmer': [12, 7, 2],
             'Metapod': [9, 6, 8],
-            'Mark Zuckerberg': [12, 6, 9],
+            'Mark Zuckerberg (Lizard)': [12, 6, 9],
             'Mystic': [random.randint(1, 15), random.randint(1, 6), random.randint(1, 10)]
         }
         # select a random monster, give the monster values for name, hitpoints and strength
@@ -183,7 +183,7 @@ def shop():
         time.sleep(2)
         # prompt user action
         print('What would you like to buy? (Type [exit] to exit shop, [inv] to check your inventory)')
-        time.sleep(1)
+        time.sleep(0.5)
         print(f'You have {player.coins} coins.')
         # get item to buy
         item_to_buy = input()
@@ -246,10 +246,11 @@ def fight():
     # print info about the monster to the player
     print(f'The {monster.name} has {monster.hitpoints} HP, '
           f'and {monster.strength} strength')
+    print(f'You have {player.hitpoints} HP and {player.strength} strengthjexplore')
     print('The monster is fierce, a fight breaks out!')
 
     while True:
-        # check if player is alive. if not, end game
+        # check if player is alive. if not, end monster_game
         if player.hitpoints <= 0:
             print('You have died.')
             print('Game Over.')
@@ -391,7 +392,7 @@ def new_day():
             print('Options: [inv], [explore], [shop]')
 
 
-# greeting at start of game
+# greeting at start of monster_game
 print('Welcome adventurer!')
 # name prompt
 print('What is your name?')
@@ -403,6 +404,6 @@ player = Player()
 player.name = name
 print(f'Happy exploring {name}!')
 
-# game loop, stats a new day as long as the player is alive
+# monster_game loop, stats a new day as long as the player is alive
 while player.alive is True:
     new_day()
