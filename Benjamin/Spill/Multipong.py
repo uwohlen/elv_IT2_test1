@@ -53,7 +53,7 @@ class Pong:
 
   def lage(self):
     global ping
-    if klokke % 5000 == 0:
+    if klokke % 1000 == 0:
       pongs.append(Pong(random.randint(560,720),random.randint(100,250),choice([i for i in range(-8,8) if i not in [0]])/10,choice([i for i in range(-8,8) if i not in [0]])/10,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255))))
   
   def tegn(self):
@@ -98,10 +98,15 @@ class Pong:
         elif pongs[o].x < (pongs[i].x) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1) or pongs[o].x < (pongs[i].x + pongs[i].bredde) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1):
           pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
           pongs[i].fartx,pongs[o].fartx = -pongs[i].fartx,-pongs[o].fartx
+        elif pongs[o].y < (pongs[i].y) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1) or pongs[o].y < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1):
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+        elif pongs[o].y < (pongs[i].y) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1) or pongs[o].y < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1):
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty  
 
 
-
-plate = Pong(560,650,0.8,0,160,10,vindu,(255,255,255))
+plate = Pong(0,650,0.8,0,1600,10,vindu,(255,255,255))
 
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
@@ -134,9 +139,9 @@ while fortsett:
       if (plate.x + plate.bredde) > (arena.x + arena.bredde):
         plate.x -= plate.fartx
       plate.x += plate.fartx
-    
     plate.lage()
     plate.tegn()
+    plate.bounce()
     plate.flytt()
 
     klokke += 1
