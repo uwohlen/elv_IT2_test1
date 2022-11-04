@@ -115,7 +115,7 @@ class Player(character.Character):
             ioutil.slow(f"Tingene til {dead_monster.name}")
             for i, item in enumerate(dead_monster.backpack_items):
                 if item.stackable:
-                    ioutil.slow(f"{i+1}: {item.name} x{self.backpack_stacks[i]}")
+                    ioutil.slow(f"{i+1}: {item.name} x{dead_monster.backpack_stacks[i]}")
                 else:
                     ioutil.slow(f"{i+1}: {item.name}")
             ioutil.slow(f"Hvilken ting velger du (1-{len(dead_monster.backpack_items)}, eller gå videre (0)?")
