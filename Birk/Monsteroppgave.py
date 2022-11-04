@@ -100,6 +100,7 @@ while birk.influence > 0 and kraftig_kjempe.influence > 0:
             os.system('cls')
             slow_type(f"Skriv inn en gyldig handling")
             time.sleep(2)
+            os.system('cls')
     
     else:
         print(f"[Liv igjen: {birk.influence}] \t [Liv igjen: {kraftig_kjempe.influence}] \n \n")
@@ -140,7 +141,6 @@ while birk.influence > 0 and kraftig_kjempe.influence > 0:
             time.sleep(2)
             turn = "Birk"
             os.system('cls')
-            
 
 # Utvikle kamp system
 # Lage bevegelse system
