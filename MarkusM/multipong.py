@@ -33,11 +33,13 @@ class block:
         self.posx,self.posy = startpos
         self.momentum = 0,0
 
-        self.momentum = (r.randint(1,10),r.randint(1,10))
+        self.momentum = (r.randint(1,5),r.randint(1,5))
 
         self.rect.center = (startpos)
 
         self.color = (r.randint(50,200),r.randint(50,200),r.randint(50,200))
+        self.xcounter = 0
+        self.ycounter = 0
 
     def posupdate(self):
         
@@ -58,10 +60,20 @@ class block:
         self.posupdate()
         pg.draw.rect(window,self.color,self.rect)
 
+    def count(self):
+        if self.ycounter >=1:
+            self.ycounter -=1
+        if self.xcounter >=1:
+            self.xcounter -=1
+
 
 def blockrender():
     for i in range(len(blocklist)):
         blocklist[i].render()
+
+def updateCounter():
+    for i in range(len(blocklist)):
+        blocklist[i].count()
 
 def addblock():
     blocklist.append(block((window_width/2,window_height/2)))
@@ -74,8 +86,9 @@ class player():
         self.color = (0,0,0)
         self.posy = window_height-window_height/4
         self.posx = 0
-
         self.rect.center = self.posx,self.posy
+
+        self.updateSafebox()
 
     def move(self):
         x,y = pg.mouse.get_pos()
@@ -84,18 +97,39 @@ class player():
     def render(self):
         self.move()
         pg.draw.rect(window,self.color,self.rect)
+        pg.draw.rect(window,(0,255,0),self.safebox)
+        pg.draw.rect(window,(0,255,0),self.ysafebox1)
+        pg.draw.rect(window,(0,255,0),self.ysafebox2)
+        
 
     def updateSafebox(self):
-        safebox = pg.Rect(0,0,self.width,11)
-        safebox.midtop = self.rect.midtop
-        
+        self.safebox = pg.Rect(0,0,self.width-10,5)
+        self.safebox.midtop = self.rect.midtop
+
+        self.ysafebox1 = pg.Rect(0,0,5,self.height-10)
+        self.ysafebox2 = pg.Rect(0,0,5,self.height-10)
+        self.ysafebox1.midleft = self.rect.midleft
+        self.ysafebox2.midright = self.rect.midright
+
 def safecollision():
     player.updateSafebox()
     for i in range(len(blocklist)):
+        updateCounter()
+        if blocklist[i].ycounter == 0:
+            if pg.Rect.colliderect(player.safebox,blocklist[i].rect):
+                a,b = blocklist[i].momentum
+                blocklist[i].momentum = a,-b
+                blocklist[i].ycounter = 60
+        if blocklist[i].xcounter ==0:
+            if pg.Rect.colliderect(player.ysafebox1,blocklist[i].rect) or pg.Rect.colliderect(player.ysafebox2,blocklist[i].rect):
+                a,b = blocklist[i].momentum
+                blocklist[i].momentum = -a,b
+            
+                blocklist[i].xcounter = 60
 
-        if pg.Rect.colliderect(player.safebox,blocklist[i].rect):
-            a,b = blocklist[i].momentum
-            blocklist[i].momentum = a,-b
+
+
+
 
 
 player = player()
@@ -117,9 +151,9 @@ while run:
     if counter > windowFPS*timediff:
         addblock()
         counter = -1
-    
-    player.render()
 
+    safecollision()
+    player.render()
     counter+=1
     blockrender()
 
