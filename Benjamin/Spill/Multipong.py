@@ -31,20 +31,28 @@ class Button():
     self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
     self.rect = self.image.get_rect()
     self.rect.topleft = (x, y)
+    self.clicked = False
 
   def draw(self):
+    action = False
     # Få posisjonen til musen
     pos = pg.mouse.get_pos()
-    print(pos)
 
     if self.rect.collidepoint(pos):
-      if pg.mouseget_pressed()[0] == 1:
+      if pg.mouse.get_pressed()[0] == 1 and self.clicked == False:
+        self.clicked = True
+        action = True
 
+    if pg.mouse.get_pressed()[0] == 0:
+      self.clicked = False
+    
     # tegne knappene
     vindu.blit(self.image, (self.rect.x, self.rect.y))
+      
+    return action
 
-start_button = Button(100,200,start_bilde, 0.5)
-shop_button = Button(700,200,shop_bilde, 0.5)
+start_button = Button(100,200,start_bilde, 1)
+shop_button = Button(700,200,shop_bilde, 1)
 
 class Arena:
   def __init__(self,x,y,bredde,høyde,farge):
@@ -55,9 +63,9 @@ class Arena:
     self.farge = farge
   def tegnarena(self):
     """Metode for å tegne arena"""
-    pg.draw.rect(vindu, arena.farge, (arena.x, arena.y, arena.bredde, arena.bredde))
+    pg.draw.rect(vindu, arena.farge, (arena.x, arena.y, arena.bredde, arena.høyde))
 
-arena = Arena(360,0,560,720,(120,120,120))
+arena = Arena(360,0,560,720,(0,0,0))
 
     
 class Pong:
@@ -140,46 +148,52 @@ plate = Pong(560,650,1,0,160,10,vindu,(255,255,255),0)
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24) 
 
-# Gjenta helt til brukeren lukker vinduet
 fortsett = True
-while fortsett:
-
-    # Sjekker om brukeren har lukket vinduet
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            fortsett = False
-
-    # Henter en ordbok med status for alle tastatur-taster
-    trykkede_taster = pg.key.get_pressed()
-
-    # Farger bakgrunnen hvit
+spill = True
+def game():
+  global spill
+  global klokke
+  while spill == True:
     vindu.fill((120, 120, 120))
-
-    # Tegner et rektangel
-    pg.draw.rect(vindu, (0, 0, 0), (360, 0, 560, 1280))
-
-    # styrer platen
+    trykkede_taster = pg.key.get_pressed()
     if trykkede_taster[K_LEFT]:
       if plate.x < arena.x:
         plate.x += plate.fartx
-      plate.x -= plate.fartx
+        plate.x -= plate.fartx
     if trykkede_taster[K_RIGHT]:
       if (plate.x + plate.bredde) > (arena.x + arena.bredde):
         plate.x -= plate.fartx
-      plate.x += plate.fartx
+        plate.x += plate.fartx
+    if trykkede_taster[K_UP]:
+      spill = False
     plate.lage()
     plate.tegn()
+    arena.tegnarena()
     '''plate.bounce()'''
     plate.flytt()
-
-    klokke += 1
-    clock.tick(1000)
-
-    shop_button.draw()
-    start_button.draw()
-
-    # Oppdaterer alt innholdet i vinduet
+    '''klokke += 1'''
     pg.display.flip()
+  # Oppdaterer alt innholdet i vinduet
+
+
+# Gjenta helt til brukeren lukker vinduet
+while fortsett:
+    # Sjekker om brukeren har lukket vinduet
+  for event in pg.event.get():
+    if event.type == pg.QUIT:
+      fortsett = False
+
+    # Farger bakgrunnen
+  vindu.fill((120, 120, 120))
+
+  if shop_button.draw():
+      fortsett = False
+
+  if start_button.draw():
+    game()
+
+  
+  pg.display.flip()
 
 # Avslutter pygameas
 pg.quit()
