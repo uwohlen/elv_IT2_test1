@@ -1,4 +1,3 @@
-from re import S
 import pygame as pg
 import random as r
 import sys, time
@@ -13,16 +12,17 @@ except:
 
 pg.init() #starter pygame
 
-window_width = 1080
+window_width = 1280
 window_height = 720
-window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE,DOUBLEBUF)
-#window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
+#window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE,DOUBLEBUF)
+window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
 window.set_alpha(None)
 pg.display.set_caption('gaming')
 font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
 font2 = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 80)
 menyFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Black_PERSONAL USE.otf",80)
 timerFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Regular_PERSONAL USE.otf",80)
+
 
 gifList = []
 keyIndex = 0
@@ -75,7 +75,7 @@ def typeGame():
 
     counter = 0
     typetest = str()
-    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
+    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Superoptikjempefantafenomenalistisk","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
     tasknr = 0
     timerPlayed = False
     sec = 0
@@ -332,7 +332,7 @@ class block:
         self.centerposx = centerposx
         self.centerposy = centerposy
         self.rect = pg.Rect(0,0,self.width,self.height)
-        texture = pg.image.load("MarkusM\images\gdBlock.png")
+        texture = pg.image.load("MarkusM/images/gdBlock.png")
 
         self.preTexture = pg.Surface((self.width,self.height)) #performance
         self.preTexture.blit(texture,self.rect)
@@ -404,7 +404,7 @@ class triangle:
 
 class border:
     def __init__(self,height,width):
-        self.texture = pg.image.load("MarkusM\images\gdBorder3.png")
+        self.texture = pg.image.load("MarkusM/images/gdBorder3.png")
 
         self.height = height
         self.width = width
@@ -477,7 +477,7 @@ def safeColissionCheck():
     else:
         return False #ved collision problemer sjekk denne. Kan hende for-løkken ikke stopper etter return
     
-class player:
+class Player:
     def __init__(self,length,borderHeight):
         global window_width
         global window_height
@@ -487,12 +487,11 @@ class player:
         self.posx = window_width/2
         self.posy = window_height-borderHeight
         #self.safeRect = pg.Rect(0,0,self.length,self.length)
-
+        self.rect = 0
         self.rect = pg.Rect(0,0,self.length,self.length)
 
         playerIconRaw = pg.image.load("MarkusM/images/gdPlayer.png")
         playerIcon = pg.transform.scale(playerIconRaw,(100,100))
-
         self.preTexture = pg.Surface((self.length,self.length)) #performance
         self.preTexture.blit(playerIcon,self.rect)
 
@@ -529,8 +528,9 @@ def gdWin():
 
 
 borderHeight = 50
-player = player(100,borderHeight) #bredde gd blokk
+player = Player(100,borderHeight) #bredde gd blokk
 lower_border = border(borderHeight,window_width)
+print(player.rect)
 blockList = []
 triangleList = []
 
@@ -558,7 +558,6 @@ for line in lvl:
         x +=1
     x,y = 0,y+1
 
-print(win)
 
 triangle2 = triangle(50,window_width+200+1080,window_height-borderHeight)
 block2 = block(100,window_width+1080,window_height-borderHeight-50)
@@ -640,17 +639,157 @@ def gameFail():
     SoundEffectChannel.play(fail)
     MusicChannel.stop()
 
-while True: #displayLoop
+class card():
+    def __init__(self,cost,damage):
+        self.cost = cost
+        self.damage = damage
+        self.width = 200
+        self.height = 300
+        self.posx = window_width/2
+        self.posy = window_height/2
+        self.mouseOffset = (0,0)
+
+        self.rect = pg.Rect(0,0,self.width,self.height)
+        self.rect.center = (self.posx,self.posy)
+
+    def render(self):
+        self.rect.center = (self.posx,self.posy)
+        pg.draw.rect(window,grey,self.rect)
+
+    def move(self):
+        x,y = pg.mouse.get_pos()
+        ox,oy = self.mouseOffset
+        self.posx = x+ox
+        self.posy = y+oy
+        delta = 1.2
+
+        if ox>delta/2+1:
+            ox = ox/delta
+        elif ox<-(delta+1):
+            ox = ox/delta
+        else:
+            ox = 0
+        if oy>delta/2+1:
+            oy = oy/delta
+        elif oy<-(delta+1):
+            oy = oy/delta
+        else:
+            oy = 0
+        self.mouseOffset = (ox,oy)
+        #print(self.posx,self.posy)
+    
+    def moveFinished(self):
+        #finne posisjon kortet kan bevege seg til, og flytte det den hvis den er nærme nok. Eller fytte tilbake til hånd
+        pass
+    def mouseOffsetCheck(self):
+        x,y = pg.mouse.get_pos()
+        if self.rect.collidepoint((x,y)):
+            self.mouseOffset = (self.posx-x,self.posy-y)
+            print(self.mouseOffset)
+            global cardSelected
+            cardSelected = 1
+        else:
+            cardSelected = None
+        #definere differansen mellom posisjonen musen startet, og hvor den flyttet til. Ellers vil den hoppe til senter av musen.
+
+
+card1 = card(0,0)
+global cardSelected
+cardSelected = None
+
+#class player():
+##    def __init__(self,hp):
+#        self.hp = hp
+ #       self.deck = []
+
+def cardInterract():
+    
+    #for elements in kortlist. Lagre verdi
+    card1.mouseOffsetCheck()
+
+def cardMove():
+    #beveger det listeelementet som ble beveg i cardInterract
+    if cardSelected == 1:
+        card1.move()
+
+def mouseHover():
+    #hvis mus ligger over kort, forstørre kortet. Både for hånd og for kort på bordet
+    #Hvis ett kort er higligha allerede, ikke higlight flere kort
+    pass
+
+class cardSlot:
+    def __init__(self,centerposx,centerposy):
+        self.centerposx = centerposx
+        self.centerposy = centerposy
+        self.vacant = None
+
+        self.rect = pg.Rect(0,0,card1.width,card1.height)
+        self.rect.center = (centerposx,centerposy)
+
+
+    def render(self):
+        #kun for testing. I spillet burde slottet være usynlig
+        pg.draw.rect(window,red,self.rect)
+
+    def dropCheck(self):
+        if self.vacant == None:
+            x,y = pg.mouse.get_pos()
+            if self.rect.collidepoint((x,y)):
+                card1.posx = self.centerposx
+                card1.posy = self.centerposy
+                #self.vacant = True
+
+cardslot1 = cardSlot(200,200)
+cardslot2 = cardSlot(800,200)
+
+def cardGame():
+    run = True
+    while run:
+        window.fill((255,255,255))
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                sys.exit()
+            if event.type == pg.KEYDOWN:
+                if event.key ==pg.K_ESCAPE:
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                left,middle,right = pg.mouse.get_pressed()
+                if left:
+                    cardInterract()
+
+            if event.type == MOUSEBUTTONUP:
+                #Regne ut nærmeste sted kortet kan gå
+                cardslot1.dropCheck()
+                cardslot2.dropCheck()
+                pass
+
+        left,middle,right = pg.mouse.get_pressed()
+        if left:
+            cardMove()
+        
+
+        cardslot1.render()
+        cardslot2.render()
+        card1.render()
+        pg.display.flip()
+        clock.tick(windowFPS)
+while True: #
     menu()
-    gd()
+    #gd()
     #introduction()
-    #typeGame()
+    typeGame()
+    #cardGame()
 
     #time.sleep(2)
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 #Performance. Lage en løkke som sjekker om elementer er av skjermen, og velger å ikke blitte.
 #endre resolution til 1280x720 eller 1920x1080
+
+#kortspill? Kanskje lage noe som inscryption? Uten hele 3d verden greia.
+#drag and drop
+#2x4 spillefelt, med et felt hvor datamaskinen plasserer kort
+#ofre kort for å få blod
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php

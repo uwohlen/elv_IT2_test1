@@ -8,7 +8,7 @@ class Game:
         self.balls = [Ball(width/2, height/4, 1, 1, 20, 20, width, height)]
         self.paddle = Paddle(height - 50, 4, 50, 5, self.width, self.height)
 
-        self.next_spawn = time.time() + random.randint(10, 15)
+        self.next_spawn = time.time() + random.randint(6, 10)
 
     def update(self):
         if time.time() > self.next_spawn:
@@ -21,7 +21,7 @@ class Game:
                 20,
                 self.width, 
                 self.height))
-            self.next_spawn = time.time() + random.randint(10, 15)
+            self.next_spawn = time.time() + random.randint(6, 10)
         for ball in self.balls:
             ball.update(self.paddle)
             if ball.game_over():
