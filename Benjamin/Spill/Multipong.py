@@ -1,10 +1,11 @@
 import pygame as pg
 from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT)
-import math as ma
+from math import *
 import random as random
 import sys, time
 import os
 from pygame.locals import *
+from random import choice
 
 # Initialiserer/starter pygame
 pg.init()
@@ -15,9 +16,13 @@ VINDU_HOYDE  = 720
 vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 print(type(vindu))
 
+
 klokke = 0
 clock = pg.time.Clock()
 pongs = []
+
+
+
 
 class Arena:
   def __init__(self,x,y,bredde,høyde,farge):
@@ -28,7 +33,7 @@ class Arena:
     self.farge = farge
   def tegnarena(self):
     """Metode for å tegne arena"""
-    pg.draw.rect(pong1.vindusobjekt, arena.farge, (arena.x, arena.y, arena.bredde, arena.bredde))
+    pg.draw.rect(vindu, arena.farge, (arena.x, arena.y, arena.bredde, arena.bredde))
 
 arena = Arena(360,0,560,720,(120,120,120))
 
@@ -45,6 +50,11 @@ class Pong:
     self.høyde = høyde
     self.vindusobjekt = vindusobjekt
     self.farge = farge
+
+  def lage(self):
+    global ping
+    if klokke % 1000 == 0:
+      pongs.append(Pong(random.randint(560,720),random.randint(100,250),choice([i for i in range(-8,8) if i not in [0]])/10,choice([i for i in range(-8,8) if i not in [0]])/10,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255))))
   
   def tegn(self):
     global klokke
@@ -57,6 +67,7 @@ class Pong:
   def flytt(self):
     global fortsett
     global klokke
+    clock.tick(1500)
     """Metode for å flytte kvadratene"""
     # Sjekker om ballen er utenfor høyre/venstre kant
     for i in range(0,len(pongs)):
@@ -68,27 +79,35 @@ class Pong:
           fortsett = False
         elif plate.x < (pongs[i].x) < (plate.x + plate.bredde) and (plate.y - 1) < (pongs[i].y + pongs[i].høyde) < (plate.y + 1) or plate.x < (pongs[i].x + pongs[i].bredde) < (plate.x + plate.bredde) and (plate.y - 1) < (pongs[i].y + pongs[i].høyde) < (plate.y + 1):
           pongs[i].farty = -pongs[i].farty
-          pongs[i].fartx = random.randint(1,6) / 10 + pongs[i].fartx
-        elif pongs[i].y < (plate.y + plate.høyde / 2) < (pongs[i].y + pongs[i].høyde) and (pongs[i].x + pongs[i].bredde - 1) < plate.x < (pongs[i].x + pongs[i].bredde + 1):
-          pongs[i].farty = -pongs[i].farty
-          pongs[i].fartx = -(random.randint(1,6) / 10 + pongs[i].fartx)
-          plate.x += 10*plate.fartx
-        elif pongs[i].y < (plate.y + plate.høyde / 2) < (pongs[i].y + pongs[i].høyde) and (pongs[i].x - 1) < (plate.x + plate.bredde) < (pongs[i].x + 1):
-          pongs[i].farty = -pongs[i].farty
-          pongs[i].fartx = -(random.randint(1,6) / 10 + pongs[i].fartx)
-          plate.x -= 10*plate.fartx
-        # Flytter pong1en
+          pongs[i].fartx = ((random.randint(1,6) / 10) + pongs[i].fartx)
+        elif (pongs[i].y -3) < (plate.y + (plate.høyde / 2)) < (pongs[i].y + pongs[i].høyde + 3) and (pongs[i].x + pongs[i].bredde - 3) < plate.x < (pongs[i].x + pongs[i].bredde + 3):
+          pongs[i].fartx = -1
+        elif (pongs[i].y -3) < (plate.y + (plate.høyde / 2)) < (pongs[i].y + pongs[i].høyde + 3) and (pongs[i].x - 3) < (plate.x + plate.bredde) < (pongs[i].x + 3):
+          pongs[i].fartx = 1
         pongs[i].x += pongs[i].fartx
         pongs[i].y += pongs[i].farty
 
+  def bounce(self):
+    global klokke
+    clock.tick(1500)
+    for i in range(0,len(pongs)):
+      for o in range(0,len(pongs)):
+        if pongs[o].x < (pongs[i].x) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1) or pongs[o].x < (pongs[i].x + pongs[i].bredde) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1):
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+          pongs[i].fartx,pongs[o].fartx = -pongs[i].fartx,-pongs[o].fartx
+        elif pongs[o].x < (pongs[i].x) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1) or pongs[o].x < (pongs[i].x + pongs[i].bredde) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1):
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+          pongs[i].fartx,pongs[o].fartx = -pongs[i].fartx,-pongs[o].fartx
+        elif pongs[o].y < (pongs[i].y) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1) or pongs[o].y < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1):
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+        elif pongs[o].y < (pongs[i].y) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1) or pongs[o].y < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde) and (pongs[o].y + pongs[o].høyde - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + pongs[o].høyde + 1):
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty
+          pongs[i].farty,pongs[o].farty = -pongs[i].farty,-pongs[o].farty  
 
-pong1 = Pong(540, 540, 0.3, 0.3, 45, 45, vindu, (255,255,255))
-pong2 = Pong(618, 338, 0.3, 0.3, 45,45, vindu, (255,0,0))
-pong3 = Pong(618, 338, -0.3, -0.3, 45,45, vindu, (0,255,0))
-plate = Pong(595,650,0.8,0,90,10,vindu,(255,255,255))
-platebox = Pong(685,650,0.4,0,0,0,vindu,(255,255,255))
 
-pongs.append(pong1)
+plate = Pong(0,650,0.8,0,1600,10,vindu,(255,255,255))
+
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24) 
@@ -120,16 +139,18 @@ while fortsett:
       if (plate.x + plate.bredde) > (arena.x + arena.bredde):
         plate.x -= plate.fartx
       plate.x += plate.fartx
-    pong1.tegn()
-    pong1.flytt()
+    plate.lage()
+    plate.tegn()
+    plate.bounce()
+    plate.flytt()
 
     klokke += 1
     print(klokke)
-    if klokke == 10000:
+    '''if klokke == 10000:
       pongs.append(pong2)
     if klokke == 20000:
-      pongs.append(pong3)
-
+      pongs.append(pong3)'''
+    clock.tick(1000)
 
     # Oppdaterer alt innholdet i vinduet
     pg.display.flip()
