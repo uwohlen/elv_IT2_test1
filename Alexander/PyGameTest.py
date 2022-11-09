@@ -1,5 +1,5 @@
 import pygame as pg
-import math
+
 
 pg.init()
 
@@ -8,6 +8,8 @@ width = 500
 
 wind = pg.display.set_mode([height, width])
 font = pg.font.SysFont("Arial", 12)
+clock = pg.time.Clock()
+
 
 class ball():
     def __init__(self, x, y, r, v, window):
@@ -29,23 +31,37 @@ class ball():
         self.x += self.v[0]
         self.y += self.v[1]
 
-def collision(ball1, ball2):
-    dist = math.sqrt((ball1.x - ball2.x) ** 2 + (ball1.y - ball2.y) ** 2)
-    if (dist - (ball1.r + ball2.r)) <= 0
 
-ball = ball(250, 250, 20, [0.1, 0.12], wind)
-
+balls = [ball(250, 200, 10, [2.5, 3.2], wind), ball(250, 250, 10, [1.5, 2.2], wind)]
+box = pg.Rect(200, 450, 100, 15)
+v = 5
 cont = True
+counter = 0
 while cont:
     
     for event in pg.event.get():
         if event.type == pg.QUIT:
             cont = False
     
+    keys = pg.key.get_pressed()
+    
+    if keys[pg.K_LEFT]:
+        box.move_ip(-v, 0)
+    if keys[pg.K_RIGHT]:
+        box.move_ip(v, 0)
+        
+    for ball in balls:
+        if box.collidepoint(ball.x, ball.y + ball.r):
+            ball.v[1] = -ball.v[1]
+        ball.move()
+        ball.draw()
+    
+    
     wind.fill((255, 255, 255))
-    ball.draw()
+    pg.draw.rect(wind, 0, box)
     pg.display.flip() # update window
-    ball.move()
+    counter += 1
+    clock.tick(60)
 
 
 
