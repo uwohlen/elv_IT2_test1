@@ -23,6 +23,7 @@ pongs = []
 
 start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
 shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
+exit_bilde = pg.image.load('Benjamin/pngs/multipong/Exit.png').convert_alpha()
 
 class Button():
   def __init__(self, x, y, image, scale):
@@ -53,6 +54,7 @@ class Button():
 
 start_button = Button(100,200,start_bilde, 1)
 shop_button = Button(700,200,shop_bilde, 1)
+exit_button = Button(400,400,exit_bilde, 1)
 
 class Arena:
   def __init__(self,x,y,bredde,høyde,farge):
@@ -83,10 +85,16 @@ class Pong:
     self.passes = passes
 
   def lage(self):
-    global ping
     if klokke % 3000 == 0:
       pongs.append(Pong(random.randint(560,720),random.randint(-200,-100),choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10,choice([i for i in range(4,8) if i not in [0]])/10,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),0))
   
+  def nytt_spill(self):
+    global pongs
+    global klokke
+    pongs = []
+    plate.x = 560
+    klokke = 0
+
   def tegn(self):
     global klokke
     """Metode for å tegne kvadratene"""
@@ -98,7 +106,7 @@ class Pong:
   def flytt(self):
     global fortsett
     global klokke
-    clock.tick(1500)
+    global spill
     """Metode for å flytte kvadratene"""
     # Sjekker om ballen er utenfor høyre/venstre kant
     for i in range(0,len(pongs)):
@@ -108,7 +116,9 @@ class Pong:
           pongs[i].passes +=1
           pongs[i].farty = -pongs[i].farty
         elif ((pongs[i].y + pongs[i].høyde) >= arena.høyde):
-          '''fortsett = False'''
+          plate.nytt_spill()
+          spill = False
+          meny()
         elif plate.x < (pongs[i].x) < (plate.x + plate.bredde) and (plate.y - 1) < (pongs[i].y + pongs[i].høyde) < (plate.y + 1) or plate.x < (pongs[i].x + pongs[i].bredde) < (plate.x + plate.bredde) and (plate.y - 1) < (pongs[i].y + pongs[i].høyde) < (plate.y + 1):
           pongs[i].farty = -pongs[i].farty
           pongs[i].fartx = ((random.randint(1,6) / 10) + pongs[i].fartx)
@@ -123,7 +133,6 @@ class Pong:
 
   def bounce(self):
     global klokke
-    clock.tick(1500)
     for i in range(-1,len(pongs)):
       for o in range(-1,i) and range(i+1, len(pongs)):
         if pongs[o].x < (pongs[i].x) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1) or pongs[o].x < (pongs[i].x + pongs[i].bredde) < (pongs[o].x + pongs[o].bredde) and (pongs[o].y - 1) < (pongs[i].y + pongs[i].høyde) < (pongs[o].y + 1):
@@ -148,52 +157,66 @@ plate = Pong(560,650,1,0,160,10,vindu,(255,255,255),0)
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24) 
 
-fortsett = True
-spill = True
+
+def plate_bevegelse():
+  trykkede_taster = pg.key.get_pressed()
+  if trykkede_taster[K_LEFT]:
+    plate.x -= plate.fartx
+    if plate.x <= arena.x:
+      plate.x += plate.fartx
+  if trykkede_taster[K_RIGHT]:
+    plate.x += plate.fartx
+    if (plate.x + plate.bredde) > (arena.x + arena.bredde):
+      plate.x -= plate.fartx
+  if trykkede_taster[K_UP]:
+    sys.exit()
+
+
 def game():
-  global spill
   global klokke
-  while spill == True:
+  spill = True
+  while spill:
+    for event in pg.event.get():
+      if event.type == pg.QUIT:
+        sys.exit()
+    plate_bevegelse()
     vindu.fill((120, 120, 120))
-    trykkede_taster = pg.key.get_pressed()
-    if trykkede_taster[K_LEFT]:
-      if plate.x < arena.x:
-        plate.x += plate.fartx
-        plate.x -= plate.fartx
-    if trykkede_taster[K_RIGHT]:
-      if (plate.x + plate.bredde) > (arena.x + arena.bredde):
-        plate.x -= plate.fartx
-        plate.x += plate.fartx
-    if trykkede_taster[K_UP]:
-      spill = False
+    arena.tegnarena()
     plate.lage()
     plate.tegn()
-    arena.tegnarena()
     '''plate.bounce()'''
     plate.flytt()
-    '''klokke += 1'''
+    klokke += 1
+    clock.tick(500)
     pg.display.flip()
   # Oppdaterer alt innholdet i vinduet
 
 
 # Gjenta helt til brukeren lukker vinduet
-while fortsett:
-    # Sjekker om brukeren har lukket vinduet
-  for event in pg.event.get():
-    if event.type == pg.QUIT:
-      fortsett = False
+def meny():
+  fortsett = True
+  while fortsett:
+      # Sjekker om brukeren har lukket vinduet
+    for event in pg.event.get():
+      if event.type == pg.QUIT:
+        sys.exit()
 
-    # Farger bakgrunnen
-  vindu.fill((120, 120, 120))
+      # Farger bakgrunnen
+    vindu.fill((120, 120, 120))
 
-  if shop_button.draw():
-      fortsett = False
+    if shop_button.draw():
+        sys.exit()
 
-  if start_button.draw():
-    game()
+    if exit_button.draw():
+        sys.exit()
 
-  
-  pg.display.flip()
+    if start_button.draw():
+      game()
+    
+    pg.display.flip()
+
+while True:
+  meny()
 
 # Avslutter pygameas
 pg.quit()
