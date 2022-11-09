@@ -40,6 +40,13 @@ blocklist = []
 window = pg.display.set_mode([window_width,window_height])
 run = True
 
+class settings:
+    def __init__(self):
+        self.meny = 1
+settings = settings()
+
+
+
 global blockSize
 blockSize = 100
 
@@ -213,8 +220,66 @@ def main():
         clock.tick(windowFPS) #holde frame rate til 60
         pg.display.flip() #oppdatere skjermen
 
-def menu():
+class menublock:
+    def __init__(self,posy,text,color):
+        self.posy = posy
+        self.rect = pg.Rect(0,0,window_width/1.5,window_height/8)
+        self.color = color
+        self.rect.center = window_width/2,posy
+        self.text = font2.render(str(text),True,black) #definere tekst
+        self.textBox = self.text.get_rect() #definere hvor stor teksten er
+        self.textBox.center = self.rect.center #sentrere teksten i boksen
 
+    def render(self):
+        #rendere boks
+        pg.draw.rect(window,self.color,self.rect)
+
+        #rendere tekst
+        window.blit(self.text,self.textBox) #render
+
+#testbox = menublock(80,"TEST",light_grey)
+startbox = menublock(window_height/2-window_height/5,"START",light_grey)
+quitbox = menublock(window_height/2+window_height/5,"QUIT",light_grey)
+shopbox = menublock(window_height/2,"SHOP",light_grey)
+backbox = menublock(window_height/2+window_height/5,"BACK",light_grey)
+
+def menurender():
+    if settings.meny == 1:
+        startbox.render()
+        quitbox.render()
+        shopbox.render()
+
+        #tittel
+        title = font2.render(str("GAMING"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
+
+    if settings.meny == 2:
+        backbox.render()
+
+        #tittel
+        title = font2.render(str("SHOP"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
+
+
+def menuIntererract(mousepos):
+    if settings.meny == 1:
+        if quitbox.rect.collidepoint(mousepos):
+            sys.exit()
+        if startbox.rect.collidepoint(mousepos):
+            global loop
+            loop = False
+        if shopbox.rect.collidepoint(mousepos):
+            settings.meny = 2
+
+    elif settings.meny == 2:
+        if backbox.rect.collidepoint(mousepos):
+            settings.meny = 1
+        
+
+def menu():
+    global loop
     loop = True
     while loop:
         if MusicChannel.get_busy() == False:
@@ -230,54 +295,17 @@ def menu():
                 left,middle,right = pg.mouse.get_pressed()
                 mousepos = pg.mouse.get_pos()
                 if left:
-                    if quitBox.collidepoint(mousepos):
-                        sys.exit()
-                    if startBox.collidepoint(mousepos):
-                        loop = False
-                
-
-                
+                    menuIntererract(mousepos)
+        
             if event.type == pg.KEYDOWN:
                 if event.key ==pg.K_ESCAPE:
                     sys.exit()
         window.fill((255,255,255))
-
-        centerx,centery = findCenter() #finne senter av skjermen
-
-        quitBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
-        quitBox.center = (centerx+window_width/4,centery) #posisjonere rektangel
-        pg.draw.rect(window,light_grey,quitBox) #tegne rektangel
-        
-        quitText = menyFont.render(str("QUIT"),True,black) #definere tekst
-        quitTextBox = quitText.get_rect() #definere hvor stor teksten er
-        quitTextBox.center = quitBox.center #sentrere teksten i boksen
-        window.blit(quitText,quitTextBox) #render
-
-        startBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
-        startBox.center = (centerx-window_width/4,centery) #posisjonere rektangel
-        pg.draw.rect(window,light_grey,startBox) #tegne rektangel
-
-        startText = font2.render(str("START"),True,black) #definere tekst
-        startTextBox = startText.get_rect() #definere hvor stor teksten er
-        startTextBox.center = startBox.center #sentrere teksten i boksen
-        window.blit(startText,startTextBox) #render
-
-        #tittel
-        title = font2.render(str("GAMING"),True,black) #definere tekst
-        titleBox = title.get_rect(center=(window_width/2,(window_height/2)-(window_height/4)))
-        window.blit(title,titleBox) #render
-
-
-        #window.blit(quitBox,(centerPosx-90,centerPosy))
-        #window.blit(quitButton, (0,0))
-
-        
-        
-
+        menurender()
 
         pg.display.flip()
 
-while True:
+while True: #spillLoop
     menu()
     main()
 
