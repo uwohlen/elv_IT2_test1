@@ -25,15 +25,26 @@ start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
 shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
 
 class Button():
-  def __init__(self, x, y, image):
-    self.image = image
+  def __init__(self, x, y, image, scale):
+    width = image.get_width()
+    height = image.get_height()
+    self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
     self.rect = self.image.get_rect()
     self.rect.topleft = (x, y)
 
   def draw(self):
-    vindu.blit(self.image, (self.rect.y, self.rect.y))
+    # Få posisjonen til musen
+    pos = pg.mouse.get_pos()
+    print(pos)
 
+    if self.rect.collidepoint(pos):
+      if pg.mouseget_pressed()[0] == 1:
 
+    # tegne knappene
+    vindu.blit(self.image, (self.rect.x, self.rect.y))
+
+start_button = Button(100,200,start_bilde, 0.5)
+shop_button = Button(700,200,shop_bilde, 0.5)
 
 class Arena:
   def __init__(self,x,y,bredde,høyde,farge):
@@ -89,7 +100,7 @@ class Pong:
           pongs[i].passes +=1
           pongs[i].farty = -pongs[i].farty
         elif ((pongs[i].y + pongs[i].høyde) >= arena.høyde):
-          fortsett = False
+          '''fortsett = False'''
         elif plate.x < (pongs[i].x) < (plate.x + plate.bredde) and (plate.y - 1) < (pongs[i].y + pongs[i].høyde) < (plate.y + 1) or plate.x < (pongs[i].x + pongs[i].bredde) < (plate.x + plate.bredde) and (plate.y - 1) < (pongs[i].y + pongs[i].høyde) < (plate.y + 1):
           pongs[i].farty = -pongs[i].farty
           pongs[i].fartx = ((random.randint(1,6) / 10) + pongs[i].fartx)
@@ -163,6 +174,9 @@ while fortsett:
 
     klokke += 1
     clock.tick(1000)
+
+    shop_button.draw()
+    start_button.draw()
 
     # Oppdaterer alt innholdet i vinduet
     pg.display.flip()
