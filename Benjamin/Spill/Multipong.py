@@ -20,6 +20,14 @@ print(type(vindu))
 klokke = 0
 clock = pg.time.Clock()
 pongs = []
+bakgrunnlist = []
+bakgrunnlist2 = []
+counter = 0
+
+for i in range(113):
+    bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
+for i in range(0,112):
+    bakgrunnlist2.append(pg.transform.scale(bakgrunnlist[i], (1280, 720)))
 
 start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
 shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
@@ -54,7 +62,7 @@ class Button():
 
 start_button = Button(100,200,start_bilde, 1)
 shop_button = Button(700,200,shop_bilde, 1)
-exit_button = Button(400,400,exit_bilde, 1)
+exit_button = Button(400,500,exit_bilde, 1)
 
 class Arena:
   def __init__(self,x,y,bredde,høyde,farge):
@@ -194,6 +202,7 @@ def game():
 
 # Gjenta helt til brukeren lukker vinduet
 def meny():
+  global counter
   fortsett = True
   while fortsett:
       # Sjekker om brukeren har lukket vinduet
@@ -202,7 +211,12 @@ def meny():
         sys.exit()
 
       # Farger bakgrunnen
-    vindu.fill((120, 120, 120))
+    clock.tick(30)
+    vindu.blit(bakgrunnlist2[counter],(0, 0))
+    counter += 1
+    if counter == 112:
+        counter = 0
+    print(counter)
 
     if shop_button.draw():
         sys.exit()
