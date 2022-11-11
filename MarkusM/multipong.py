@@ -259,17 +259,17 @@ class gridElement:
         self.color = color
         self.buy = False
 
-        self.texture = pg.image.load("MarkusM/images/lockiconTransparent.png")
-        self.texture = pg.transform.scale(self.texture,(size-10,size-10))
-        self.pretexture = pg.Surface((size-10,size-10)) #BIG FPS. gikk fra 25 til 60 😃
-        self.pretexture.blit(self.pretexture,self.rect)
+        self.textureraw = pg.image.load("MarkusM/images/coinicon.png")
+        self.texture = pg.transform.scale(self.textureraw,(size-10,size-10))
+        self.pretexture = pg.Surface((size-10,size-10)) #performance
+        self.pretexture.blit(self.texture,(self.rect.x,self.rect.y))
 
     def render(self):
         pg.draw.rect(window,black,self.padding)
         pg.draw.rect(window,self.color,self.rect)
 
-        if self.buy == False:
-            window.blit(self.pretexture,self.rect)
+        #if self.buy == False:
+        window.blit(self.pretexture,self.rect)
 
 
 gridlist = []
