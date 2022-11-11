@@ -11,7 +11,7 @@ def intergral(a,b,n,function):
 
     for i in range(n):				# i fra og med 0 til og med n−1
 	    summen = summen + f(a + (i)*delta_x) * delta_x
-
+    
     print(round(summen, 5))
-
+    
 intergral(0,1,10000,"sqrt(1+x^2)")

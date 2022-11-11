@@ -3,8 +3,6 @@ import random as r
 import sys, time
 import os
 
-
-
 def slow_type(t):
     typing_speed = 300 #wpm
     for l in t:
@@ -45,6 +43,7 @@ class monster: #konstruktør for monster
         print(f"Du har {hero.hp} liv igjen")
         if hero.hp <=0:
             hero.death()
+
     def stats(self):
         clear()
         print(f"navn: {self.name}")
@@ -75,7 +74,10 @@ class hero(monster):
                 a = self.combatAction()
 
                 if a == "f":
-                    self.combat(monsterID,1)
+                    monsterList[monsterID-1].hp = monsterList[monsterID-1].hp-self.dmg*hero.inv[itemSelected].dmg
+                    print(f"Du angriper og gjør {self.dmg*hero.inv[itemSelected].dmg} skade")
+                    print(f"{monsterList[monsterID-1].name} har {monsterList[monsterID-1].hp} liv igjen")
+
 
                     if monsterList[monsterID-1].hp > 0:
                         if self.hp == 1:
@@ -173,9 +175,6 @@ class hero(monster):
                                 hero.stats()
                                 sys.exit()
 
-
-                            
-
                         if self.hp > 1:
                             print("Ninja angriper")
                             print("Ninja dreper deg nesten i ett slag. Du har nå ett liv igjen")
@@ -183,6 +182,10 @@ class hero(monster):
                     if monster3.hp <= 0:
                         print("Ninja: Stream sniping")
                         time.sleep(1)
+                        slow_type("Du får 40 xp!")
+                        for i in range(4):
+                            hero.levelUp()
+                            time.sleep(0.5)
                         print("Victory royale!")
                         time.sleep(2)
                         break
@@ -236,7 +239,8 @@ class hero(monster):
                         clear()
                 elif a == "c":
                     gammelMann.stats()
-
+            if monsterID == 10:
+                global f
          
         else:
             print("Feil. monsterID ikke funnet.")
@@ -458,8 +462,13 @@ class hero(monster):
     def death(self):
         clear()
         print("du døde :(")
-        print("på reisen din klarte du å:")
+        print(f"på reisen din klarte du å: {specialEvent}")
         print("siste stats:")
+        print("")
+        print(f"liv: {self.hp}")
+        print(f"level: {self.lv}")
+        print(f"damage: {self.dmg}")
+        print(f"xp: {self.xp}")
 
         hero.dead = True
 
@@ -474,13 +483,12 @@ class event:
     def event(self):
         if self.specialEvent == False:
 
-
+            #vanlige events
             slow_type(self.eventText)
             print("")
             print("")
             time.sleep(1)
             if self.monsterAmount == 1:
-                #vanlige events
                 if r.randint(1,6) == 1:
                     print("du reagerer fort og angriper!")
                     hero.combat(self.monsterSpawn,self.monsterAmount)
@@ -527,8 +535,6 @@ class event:
                         monsterList[self.monsterSpawn-1].stats()
             clear()
         
-                        
-
             print("")
         elif self.specialEvent == True:
             if self.eventID == 1:   #spesialevent 1
@@ -544,8 +550,11 @@ class event:
                         slow_type(self.eventText)
                         print("")
                         print("")
-                        print("Ninja: Du har mats!!!")
-                        print("Kan jeg få? Jeg trenger for å drepe tFue i moisy mire")
+                        slow_type("Ninja: Du har mats!!!")
+                        print("")
+                        slow_type("Kan jeg få? Jeg trenger for å drepe tFue i moisy mire")
+                        print("")
+                        time.sleep(0.5)
                         a = input('Gir du han? Skriv inn "y" for ja og "n" for nei')
                         if a == "y":
                             hero.itemRemove(i)
@@ -623,6 +632,24 @@ class event:
                         clear()
                         hero.coward +=1
                         break
+            elif self.eventID == 204:
+                while True:
+                    slow_type(self.eventText)
+                    print("")
+                    time.sleep(1)
+                    a = hero.combatAction()
+                    if a == "c":
+                        monsterList[self.monsterSpawn-1].stats()
+                    elif a == "f":
+                    
+                        #sloss mot politimannen
+                        sloss
+                    elif a == "r":
+                        #prøver å stikke av
+                        sloss
+                    if politi.hp <= 0:
+                        vinn
+
             else:
                 print("feil. Fant ikke eventID")
 
@@ -634,9 +661,17 @@ class wEvent:
         self.id = id
     
     def worldEventOptions(self):
-        
+        global pFight
         while True:
-            print(self.eventText)
+            slow_type(self.eventText)
+            if self.id == 204:
+                print("")
+                print("1: Bob")
+                print("2: Greg")
+                print("3: Saul")
+
+            time.sleep(1)
+            print("")
             if "y" in self.options:
                 if self.id == 1: #spesiell melding for event 1
                     print('trykk "y" for å gå inn')
@@ -667,10 +702,20 @@ class wEvent:
                 if self.id == 1: #spesiell melding for event 1
                     print("Du forblir utenfor")
                     break
+                elif self.id == 2:
+                    print("Du går ikke ut")
+                    wEventTomtHusIn.worldEvent()
                 elif self.id == 3:
                     print("Du går videre")
                     global skipFactor
                     skipFactor =+1
+                    break
+                elif self.id == 201:
+                    politiFight.event()
+                    pFight = True
+                    break
+                elif self.id == 202:
+                    print("du åpner ikke kisten")
                     break
                 elif self.id == 4:
                     print("Du plukker ikke opp sverdet")
@@ -680,7 +725,7 @@ class wEvent:
                     break
                 else: #ordinær melding
                     break
-
+            
             if "y" in self.options and a =="y":
                 if self.id == 1: #spesiell melding for event 1
                     print("Du går inn")
@@ -689,6 +734,33 @@ class wEvent:
                 elif self.id == 2: #spesiell melding for event 2
                     print("du går ut")
                     wEventTomtHusUt.worldEvent()
+                    break
+                elif self.id == 201:
+                    slow_type("Du blir arrestert!")
+                    print("")
+                    pFight = False
+                    break
+                elif self.id == 202:
+                    hasScar = False
+                    for i in range(len(hero.inv)):
+                        if "Fortnite Scar" in hero.inv[i].name:
+                            hasScar = True
+                            break
+                    if hasScar == True:
+                        slower_type("...",2)
+                        print("")
+                        time.sleep(0.5)
+                        slow_type("Kisten er tom :( ")
+                        print("")
+                        time.sleep(1)
+                        clear()
+                        break
+                    else:
+                        wEventTomtHuskiste.worldEvent()
+                        break
+                elif self.id == 203:
+                    print("Velger å plukke opp Fortnite Scar")
+                    hero.itemAdd(fortniteScar)
                     break
                 elif self.id ==3:
                     eventGammelMann.event()
@@ -717,10 +789,22 @@ class wEvent:
                         print("")
             if "s" in self.options and a =="s":
                 hero.stats()
+            global advokat
+            if "1" in self.options and a == "1":
+                
+                advokat = 0
+                break
+            if "2" in self.options and a == "2":
+                
+                advokat = 1
+                break
+            if "3" in self.options and a == "3":
+                
+                advokat = 2
+                break
 
     def worldEvent(self):
         self.worldEventOptions()
-
 
 class item:
     def __init__(self,name,desc,dmg):
@@ -732,15 +816,16 @@ class item:
 
 wEvent1 = wEvent("Du kommer til ett hus. Går du inn?",["y","n","i","c","s"],["y","n","i","c","s"],1)
 wEventTomtHus = wEvent("Huset er tomt. Ninja sin døde kropp råtner på gulvet. Vil du gå ut?",["y","n"],["y","n"],2)
-wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],3)
+wEventTomtHusUt = wEvent("Poltiet: Dette er politiet, kom ut med hendene bak ryggen. Følger du det de sier?",["y","n"],["y","n"],201)
 wEventTomtHusIn = wEvent("Ninja sin døde kropp råtner fortsatt på gulvet. Men du ser en Kiste! vil du åpne den?",["y","n"],["y","n"],202)
 wEventTomtHuskiste = wEvent("I kisten fant du en scar!",["y","n"],["y","n"],203)
 wEvent2 = wEvent("Videre på din reise finner du en by. En gammel mann sitter forran ett hus på en knirkete gyngestol. Går du bort til mannen?",["y","n"],["n","n"],3)
 wEventBandittSverd = wEvent("Banditten mistet ett sverd! Vil du plukke det opp?",["y","n"],["n","n"],4)
 wEventSkarpStein = wEvent("Gnomen mistet en skarp stein! Vil du plukke den opp?",["y","n"],["n","n"],5)
+wEventAdvokat = wEvent("For at du skal få så liten tid i fengsel som mulig må du velge advokat med omhu. Du kan velge mellom: ",["1","2","3"],["1","2","3"],204)
 
 mats = item("Tre","Litt tre du fant. Ubrukelig",0)
-fortniteScar = item("Fornite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
+fortniteScar = item("Fortnite Scar","Legendary scar assault rifle fra Fortnite. Gjør veldig mye skade",27)
 starterPinne = item("Pinne","En veldig fin pinne. Ligner svært på en pistol",1)
 Fortnite_Builder_Plan = item("Fortnite_Builder_Plan","?????????","????")
 bandittSverd = item("Sverd","Ett helt ordinært sverd. Ble funnet på en banditts døde kropp.", 5)
@@ -751,6 +836,9 @@ event2 = event(2,3,"En gjeng med monstere angriper deg!",False,102)
 event3 = event(3,1,"Inne finner du Ninja fra Fornite. Han spør om du har noe materialer til han. Til gjengjeld sier han at han kan gi deg noe spesielt tilbake.",True,1)
 eventGammelMann = event(4,1,"Rodrik hilser deg velkommen.",True,2)
 event4 = event(5,1,"En banditt angriper deg!",False,103)
+politiFight = event(7,1,"Du sloss mot politiet!",True,204)
+
+
 
 monster1 = monster(1,1,1,1,1,"Gnom")
 monster2 = monster(1,1,1,1,1,"bob")
@@ -758,6 +846,9 @@ monster3 = monster(10,10,27,"boogie bomb",40,'Tyler "Fortnite Ninja" Blevins')
 gammelMann = monster(1,1,0,"alt",1,"Rodrik")
 monster4 = monster(10,2,2,"penger",2,"banditt")
 shopkeeper = monster(100,10,40,"å være hyggelig",1,"Mohammed Zumbul")
+politi = monster(104,10,10,"Fortnite Scar",17,"politimann")
+tank = monster(20000,40,80,None,4000,"M1 A2 Abrahams main battle tank")
+
 
 
 
@@ -767,14 +858,19 @@ hero = hero(30,1,1,1,1,"geir",False,1)
 itemSelected = 0
 skipFactor = 0
 badOmen = False
-
+pFight = False
+advokat = None
 
 monsterList = []
 monsterList.append(monster1)
 monsterList.append(monster2)
 monsterList.append(monster3)
-monsterList.append(gammelMann)
+monsterList.append(gammelMann) #id = 4
 monsterList.append(monster4)
+monsterList.append(shopkeeper)
+monsterList.append(politi) 
+monsterList.append(tank) #id = 8
+
 
 slow_type("Velkommen til dette spillet")
 time.sleep(1)
@@ -787,8 +883,9 @@ print("")
 slow_type("Du får en pinne for å komme i gang")
 time.sleep(1)
 clear()
-hero.inv.append(starterPinne)
 
+hero.inv.append(starterPinne)
+"""
 #teste inventory:
 #hero.inv.append(starterPinne)
 #hero.inv.append(starterPinne)
@@ -798,6 +895,13 @@ hero.inv.append(starterPinne)
 
 
 #🤓
+"""
+advokatList = ["Bob","Greg","Saul"]
+
+
+
+
+
 
 event1.event()
 if monster1.hp == 0:
@@ -815,16 +919,53 @@ time.sleep(2)
 clear()
 if monster3.hp <= 0: #om ninja er død
     wEventTomtHus.worldEvent() 
-    #if hero.inv has scar:
-        #sloss mot politiet
-        #if victory:
-            #finne en datamaskin for å spille among us/fortnite
-        #else:
-            #fengsel
-            #if hero.inv has fortnitebuilderplan and mats:
-                #bygge seg ut av fengsel
-            #else:
-                #sitte i fengsel til man dør av alder
+
+    #sloss mot politiet
+    if pFight == True:
+        #finne en datamaskin for å spille among us/fortnite
+        print("mwuap")
+    else:
+        wEventAdvokat.worldEvent()
+        #Hvis man tar plea deal kommer man i arbeidsleir, ellers havner man i fengsel som om man hadde sloss mot politet
+        slow_type(f"Du valgte {advokatList[advokat]}")
+        print("")
+        specialEvent = "bli arrestert"
+        if advokat == 0 or advokat == 1:
+            time.sleep(1.5)
+            clear()
+            slow_type(f"{advokatList[advokat]} klarte ikke å få deg ut av fengsel. ")
+            time.sleep(1)
+            slow_type("Du må tilbringe 40 år høysikkerthetsfengsel.")
+            print("")
+            time.sleep(1.5)
+            slow_type("Neste gang burde du ikke tulle med rettsystemet.")
+            time.sleep(4)
+            hero.death()
+
+        elif advokat == 2:
+            time.sleep(1)
+            slow_type("Saul gir deg en plea deal! Du trenger bare å tilbringe 20 år i arbeidsleir!")
+            print("")
+            time.sleep(0.5)
+            while True:
+                slow_type("Tar du plea dealen? y/n")
+                plea = input()
+                if plea == "n":
+                    clear()
+                    slow_type("Du velger å tilbringe 40 år i høsikkerhetsfengsel, men desverre dør du av hjerteinfark før du vinner tilbake friheten din. ")
+                    time.sleep(1)
+                    slow_type("Neste gang burde du ikke tulle med rettsystemet.")
+                    time.sleep(4)
+                    hero.death()
+                    break
+                if plea == "y":
+                    clear()
+                    slow_type("Du dør in en gruveulykke :(")
+                    time.sleep(1)
+                    slow_type("Neste gang burde du ikke tulle med rettsystemet")
+                    time.sleep(2)
+                    hero.death()
+                    break
     #else:
         #arbeidsleir. Ende opp med samme ending som fight med shopkeeper uten badomen?
 
@@ -840,6 +981,8 @@ else: #om man ikke velger å sloss mot ninja
     if monster4.hp <= 0:
         wEventBandittSverd.worldEvent() #bandittsverd
     time.sleep(2)
+    clear()
+    print("Dette er desverre slutten på spillet intil videre. Sloss med ninja for å unlocke ending")
     
     #butikk. Kjøpe eller snakke med inbyggere
     #if fight med shopkeeper and badomen == True:
@@ -855,7 +998,6 @@ else: #om man ikke velger å sloss mot ninja
         #else:
             #????
 
-    
 #legge til at itemet blir deselecta når ett item blir fjernet. - skal være fikset, men vet ikke sikkert
 
 #VIKTIG! kan ikke se hvor mye skade fiende gjør
