@@ -775,12 +775,15 @@ def cardGame():
         clock.tick(windowFPS)
 while True: #
     menu()
-    #gd()
+    gd()
     #introduction()
-    typeGame()
+    #typeGame()
     #cardGame()
 
     #time.sleep(2)
+
+#! kommenter ut enten typegame eller gd for spill. introduction eller cardgame gjør ikke noe
+
 
 #lavere frame rate gir bedre tid. Endre til at man ganger teller med en mulitplier basert på framerate
 #Performance. Lage en løkke som sjekker om elementer er av skjermen, og velger å ikke blitte.
