@@ -16,6 +16,12 @@ VINDU_HOYDE  = 720
 vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 print(type(vindu))
 
+base_icon = pg.image.load(f"Benjamin/pngs/multipong/base_icon.png")
+pg.transform.scale(base_icon, (40, 40))
+var = pg.PixelArray(base_icon)
+# var.replace(([Colour you want to replace]), [Colour you want])
+var.replace((161,161,161), (255,random.randint(100,200),255))
+
 
 klokke = 0
 clock = pg.time.Clock()
@@ -32,6 +38,8 @@ for i in range(0,112):
 start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
 shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
 exit_bilde = pg.image.load('Benjamin/pngs/multipong/Exit.png').convert_alpha()
+
+sakura_bilde = pg.image.load('Benjamin/pngs/multipong/Sakura1.jpg').convert_alpha()
 
 class Button():
   def __init__(self, x, y, image, scale):
@@ -64,6 +72,22 @@ start_button = Button(100,200,start_bilde, 1)
 shop_button = Button(700,200,shop_bilde, 1)
 exit_button = Button(400,500,exit_bilde, 1)
 
+class Bilder:
+  def __init__(self, x, y, image, scale):
+    width = image.get_width()
+    height = image.get_height()
+    self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
+    self.rect = self.image.get_rect()
+    self.rect.topleft = (x, y)
+    self.clicked = False
+  
+  def draw(self):
+    vindu.blit(self.image, (self.rect.x, self.rect.y))
+
+
+sakura_bilde1 = Bilder(0,0,pg.transform.flip(sakura_bilde, True, False), 0.352)
+sakura_bilde2 = Bilder(560,0, sakura_bilde, 0.352)
+
 class Arena:
   def __init__(self,x,y,bredde,høyde,farge):
     self.x = x
@@ -91,10 +115,6 @@ class Pong:
     self.vindusobjekt = vindusobjekt
     self.farge = farge
     self.passes = passes
-
-  def lage(self):
-    if klokke % 3000 == 0:
-      pongs.append(Pong(random.randint(560,720),random.randint(-200,-100),choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10,choice([i for i in range(4,8) if i not in [0]])/10,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),0))
   
   def nytt_spill(self):
     global pongs
@@ -103,15 +123,33 @@ class Pong:
     plate.x = 560
     klokke = 0
 
-  def tegn(self):
+def tegn():
     global klokke
     """Metode for å tegne kvadratene"""
     for i in range(0,len(pongs)):
       pg.draw.rect(pongs[i].vindusobjekt, pongs[i].farge, (pongs[i].x, pongs[i].y, pongs[i].bredde, pongs[i].bredde))
-      pg.draw.rect(plate.vindusobjekt, plate.farge, (plate.x, plate.y, plate.bredde, plate.høyde))
 
+def lage():
+    if klokke % 3000 == 0:
+      pongs.append(Pong(random.randint(560,720),random.randint(-200,-100),choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10,choice([i for i in range(4,8) if i not in [0]])/10,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),0))
 
-  def flytt(self):
+class Plate:
+  def __init__(self, x, y, fartx, farty, bredde, høyde, vindusobjekt, farge, passes):
+    self.x = x
+    self.y = y
+    self.fartx = fartx
+    self.farty = farty
+    self.bredde = bredde
+    self.høyde = høyde
+    self.vindusobjekt = vindusobjekt
+    self.farge = farge
+    self.passes = passes
+
+  def tegn(self):
+    global klokke
+    pg.draw.rect(plate.vindusobjekt, plate.farge, (plate.x, plate.y, plate.bredde, plate.høyde))
+
+def flytt():
     global fortsett
     global klokke
     global spill
@@ -139,7 +177,7 @@ class Pong:
         pongs[i].x += pongs[i].fartx
         pongs[i].y += pongs[i].farty
 
-  def bounce(self):
+def bounce():
     global klokke
     for i in range(-1,len(pongs)):
       for o in range(-1,i) and range(i+1, len(pongs)):
@@ -161,7 +199,7 @@ class Pong:
           pongs[o].passes += 1
 
 
-plate = Pong(560,650,1,0,160,10,vindu,(255,255,255),0)
+plate = Plate(560,650,1,0,160,10,vindu,(255,255,255),0)
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.SysFont("Arial", 24) 
 
@@ -189,11 +227,13 @@ def game():
         sys.exit()
     plate_bevegelse()
     vindu.fill((120, 120, 120))
+    sakura_bilde2.draw()
+    sakura_bilde1.draw()
     arena.tegnarena()
-    plate.lage()
-    plate.tegn()
+    lage()
+    tegn()
     '''plate.bounce()'''
-    plate.flytt()
+    flytt()
     klokke += 1
     clock.tick(500)
     pg.display.flip()
@@ -216,7 +256,6 @@ def meny():
     counter += 1
     if counter == 112:
         counter = 0
-    print(counter)
 
     if shop_button.draw():
         sys.exit()
