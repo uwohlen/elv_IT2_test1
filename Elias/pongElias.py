@@ -3,6 +3,7 @@ from telnetlib import XASCII
 import pygame as pg
 from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT, K_SPACE)
 import random
+
 pg.init()
 
 w = 600
@@ -63,8 +64,8 @@ class Blokk:
     def kmb(self, baller):
         global treff
         for ball in baller:
-            if (ball.x-ball.radius>self.x) and \
-                (ball.x+ball.radius<self.x+self.bredde) and \
+            if (ball.x>self.x) and \
+                (ball.x<self.x+self.bredde) and \
                 (ball.y+ball.radius>self.y) and \
                 (ball.y+ball.radius<self.y+self.lengde):
                 ball.fart_y = -ball.fart_y
@@ -72,11 +73,11 @@ class Blokk:
                 treff+=1
                 if treff%3==0:
                     if len(baller)-1<treff//3:
-                        baller.append(Ball(250,250,random.randint(1,6),-4,30,d))
+                        baller.append(Ball(250,250,random.randint(1,6),random.randint(2,4)*-1,30,d))
             
 
          
-baller.append(Ball(250,250,random.randint(1,6),-4,30,d))
+baller.append(Ball(250,250,random.randint(1,6),random.randint(2,4)*-1,30,d))
 blokk = Blokk(d,200,600,150,15,5)
 
 font = pg.font.SysFont('Comic Sans MS', 30)
