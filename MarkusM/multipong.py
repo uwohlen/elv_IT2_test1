@@ -1,3 +1,4 @@
+from turtle import width
 import pygame as pg
 import math
 import random as r
@@ -27,8 +28,6 @@ SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
 MusicChannel = pg.mixer.Channel(3)
 
-highScore = 0
-
 clock = pg.time.Clock() 
 windowFPS = 60
 
@@ -45,13 +44,14 @@ run = True
 class settings:
     def __init__(self):
         self.meny = 2
-        self.coins = 10000
+        self.coins = 1000000
+        self.highscore = 0
 settings = settings()
 
 
 
 global blockSize
-blockSize = 100
+blockSize = 50
 
 global playerSize #størrelse av spiller-blokken
 playerSize = (150,32)
@@ -315,6 +315,26 @@ def menuIntererract(mousepos):
     elif settings.meny == 2:
         if backbox.rect.collidepoint(mousepos):
             settings.meny = 1
+
+class gridElement:
+    def __init__(self,size,pos):
+        self.size = size
+        self.xpos,self.ypos = pos
+        self.padding = pg.Rect(0,0,size,size)
+        self.rect = pg.Rect(0,0,size-10,size-10)
+
+    def render(self):
+        print("LOL bozo")
+
+gridlist = []
+
+def grid():
+    #definere hvordan gridden skal se ut
+    print("LOL bozo")
+
+def gridrender():
+    for i in gridlist:
+        gridlist[i].render
 
 def menu():
     global loop
