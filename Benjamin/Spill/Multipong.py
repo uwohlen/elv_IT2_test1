@@ -8,10 +8,12 @@ from random import choice
 from pygame import mixer
 
 # Initialiserer/starter pygame
+pg.mixer.init(44100, -16, 1, 512)
 pg.init()
+pg.mixer.quit()
+pg.mixer.init(44100, 32, 2, 512)
+pg.mixer.set_num_channels(32)
 
-pg.mixer.pre_init(44100, -16, 2, 2048)
-mixer.init()
 
 # Oppretter et vindu der vi skal "tegne" innholdet vårt
 VINDU_BREDDE = 1280
@@ -20,8 +22,8 @@ vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 print(type(vindu))
 # var.replace(([Colour you want to replace]), [Colour you want])
 
-meny_musikk = pg.mixer.music.load("Benjamin/Lyd/Daft Punk - Veridis Quo.mp3")
-meny_musikk.set_volume(0.1)
+meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Untitled (2).wav")
+'''meny_musikk.set_volume(0.05)'''
 
 
 klokke = 0
