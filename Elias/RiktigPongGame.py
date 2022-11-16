@@ -1,7 +1,5 @@
-from sqlite3 import Timestamp
-from telnetlib import XASCII
 import pygame as pg
-from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT, K_SPACE)
+from pygame.locals import (K_LEFT, K_RIGHT, K_SPACE)
 import random
 
 pg.init()
@@ -97,7 +95,6 @@ while fortsett:
         i.tegn()
         i.flytt()
     blokk.kmb(baller)
-    print(treff)
     if not slutt:
         teller+=1
     tekst=str(teller)
