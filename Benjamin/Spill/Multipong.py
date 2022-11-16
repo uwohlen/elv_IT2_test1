@@ -23,12 +23,20 @@ clock = pg.time.Clock()
 pongs = []
 bakgrunnlist = []
 bakgrunnlist2 = []
-counter = 0
+shop_bakgrunnlist = []
+shop_bakgrunnlist2 = []
+counter_meny = 0
+counter_shop = 0
 
 for i in range(113):
     bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
 for i in range(0,112):
     bakgrunnlist2.append(pg.transform.scale(bakgrunnlist[i], (1280, 720)))
+
+for i in range(314):
+    shop_bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/shop_gif/images/pixel-sakura-{i}.png"))
+for i in range(0,313):
+    shop_bakgrunnlist2.append(pg.transform.scale(shop_bakgrunnlist[i], (1280, 720)))
 
 start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
 shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
@@ -252,16 +260,24 @@ def game():
   # Oppdaterer alt innholdet i vinduet
     
 def shop():
+  global klokke
+  global counter_shop
   sjappe = True
   while sjappe:
     for event in pg.event.get():
       if event.type == pg.QUIT:
         sys.exit()
+    vindu.blit(shop_bakgrunnlist2[counter_shop],(0, 0))
+    counter_shop += 1
+    if counter_shop == 313:
+        counter_shop = 0
+    clock.tick(30)
+    pg.display.flip()
 
 
 # Gjenta helt til brukeren lukker vinduet
 def meny():
-  global counter
+  global counter_meny
   fortsett = True
   while fortsett:
       # Sjekker om brukeren har lukket vinduet
@@ -271,13 +287,13 @@ def meny():
 
       # Farger bakgrunnen
     clock.tick(30)
-    vindu.blit(bakgrunnlist2[counter],(0, 0))
-    counter += 1
-    if counter == 112:
-        counter = 0
+    vindu.blit(bakgrunnlist2[counter_meny],(0, 0))
+    counter_meny += 1
+    if counter_meny == 112:
+        counter_meny = 0
 
     if shop_button.draw():
-        sys.exit()
+        shop()
 
     if exit_button.draw():
         sys.exit()
