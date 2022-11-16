@@ -257,6 +257,7 @@ def game():
   global counter_game_background
   global gif_rate
   spill = True
+  MusicChannel.fadeout(3000)
   while spill:
     for event in pg.event.get():
       if event.type == pg.QUIT:
@@ -274,6 +275,9 @@ def game():
     s.set_alpha(64)                # alpha level
     s.fill((255, 255, 255))           # this fills the entire surface
     vindu.blit(s, (VINDU_BREDDE / 4, 0))           # (0,0) are the top-left coordinates
+    bilde1 = font.render(poeng(klokke), True, (100, 100, 100))
+    bilde_rect1 = bilde1.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/7.85))
+    vindu.blit(bilde1, (bilde_rect1))
     bilde = font.render(poeng(klokke), True, (255, 255, 255))
     bilde_rect = bilde.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/8))
     vindu.blit(bilde, (bilde_rect))
