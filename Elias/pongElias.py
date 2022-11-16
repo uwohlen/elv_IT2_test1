@@ -97,7 +97,6 @@ while fortsett:
         i.tegn()
         i.flytt()
     blokk.kmb(baller)
-    print(treff)
     if not slutt:
         teller+=1
     tekst=str(teller)
