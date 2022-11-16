@@ -10,7 +10,7 @@ from pygame import mixer
 # Initialiserer/starter pygame
 pg.init()
 
-pg.mixer.pre_init(44100, -16, 2, 512)
+pg.mixer.pre_init(44100, -16, 2, 2048)
 mixer.init()
 
 # Oppretter et vindu der vi skal "tegne" innholdet vårt
@@ -20,7 +20,7 @@ vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 print(type(vindu))
 # var.replace(([Colour you want to replace]), [Colour you want])
 
-meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Untitled (4).wav")
+meny_musikk = pg.mixer.music.load("Benjamin/Lyd/Daft Punk - Veridis Quo.mp3")
 meny_musikk.set_volume(0.1)
 
 
@@ -315,6 +315,8 @@ def meny():
     for event in pg.event.get():
       if event.type == pg.QUIT:
         sys.exit()
+    
+    meny_musikk.play()
     
 
     clock.tick(30)
