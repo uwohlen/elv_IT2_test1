@@ -6,9 +6,14 @@ import sys, time
 import os
 from pygame.locals import *
 from random import choice
+from pygame import mixer
+
 
 # Initialiserer/starter pygame
 pg.init()
+
+pg.mixer.pre_init(44100, -16, 2, 512)
+mixer.init()
 
 # Oppretter et vindu der vi skal "tegne" innholdet vårt
 VINDU_BREDDE = 1280
@@ -16,6 +21,9 @@ VINDU_HOYDE  = 720
 vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 print(type(vindu))
 # var.replace(([Colour you want to replace]), [Colour you want])
+
+meny_musikk = pg.mixer.music.load("Benjamin/Lyd/Daft_Punk_Veridis_Quo.mp3")
+meny_musikk.set_volume(0.5)
 
 
 klokke = 0
@@ -55,7 +63,10 @@ back_bilde = pg.image.load('Benjamin/pngs/multipong/Back.png').convert_alpha()
 
 sakura_bilde = pg.image.load('Benjamin/pngs/multipong/Sakura1.jpg').convert_alpha()
 
-
+#lyder
+SoundEffectChannel = pg.mixer.Channel(1)
+SoundEffectChannel2 = pg.mixer.Channel(2)
+MusicChannel = pg.mixer.Channel(3)
 
 class Button():
   def __init__(self, x, y, image, scale):
@@ -303,7 +314,6 @@ def shop():
     pg.display.flip()
 
 
-# Gjenta helt til brukeren lukker vinduet
 def meny():
   global counter_meny
   fortsett = True
@@ -312,8 +322,11 @@ def meny():
     for event in pg.event.get():
       if event.type == pg.QUIT:
         sys.exit()
+    
 
-      # Farger bakgrunnen
+    meny_musikk.play(-1)
+    
+
     clock.tick(30)
     vindu.blit(bakgrunnlist2[counter_meny],(0, 0))
     counter_meny += 1
@@ -334,5 +347,5 @@ def meny():
 while True:
   meny()
 
-# Avslutter pygameas
+# Avslutter pygame
 pg.quit()
