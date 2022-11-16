@@ -25,18 +25,28 @@ bakgrunnlist = []
 bakgrunnlist2 = []
 shop_bakgrunnlist = []
 shop_bakgrunnlist2 = []
+game_backgroundlist = []
+game_backgroundlist2 = []
 counter_meny = 0
 counter_shop = 0
+counter_game_background = 0
 
 for i in range(113):
     bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
 for i in range(0,112):
-    bakgrunnlist2.append(pg.transform.scale(bakgrunnlist[i], (1280, 720)))
+    bakgrunnlist2.append(pg.transform.scale(bakgrunnlist[i], (VINDU_BREDDE, VINDU_HOYDE)))
 
 for i in range(314):
     shop_bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/shop_gif/images/pixel-sakura-{i}.png"))
 for i in range(0,313):
-    shop_bakgrunnlist2.append(pg.transform.scale(shop_bakgrunnlist[i], (1280, 720)))
+    shop_bakgrunnlist2.append(pg.transform.scale(shop_bakgrunnlist[i], (VINDU_BREDDE, VINDU_HOYDE)))
+    
+gif_rate = 15
+for i in range(0, 32):
+  for o in range(1, gif_rate + 1):
+    game_backgroundlist.append(pg.image.load(f"Benjamin/pngs/multipong/game_background_gif/images/tumblr_nr2569nqX01qze3hdo1_r2_500-{i}.png"))
+for i in range(0,31 * gif_rate):
+    game_backgroundlist2.append(pg.transform.scale(game_backgroundlist[i], (VINDU_BREDDE / 2, VINDU_HOYDE)))
 
 start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
 shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
@@ -106,7 +116,7 @@ class Arena:
     """Metode for å tegne arena"""
     pg.draw.rect(vindu, arena.farge, (arena.x, arena.y, arena.bredde, arena.høyde))
 
-arena = Arena(360,0,560,720,(0,0,0))
+arena = Arena(VINDU_BREDDE / 4, 0,VINDU_BREDDE / 2, VINDU_HOYDE,(0,0,0))
 
     
 class Pong:
@@ -145,7 +155,7 @@ def nytt_spill():
     global pongs
     global klokke
     pongs = []
-    plate.x = 560
+    plate.x = VINDU_BREDDE / 2 - plate.bredde / 2
     klokke = 0
 
 class Plate:
@@ -239,6 +249,8 @@ font = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 48)
 
 def game():
   global klokke
+  global counter_game_background
+  global gif_rate
   spill = True
   while spill:
     for event in pg.event.get():
@@ -249,6 +261,14 @@ def game():
     sakura_bilde2.draw()
     sakura_bilde1.draw()
     arena.tegnarena()
+    vindu.blit(game_backgroundlist2[counter_game_background],(VINDU_BREDDE / 4, 0))
+    counter_game_background += 1
+    if counter_game_background == 31 * gif_rate:
+      counter_game_background = 0
+    s = pg.Surface((VINDU_BREDDE / 2,VINDU_HOYDE))  # the size of your rect
+    s.set_alpha(64)                # alpha level
+    s.fill((255, 255, 255))           # this fills the entire surface
+    vindu.blit(s, (VINDU_BREDDE / 4, 0))           # (0,0) are the top-left coordinates
     bilde = font.render(poeng(klokke), True, (255, 255, 255))
     bilde_rect = bilde.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/8))
     vindu.blit(bilde, (bilde_rect))
@@ -272,7 +292,7 @@ def shop():
     vindu.blit(shop_bakgrunnlist2[counter_shop],(0, 0))
     counter_shop += 1
     if counter_shop == 313:
-        counter_shop = 0
+      counter_shop = 0
     if back_button.draw():
         meny()
     s = pg.Surface((VINDU_BREDDE * (6/8),VINDU_HOYDE * (14/16)))  # the size of your rect
