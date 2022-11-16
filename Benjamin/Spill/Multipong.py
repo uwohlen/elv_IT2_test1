@@ -8,11 +8,9 @@ from random import choice
 from pygame import mixer
 
 # Initialiserer/starter pygame
-pg.mixer.init(44100, -16, 1, 512)
+
 pg.init()
-pg.mixer.quit()
-pg.mixer.init(44100, 32, 2, 512)
-pg.mixer.set_num_channels(32)
+
 
 
 # Oppretter et vindu der vi skal "tegne" innholdet vårt
@@ -22,8 +20,9 @@ vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 print(type(vindu))
 # var.replace(([Colour you want to replace]), [Colour you want])
 
-meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Untitled (2).wav")
-'''meny_musikk.set_volume(0.05)'''
+SoundEffectChannel = pg.mixer.Channel(1)
+SoundEffectChannel2 = pg.mixer.Channel(2)
+MusicChannel = pg.mixer.Channel(3)
 
 
 klokke = 0
@@ -313,12 +312,17 @@ def meny():
   global counter_meny
   fortsett = True
   while fortsett:
+    if MusicChannel.get_busy() == False:
+            meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Daft Punk - Veridis Quo.mp3")
+            meny_musikk.set_volume(0.5)
+            MusicChannel.play(meny_musikk)
+            
+            
       # Sjekker om brukeren har lukket vinduet
     for event in pg.event.get():
       if event.type == pg.QUIT:
         sys.exit()
     
-    meny_musikk.play()
     
 
     clock.tick(30)
