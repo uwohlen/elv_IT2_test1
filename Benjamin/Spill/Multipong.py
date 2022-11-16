@@ -41,6 +41,7 @@ for i in range(0,313):
 start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
 shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
 exit_bilde = pg.image.load('Benjamin/pngs/multipong/Exit.png').convert_alpha()
+back_bilde = pg.image.load('Benjamin/pngs/multipong/Back.png').convert_alpha()
 
 sakura_bilde = pg.image.load('Benjamin/pngs/multipong/Sakura1.jpg').convert_alpha()
 
@@ -76,6 +77,7 @@ class Button():
 start_button = Button(100,200,start_bilde, 1)
 shop_button = Button(700,200,shop_bilde, 1)
 exit_button = Button(400,500,exit_bilde, 1)
+back_button = Button(VINDU_BREDDE * (14.5/16), VINDU_HOYDE / 48, back_bilde, 0.75)
 
 class Bilder:
   def __init__(self, x, y, image, scale):
@@ -271,6 +273,12 @@ def shop():
     counter_shop += 1
     if counter_shop == 313:
         counter_shop = 0
+    if back_button.draw():
+        meny()
+    s = pg.Surface((VINDU_BREDDE * (6/8),VINDU_HOYDE * (14/16)))  # the size of your rect
+    s.set_alpha(128)                # alpha level
+    s.fill((255, 255, 255))           # this fills the entire surface
+    vindu.blit(s, (VINDU_BREDDE * (1/8), VINDU_HOYDE * (1/16)))           # (0,0) are the top-left coordinates
     clock.tick(30)
     pg.display.flip()
 
