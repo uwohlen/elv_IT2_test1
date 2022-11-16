@@ -1,4 +1,3 @@
-from turtle import width
 import pygame as pg
 import math
 import random as r
@@ -28,6 +27,8 @@ SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
 MusicChannel = pg.mixer.Channel(3)
 
+highScore = 0
+
 clock = pg.time.Clock() 
 windowFPS = 60
 
@@ -44,14 +45,13 @@ run = True
 class settings:
     def __init__(self):
         self.meny = 2
-        self.coins = 1000000
-        self.highscore = 0
+        self.coins = 10000
 settings = settings()
 
 
 
 global blockSize
-blockSize = 50
+blockSize = 100
 
 global playerSize #størrelse av spiller-blokken
 playerSize = (150,32)
@@ -246,6 +246,73 @@ class menublock:
         #rendere tekst
         window.blit(self.text,self.textBox) #render
 
+gridsize = 50
+
+class gridElement:
+    def __init__(self,size,pos,color):
+        self.size = size
+        self.xpos,self.ypos = pos
+        self.padding = pg.Rect(0,0,size,size)
+        self.rect = pg.Rect(0,0,size-10,size-10)
+        self.rect.center = pos
+        self.padding.center = pos
+        self.color = color
+        self.buy = False
+
+        self.textureraw = pg.image.load("MarkusM/images/coinicon.png")
+        self.texture = pg.transform.scale(self.textureraw,(size-10,size-10))
+        self.pretexture = pg.Surface((size-10,size-10)) #performance
+        self.pretexture.blit(self.texture,(self.rect.x,self.rect.y))
+
+    def render(self):
+        pg.draw.rect(window,black,self.padding)
+        pg.draw.rect(window,self.color,self.rect)
+
+        #if self.buy == False:
+        window.blit(self.pretexture,self.rect)
+
+
+gridlist = []
+colorlist = []
+
+class shopcolor:
+    def __init__(self,color,price):
+        self.color = color
+        self.price = price
+
+colorlist.append(shopcolor(black,0))
+colorlist.append(shopcolor(green,2000))
+colorlist.append(shopcolor(light_grey,0))
+colorlist.append(shopcolor(gdred,2000))
+
+gridspace = 25
+def grid(kol,rad):
+    #definere hvordan gridden skal se ut
+    linesize = (rad-1)*gridsize+((rad-1)*gridspace)
+    clx = (window_width/2-linesize/2)
+    clspace = gridsize+gridspace
+
+    for a in range(kol):
+        for i in range(rad):
+            gridlist.append(gridElement(gridsize,(clx+i*clspace,window_height/2),colorlist[i].color))
+            #print(clx+i*clspace)
+    #gridlist.append(gridElement(gridsize,(window_width/2,window_height/2),green))
+    #gridlist.append(gridElement(gridsize,(window_width/4,window_height/2),black))
+
+
+grid(1,4)
+
+def gridrender():
+    for i in range(len(gridlist)):
+        gridlist[i].render()
+
+def gridhover():
+    #vise info når musen går over
+    pass
+def gridinterract():
+    #kjøpe hvis man har nok penger, hvis ikke rød tekst med du har ikke nok penger
+    pass
+
 #coin i shop
 coinw = 50
 coinrect = pg.Rect(0,0,coinw,coinw)
@@ -301,6 +368,8 @@ def menurender():
         window.blit(shopcoinPretexture,coinrect)
         window.blit(cointext,cointextbox)
 
+        gridrender()
+
 
 def menuIntererract(mousepos):
     if settings.meny == 1:
@@ -315,26 +384,6 @@ def menuIntererract(mousepos):
     elif settings.meny == 2:
         if backbox.rect.collidepoint(mousepos):
             settings.meny = 1
-
-class gridElement:
-    def __init__(self,size,pos):
-        self.size = size
-        self.xpos,self.ypos = pos
-        self.padding = pg.Rect(0,0,size,size)
-        self.rect = pg.Rect(0,0,size-10,size-10)
-
-    def render(self):
-        print("LOL bozo")
-
-gridlist = []
-
-def grid():
-    #definere hvordan gridden skal se ut
-    print("LOL bozo")
-
-def gridrender():
-    for i in gridlist:
-        gridlist[i].render
 
 def menu():
     global loop
