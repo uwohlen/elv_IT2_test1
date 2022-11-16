@@ -7,6 +7,7 @@ pg.init()
 #skrift
 font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
 font2 = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 80)
+shopfont = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 50)
 menyFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Black_PERSONAL USE.otf",80)
 timerFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Regular_PERSONAL USE.otf",80)
 pg.display.set_caption('gaming')
@@ -37,8 +38,17 @@ window_height = 700
 
 blocklist = []
 
+#window = pg.display.set_mode([window_width,window_height],pg.FULLSCREEN)
 window = pg.display.set_mode([window_width,window_height])
 run = True
+
+class settings:
+    def __init__(self):
+        self.meny = 2
+        self.coins = 10000
+settings = settings()
+
+
 
 global blockSize
 blockSize = 100
@@ -65,15 +75,17 @@ class block:
         self.ycounter = 0
 
     def posupdate(self): #oppdater posisjon til blokken
-        
+        global run
         x,y = self.momentum
         self.posx = self.posx - x
         self.posy = self.posy - y
 
         if self.posx-(blockSize/2) < 0 or self.posx > window_width-(blockSize/2):
             self.momentum = -x,y
-        if self.posy-(blockSize/2) < 0 or self.posy > window_height-(blockSize/2):
+        if self.posy-(blockSize/2) < 0:
             self.momentum = x,-y
+        if self.posy>window_height-(blockSize/2):
+            run = False
 
         #legge til random?
         
@@ -152,7 +164,7 @@ class player():
         
 
     def updateSafebox(self): #oppdatere hitbox
-        self.safebox = pg.Rect(0,0,self.width-10,5)
+        self.safebox = pg.Rect(0,0,self.width-20,5)
         self.safebox.midtop = self.rect.midtop
 
         self.ysafebox1 = pg.Rect(0,0,5,self.height-10)
@@ -184,12 +196,16 @@ def safecollision(): #kollisjon mellom spiller og kube
 
 player = player() #initiere spiller
 
-addblock() #legge til en blokk
 global counter
 counter = 0
 timediff = 5
 def main():
     global counter
+    global blocklist
+    global run
+    run = True
+    blocklist = []
+    addblock()
 
     while run:
         window.fill((255,255,255)) #bakgrunn
@@ -213,16 +229,172 @@ def main():
         clock.tick(windowFPS) #holde frame rate til 60
         pg.display.flip() #oppdatere skjermen
 
-def menu():
+class menublock:
+    def __init__(self,posy,text,color):
+        self.posy = posy
+        self.rect = pg.Rect(0,0,window_width/1.5,window_height/8)
+        self.color = color
+        self.rect.center = window_width/2,posy
+        self.text = font2.render(str(text),True,black) #definere tekst
+        self.textBox = self.text.get_rect() #definere hvor stor teksten er
+        self.textBox.center = self.rect.center #sentrere teksten i boksen
 
+    def render(self):
+        #rendere boks
+        pg.draw.rect(window,self.color,self.rect)
+
+        #rendere tekst
+        window.blit(self.text,self.textBox) #render
+
+gridsize = 50
+
+class gridElement:
+    def __init__(self,size,pos,color):
+        self.size = size
+        self.xpos,self.ypos = pos
+        self.padding = pg.Rect(0,0,size,size)
+        self.rect = pg.Rect(0,0,size-10,size-10)
+        self.rect.center = pos
+        self.padding.center = pos
+        self.color = color
+        self.buy = False
+
+        self.textureraw = pg.image.load("MarkusM/images/coinicon.png")
+        self.texture = pg.transform.scale(self.textureraw,(size-10,size-10))
+        self.pretexture = pg.Surface((size-10,size-10)) #performance
+        self.pretexture.blit(self.texture,(self.rect.x,self.rect.y))
+
+    def render(self):
+        pg.draw.rect(window,black,self.padding)
+        pg.draw.rect(window,self.color,self.rect)
+
+        #if self.buy == False:
+        window.blit(self.pretexture,self.rect)
+
+
+gridlist = []
+colorlist = []
+
+class shopcolor:
+    def __init__(self,color,price):
+        self.color = color
+        self.price = price
+
+colorlist.append(shopcolor(black,0))
+colorlist.append(shopcolor(green,2000))
+colorlist.append(shopcolor(light_grey,0))
+colorlist.append(shopcolor(gdred,2000))
+
+gridspace = 25
+def grid(kol,rad):
+    #definere hvordan gridden skal se ut
+    linesize = (rad-1)*gridsize+((rad-1)*gridspace)
+    clx = (window_width/2-linesize/2)
+    clspace = gridsize+gridspace
+
+    for a in range(kol):
+        for i in range(rad):
+            gridlist.append(gridElement(gridsize,(clx+i*clspace,window_height/2),colorlist[i].color))
+            #print(clx+i*clspace)
+    #gridlist.append(gridElement(gridsize,(window_width/2,window_height/2),green))
+    #gridlist.append(gridElement(gridsize,(window_width/4,window_height/2),black))
+
+
+grid(1,4)
+
+def gridrender():
+    for i in range(len(gridlist)):
+        gridlist[i].render()
+
+def gridhover():
+    #vise info når musen går over
+    pass
+def gridinterract():
+    #kjøpe hvis man har nok penger, hvis ikke rød tekst med du har ikke nok penger
+    pass
+
+#coin i shop
+coinw = 50
+coinrect = pg.Rect(0,0,coinw,coinw)
+shopcoin = pg.image.load("MarkusM/images/coinicon.png")
+shopcoin = pg.transform.scale(shopcoin, (coinw, coinw))
+shopcoinPretexture = pg.Surface((coinw,coinw)) #BIG FPS. gikk fra 25 til 60 😃
+shopcoinPretexture.blit(shopcoin,coinrect)
+
+coinspace = 10
+
+
+coinrect.center = (window_width/2,window_height/2-(window_height/4))
+
+#testbox = menublock(80,"TEST",light_grey)
+startbox = menublock(window_height/2-window_height/5,"START",light_grey)
+quitbox = menublock(window_height/2+window_height/5,"QUIT",light_grey)
+shopbox = menublock(window_height/2,"SHOP",light_grey)
+backbox = menublock(window_height/2+window_height/5,"BACK",light_grey)
+
+def menurender():
+    global shopcoinPretexture
+    global coinrect
+    global newcoinrect
+
+    if settings.meny == 1:
+        startbox.render()
+        quitbox.render()
+        shopbox.render()
+
+        #tittel
+        title = font2.render(str("MULTIPONG"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
+
+    if settings.meny == 2:
+        backbox.render()
+
+        #tittel
+        title = font2.render(str("SHOP"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
+
+        #render coins
+        cointext = shopfont.render(str(settings.coins),True,black)
+        cointextbox = cointext.get_rect()
+
+        totalbox = pg.Rect(0,0,cointextbox.width+coinrect.width+(coinspace*2),cointextbox.height)
+        totalbox.center = (window_width/2,window_height/2-(window_height/4))
+
+        c,d = totalbox.midleft
+        cointextbox.midleft = c+coinrect.width+coinspace,d
+        coinrect.midleft = c,d
+        window.blit(shopcoinPretexture,coinrect)
+        window.blit(cointext,cointextbox)
+
+        gridrender()
+
+
+def menuIntererract(mousepos):
+    if settings.meny == 1:
+        if quitbox.rect.collidepoint(mousepos):
+            sys.exit()
+        if startbox.rect.collidepoint(mousepos):
+            global loop
+            loop = False
+        if shopbox.rect.collidepoint(mousepos):
+            settings.meny = 2
+
+    elif settings.meny == 2:
+        if backbox.rect.collidepoint(mousepos):
+            settings.meny = 1
+
+def menu():
+    global loop
     loop = True
+    
     while loop:
         if MusicChannel.get_busy() == False:
             menuMusic = pg.mixer.Sound(f"MarkusM/sounds/MenuMusic.mp3")
             menuMusic.set_volume(0.5)
             MusicChannel.play(menuMusic)
             
-        #quitButton = pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
@@ -230,54 +402,17 @@ def menu():
                 left,middle,right = pg.mouse.get_pressed()
                 mousepos = pg.mouse.get_pos()
                 if left:
-                    if quitBox.collidepoint(mousepos):
-                        sys.exit()
-                    if startBox.collidepoint(mousepos):
-                        loop = False
-                
-
-                
+                    menuIntererract(mousepos)
+        
             if event.type == pg.KEYDOWN:
                 if event.key ==pg.K_ESCAPE:
                     sys.exit()
         window.fill((255,255,255))
-
-        centerx,centery = findCenter() #finne senter av skjermen
-
-        quitBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
-        quitBox.center = (centerx+window_width/4,centery) #posisjonere rektangel
-        pg.draw.rect(window,light_grey,quitBox) #tegne rektangel
-        
-        quitText = menyFont.render(str("QUIT"),True,black) #definere tekst
-        quitTextBox = quitText.get_rect() #definere hvor stor teksten er
-        quitTextBox.center = quitBox.center #sentrere teksten i boksen
-        window.blit(quitText,quitTextBox) #render
-
-        startBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
-        startBox.center = (centerx-window_width/4,centery) #posisjonere rektangel
-        pg.draw.rect(window,light_grey,startBox) #tegne rektangel
-
-        startText = font2.render(str("START"),True,black) #definere tekst
-        startTextBox = startText.get_rect() #definere hvor stor teksten er
-        startTextBox.center = startBox.center #sentrere teksten i boksen
-        window.blit(startText,startTextBox) #render
-
-        #tittel
-        title = font2.render(str("GAMING"),True,black) #definere tekst
-        titleBox = title.get_rect(center=(window_width/2,(window_height/2)-(window_height/4)))
-        window.blit(title,titleBox) #render
-
-
-        #window.blit(quitBox,(centerPosx-90,centerPosy))
-        #window.blit(quitButton, (0,0))
-
-        
-        
-
+        menurender()
 
         pg.display.flip()
 
-while True:
+while True: #spillLoop
     menu()
     main()
 
