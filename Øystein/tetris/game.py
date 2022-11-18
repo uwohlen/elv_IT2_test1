@@ -64,8 +64,20 @@ class Game:
                 x = self.piece_x + square%4
                 y = self.piece_y + square//4
                 self.squares[y*self.width+x] = 1
+            self.check_for_clear()
 
         self.current_piece = random.randint(0, len(PIECES)-1)
         self.piece_rotation = 0
         self.piece_x = self.width//2-2
         self.piece_y = 0
+    
+    def check_for_clear(self):
+        for y in range(self.height-1, -1, -1):
+            clear = True
+            for x in range(self.width):
+                if self.squares[y*self.width+x] == 0:
+                    clear = False
+            if clear:
+                for yi in range(y, 0, -1):
+                    for xi in range(self.width):
+                        self.squares[yi*self.width+xi] = self.squares[(yi-1)*self.width+xi]
