@@ -9,9 +9,6 @@ while True:
         Vballs[x][1] = -Vballs[x][1] if box.collidepoint(balls[x].x, balls[x].y + 10) else Vballs[x][1]
         score = score + 1 if box.collidepoint(balls[x].x, balls[x].y + 10) else score
         if balls[x].y + 10 >= wind.get_height(): pg.quit()
-    
-        
-         
         Vballs[x][0] = -Vballs[x][0] if ((balls[x].x - 10) <= 0 or (balls[x].x + 10) >= wind.get_width()) else Vballs[x][0]
         Vballs[x][1] = -Vballs[x][1] if ((balls[x].y - 10) <= 0 or (balls[x].y + 10) >= wind.get_height()) else Vballs[x][1]         
         balls[x].move_ip(Vballs[x][0], Vballs[x][1]), pg.draw.circle(wind, (255, 0, 0), (balls[x].x, balls[x].y), 10)
