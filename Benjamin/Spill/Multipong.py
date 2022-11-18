@@ -322,6 +322,22 @@ def shop():
     s.set_alpha(128)                # alpha level
     s.fill((255, 255, 255))           # this fills the entire surface
     vindu.blit(s, (VINDU_BREDDE * (1/8), VINDU_HOYDE * (1/16)))           # (0,0) are the top-left coordinates
+    bilde_shop = font.render('SHOP', True, (0, 0, 0))
+    bilde_rect_shop = bilde_shop.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/9.6))
+    vindu.blit(bilde_shop, (bilde_rect_shop))
+    
+    bilde_shop1 = font.render('SHOP', True, (255, 255, 255))
+    bilde_rect_shop1 = bilde_shop1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/10))
+    vindu.blit(bilde_shop1, (bilde_rect_shop1))
+    
+    bilde_shop2 = font.render('OUT OF STOCK', True, (0, 0, 0))
+    bilde_rect_shop2 = bilde_shop2.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/1.98))
+    vindu.blit(bilde_shop2, (bilde_rect_shop2))
+    
+    bilde_shop3 = font.render('OUT OF STOCK', True, (255, 255, 255))
+    bilde_rect_shop3 = bilde_shop3.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/2))
+    vindu.blit(bilde_shop3, (bilde_rect_shop3))
+    
     clock.tick(30)
     pg.display.flip()
 
