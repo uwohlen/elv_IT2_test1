@@ -15,8 +15,8 @@ class Game:
             self.balls.append(Ball(
                 self.width/2 + random.randint(-self.width/4, self.width/4), 
                 self.height/4 + random.randint(-self.height/8, self.height/8), 
-                random.choice([-1, 1]), 
-                1,
+                random.random()*4-2, 
+                random.random()+0.5,
                 20,
                 20,
                 self.width, 
@@ -59,7 +59,6 @@ class Ball:
             self.y <= paddle.y+paddle.height:
             self.y = paddle.y - self.height
             self.vel_y = -self.vel_y
-            return True
 
         if self.x <= 0:
             self.x = 0
