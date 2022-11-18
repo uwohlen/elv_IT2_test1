@@ -14,7 +14,7 @@ def main():
     ren = renderer.Renderer(w, 600, 400, -6, 6, 4, -4, fps)
     while True:
         box.apply_force(Vector2(0, 0.01), Vector2(0.1, 0))
-        #box.apply_force(Vector2(0, -0.01), Vector2(0, 0))
+        box.apply_force(Vector2(0, -0.01), Vector2(0, 0))
         w.step(1/fps)
         ren.draw()
 
