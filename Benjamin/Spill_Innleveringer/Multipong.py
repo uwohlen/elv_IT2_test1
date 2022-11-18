@@ -145,9 +145,13 @@ class Pong:
 base_icon = pg.image.load(f"Benjamin/pngs/multipong/base_icon.png").convert()
 base_icon = pg.transform.scale(base_icon, (45, 45))
 
+mo = 0
 def lage():
-    if klokke % 3000 == 0:
-      pongs.append(Pong(random.randint(560,720),random.randint(100,200),(choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10) * 2,(choice([i for i in range(4,8) if i not in [0]])/10) * 2,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),0, base_icon))
+  global mo
+  k = random.randint(1,1500)
+  if k > 1499 or mo == 0:
+    pongs.append(Pong(random.randint(560,720),random.randint(100,200),(choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10) * 2,(choice([i for i in range(4,8) if i not in [0]])/10) * 2,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),1, base_icon))
+    mo = 1
 
 
 def tegn():
