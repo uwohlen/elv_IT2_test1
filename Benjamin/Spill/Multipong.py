@@ -23,7 +23,7 @@ print(type(vindu))
 SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
 MusicChannel = pg.mixer.Channel(3)
-
+MusicChannelGame = pg.mixer.Channel(4)
 
 klokke = 0
 clock = pg.time.Clock()
@@ -146,7 +146,7 @@ base_icon = pg.transform.scale(base_icon, (45, 45))
 
 def lage():
     if klokke % 3000 == 0:
-      pongs.append(Pong(random.randint(560,720),random.randint(100,200),choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10,choice([i for i in range(4,8) if i not in [0]])/10,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),0, base_icon))
+      pongs.append(Pong(random.randint(560,720),random.randint(100,200),(choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10) * 2,(choice([i for i in range(4,8) if i not in [0]])/10) * 2,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),0, base_icon))
 
 
 def tegn():
@@ -174,11 +174,13 @@ class Plate:
     self.vindusobjekt = vindusobjekt
     self.farge = farge
 
-plate = Plate(560,650,1,0,160,10,vindu,(255,255,255))
+plate = Plate(560,650,1 * 2,0,160,10,vindu,(255,255,255))
+hastighet = 2
 
 def flytt():
     global klokke
     global spill
+    global hastighet
     """Metode for å flytte kvadratene"""
     # Sjekker om ballen er utenfor høyre/venstre kant
     for i in range(0,len(pongs)):
@@ -195,17 +197,25 @@ def flytt():
           pongs[i].farty = -pongs[i].farty
           if pongs[i].fartx > 0:
             pongs[i].fartx = ((random.randint(1,6) / 10) + pongs[i].fartx)
-          elif pongs[i].fartx >= 1.2:
-            pongs[i].fartx = 0.6
+          elif pongs[i].fartx >= 1.2 * hastighet:
+            pongs[i].fartx = 0.6 * hastighet
           elif pongs[i].fartx >= 0:
             pongs[i].fartx = -((random.randint(1,6) / 10) + pongs[i].fartx)
-          elif pongs[i].fartx <= -1.2:
-            pongs[i].fartx = -0.6
+          elif pongs[i].fartx <= -1.2 * hastighet:
+            pongs[i].fartx = -0.6 * hastighet
           pongs[i].passes += 1
+          if SoundEffectChannel.get_busy() == False:
+            lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
+            lyd_effekt1.set_volume(0.5)
+            SoundEffectChannel.play(lyd_effekt1)
+          if SoundEffectChannel.get_busy() == True:
+            lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
+            lyd_effekt1.set_volume(0.5)
+            SoundEffectChannel2.play(lyd_effekt1)
         elif (pongs[i].y -3) < (plate.y + (plate.høyde / 2)) < (pongs[i].y + pongs[i].høyde + 3) and (pongs[i].x + pongs[i].bredde - 3) < plate.x < (pongs[i].x + pongs[i].bredde + 3):
-          pongs[i].fartx = -plate.fartx - 0.1
+          pongs[i].fartx = -plate.fartx - (0.1 * hastighet)
         elif (pongs[i].y -3) < (plate.y + (plate.høyde / 2)) < (pongs[i].y + pongs[i].høyde + 3) and (pongs[i].x - 3) < (plate.x + plate.bredde) < (pongs[i].x + 3):
-          pongs[i].fartx = plate.fartx + 0.1
+          pongs[i].fartx = plate.fartx + (0.1 * hastighet)
           pongs[i].passes += 1
         pongs[i].x += pongs[i].fartx
         pongs[i].y += pongs[i].farty
@@ -262,6 +272,10 @@ def game():
     for event in pg.event.get():
       if event.type == pg.QUIT:
         sys.exit()
+    if MusicChannelGame.get_busy() == False:
+            game_musikk = pg.mixer.Sound("Benjamin/Lyd/DJ Striden - Level One.mp3")
+            game_musikk.set_volume(0.5)
+            MusicChannelGame.play(game_musikk)
     plate_bevegelse()
     vindu.fill((120, 120, 120))
     sakura_bilde2.draw()
@@ -286,7 +300,7 @@ def game():
     '''bounce()'''
     flytt()
     klokke += 1
-    clock.tick(500)
+    clock.tick(1000)
     pg.display.flip()
   # Oppdaterer alt innholdet i vinduet
     
@@ -315,6 +329,8 @@ def shop():
 def meny():
   global counter_meny
   fortsett = True
+  MusicChannelGame.fadeout(1500)
+  SoundEffectChannel.fadeout(100)
   while fortsett:
     if MusicChannel.get_busy() == False:
             meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Daft Punk - Veridis Quo.mp3")
