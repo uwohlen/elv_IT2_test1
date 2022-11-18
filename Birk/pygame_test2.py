@@ -1,5 +1,6 @@
 import pygame, sys, random
 
+# Ball movement behaviour
 def ball_animation():
     global ball_speed_x, ball_speed_y
     ball.x += ball_speed_x
@@ -14,6 +15,7 @@ def ball_animation():
     if ball.colliderect(player) or ball.colliderect(opponent):
         ball_speed_x *= -1
 
+# Player-pad movement
 def player_animation():
     player.y += player_speed
     
@@ -22,6 +24,7 @@ def player_animation():
     if player.bottom >= screen_heigth:
         player.bottom = screen_heigth
         
+# Opponent-pad movement
 def opponent_ai():
     if opponent.top < ball.y:
             opponent.top += opponent_speed
@@ -33,6 +36,7 @@ def opponent_ai():
     if opponent.bottom >= screen_heigth:
         opponent.bottom = screen_heigth
         
+# Ball starting position
 def ball_restart():
     global ball_speed_x, ball_speed_y
     ball.center = (screen_width / 2, screen_heigth / 2)
@@ -44,8 +48,8 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # Setting up the main window
-screen_width = 1280
-screen_heigth = 720
+screen_width = 1280 # 1366 (skole pc)
+screen_heigth = 720 # 768 (skole pc)
 screen = pygame.display.set_mode((screen_width, screen_heigth))
 pygame.display.set_caption('Pong')
 
@@ -53,23 +57,27 @@ pygame.display.set_caption('Pong')
 ball = pygame.Rect(screen_width / 2 - 15, screen_heigth / 2 - 15, 30, 30)
 player = pygame.Rect(screen_width - 20, screen_heigth / 2 - 70, 10, 140)
 opponent = pygame.Rect(10, screen_heigth / 2 - 70, 10, 140)
-#player_score = pygame.Rect(screen_width / 2 - 20, screen_heigth / 2 - 20, 40, 40)
-#opponent_score = pygame.Rect(screen_width / 2 - 60, screen_heigth / 2 - 20, 120, 40)
+"""player_score = pygame.Rect(screen_width / 2 - 20, screen_heigth / 2 - 20, 40, 40)"""
+"""opponent_score = pygame.Rect(screen_width / 2 - 60, screen_heigth / 2 - 20, 120, 40)"""
 
+# Colors
 bg_color = pygame.Color('grey12')
 light_grey = (200, 200, 200)
 
+# Speed
 ball_speed_x = 7 * random.choice((1, -1))
 ball_speed_y = 7 * random.choice((1, -1))
 player_speed = 0
 opponent_speed = 7
 
+# Game loop
 while True:
     # Handling input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        # Movement input
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
                 player_speed += 7
@@ -80,7 +88,7 @@ while True:
                 player_speed -= 7
             if event.key == pygame.K_UP:
                 player_speed += 7
-                
+    
     ball_animation()
     player_animation()
     opponent_ai()
@@ -89,8 +97,8 @@ while True:
     screen.fill(bg_color)
     pygame.draw.rect(screen, light_grey, player)
     pygame.draw.rect(screen, light_grey, opponent)
-    #pygame.draw.rect(screen, light_grey, player_score)
-    #pygame.draw.rect(screen, light_grey, opponent_score)
+    """pygame.draw.rect(screen, light_grey, player_score)"""
+    """pygame.draw.rect(screen, light_grey, opponent_score)"""
     pygame.draw.ellipse(screen, light_grey, ball)
     pygame.draw.aaline(screen, light_grey, (screen_width / 2, 0), (screen_width / 2, screen_heigth))
             
