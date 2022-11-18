@@ -22,8 +22,9 @@ print(type(vindu))
 
 SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
-MusicChannel = pg.mixer.Channel(3)
-MusicChannelGame = pg.mixer.Channel(4)
+SoundEffectChannel3 = pg.mixer.Channel(3)
+MusicChannel = pg.mixer.Channel(4)
+MusicChannelGame = pg.mixer.Channel(5)
 
 klokke = 0
 clock = pg.time.Clock()
@@ -190,6 +191,10 @@ def flytt():
           pongs[i].passes +=1
           pongs[i].farty = -pongs[i].farty
         elif ((pongs[i].y + pongs[i].høyde) >= arena.høyde):
+          if SoundEffectChannel3.get_busy() == False:
+            lyd_effekt3 = pg.mixer.Sound("Benjamin/Lyd/Shart Sound Effect.mp3")
+            lyd_effekt3.set_volume(2)
+            SoundEffectChannel3.play(lyd_effekt3)
           nytt_spill()
           spill = False
           meny()
@@ -206,11 +211,11 @@ def flytt():
           pongs[i].passes += 1
           if SoundEffectChannel.get_busy() == False:
             lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
-            lyd_effekt1.set_volume(0.5)
+            lyd_effekt1.set_volume(0.2)
             SoundEffectChannel.play(lyd_effekt1)
           if SoundEffectChannel.get_busy() == True:
             lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
-            lyd_effekt1.set_volume(0.5)
+            lyd_effekt1.set_volume(0.2)
             SoundEffectChannel2.play(lyd_effekt1)
         elif (pongs[i].y -3) < (plate.y + (plate.høyde / 2)) < (pongs[i].y + pongs[i].høyde + 3) and (pongs[i].x + pongs[i].bredde - 3) < plate.x < (pongs[i].x + pongs[i].bredde + 3):
           pongs[i].fartx = -plate.fartx - (0.1 * hastighet)
@@ -346,7 +351,8 @@ def meny():
   global counter_meny
   fortsett = True
   MusicChannelGame.fadeout(1500)
-  SoundEffectChannel.fadeout(100)
+  SoundEffectChannel.fadeout(0)
+  SoundEffectChannel2.fadeout(0)
   while fortsett:
     if MusicChannel.get_busy() == False:
             meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Daft Punk - Veridis Quo.mp3")
@@ -382,7 +388,7 @@ while True:
   meny()
 
 # Avslutter pygame
-pg.quit()
+
 
 #https://www.veed.io/convert/mp3-to-wav?utm_campaign=YouTube+Description+Tim&utm_medium=How+to+Convert+MP3+to+WAV+Free+Online+Video+Converter&utm_source=YouTube
 #https://yt2mp3.info/?l=en
