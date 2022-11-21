@@ -63,6 +63,12 @@ back_bilde = pg.image.load('Benjamin/pngs/multipong/Back.png').convert_alpha()
 
 sakura_bilde = pg.image.load('Benjamin/pngs/multipong/Sakura1.jpg').convert_alpha()
 
+lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
+lyd_effekt1.set_volume(0.1)
+
+game_musikk = pg.mixer.Sound("Benjamin/Lyd/DJ Striden - Level One.mp3")
+game_musikk.set_volume(0.2)
+
 class Button():
   def __init__(self, x, y, image, scale):
     width = image.get_width()
@@ -164,9 +170,11 @@ def tegn():
 def nytt_spill():
     global pongs
     global klokke
+    global mo
     pongs = []
     plate.x = VINDU_BREDDE / 2 - plate.bredde / 2
     klokke = 0
+    mo = 0
 
 class Plate:
   def __init__(self, x, y, fartx, farty, bredde, høyde, vindusobjekt, farge):
@@ -214,12 +222,8 @@ def flytt():
             pongs[i].fartx = -0.6 * hastighet
           pongs[i].passes += 1
           if SoundEffectChannel.get_busy() == False:
-            lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
-            lyd_effekt1.set_volume(0.2)
             SoundEffectChannel.play(lyd_effekt1)
           if SoundEffectChannel.get_busy() == True:
-            lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
-            lyd_effekt1.set_volume(0.2)
             SoundEffectChannel2.play(lyd_effekt1)
         elif (pongs[i].y -3) < (plate.y + (plate.høyde / 2)) < (pongs[i].y + pongs[i].høyde + 3) and (pongs[i].x + pongs[i].bredde - 3) < plate.x < (pongs[i].x + pongs[i].bredde + 3):
           pongs[i].fartx = -plate.fartx - (0.1 * hastighet)
@@ -267,6 +271,13 @@ def poeng(klokke):
   poeng = int(klokke / 100)
   return str(poeng)
 
+def highscore(klokke):
+  highscore = int(klokke / 100)
+  if highscore1 < highscore:
+      highscore = highscore1
+  return str(highscore1)
+
+highscore1 = 0
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 48) 
@@ -282,8 +293,6 @@ def game():
       if event.type == pg.QUIT:
         sys.exit()
     if MusicChannelGame.get_busy() == False:
-            game_musikk = pg.mixer.Sound("Benjamin/Lyd/DJ Striden - Level One.mp3")
-            game_musikk.set_volume(0.5)
             MusicChannelGame.play(game_musikk)
     plate_bevegelse()
     vindu.fill((120, 120, 120))
@@ -350,9 +359,12 @@ def shop():
     clock.tick(30)
     pg.display.flip()
 
+high = str("Highscore: ")
 
 def meny():
   global counter_meny
+  global highscore1
+  global high
   fortsett = True
   MusicChannelGame.fadeout(1500)
   SoundEffectChannel.fadeout(0)
@@ -368,8 +380,6 @@ def meny():
     for event in pg.event.get():
       if event.type == pg.QUIT:
         sys.exit()
-    
-    
 
     clock.tick(30)
     vindu.blit(bakgrunnlist2[counter_meny],(0, 0))
@@ -385,6 +395,14 @@ def meny():
 
     if start_button.draw():
       game()
+    
+    bilde_highscore = font.render((highscore(klokke)), True, (0, 0, 0))
+    bilde_rect_highscore = bilde_highscore.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/15.8))
+    vindu.blit(bilde_highscore, (bilde_rect_highscore))
+    
+    bilde_highscore2 = font.render((highscore(klokke)), True, (255, 255, 255))
+    bilde_rect_highscore2 = bilde_highscore2.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/16))
+    vindu.blit(bilde_highscore2, (bilde_rect_highscore2))
     
     pg.display.flip()
 
