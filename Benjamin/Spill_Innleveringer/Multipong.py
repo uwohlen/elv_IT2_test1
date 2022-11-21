@@ -306,7 +306,7 @@ def game():
       counter_game_background = 0
     s = pg.Surface((VINDU_BREDDE / 2,VINDU_HOYDE))  # the size of your rect
     s.set_alpha(64)                # alpha level
-    s.fill((255, 255, 255))           # this fills the entire surface
+    s.fill((255, 150, 150))           # this fills the entire surface
     vindu.blit(s, (VINDU_BREDDE / 4, 0))           # (0,0) are the top-left coordinates
     bilde1 = font.render(poeng(klokke), True, (100, 100, 100))
     bilde_rect1 = bilde1.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/7.85))
@@ -397,11 +397,11 @@ def meny():
     if start_button.draw():
       game()
     
-    bilde_highscore = font.render((f'Highscore: {str(highscore1)}'), True, (0, 0, 0))
-    bilde_rect_highscore = bilde_highscore.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/15.8))
+    bilde_highscore = font.render((f'Highscore: {str(highscore1)}'), True, (255, 255, 255))
+    bilde_rect_highscore = bilde_highscore.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/15))
     vindu.blit(bilde_highscore, (bilde_rect_highscore))
     
-    bilde_highscore2 = font.render((f'Highscore: {str(highscore1)}'), True, (255, 178, 100))
+    bilde_highscore2 = font.render((f'Highscore: {str(highscore1)}'), True, (255, 128, 0))
     bilde_rect_highscore2 = bilde_highscore2.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/16))
     vindu.blit(bilde_highscore2, (bilde_rect_highscore2))
     
