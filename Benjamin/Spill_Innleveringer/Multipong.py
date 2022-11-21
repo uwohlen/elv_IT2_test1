@@ -38,6 +38,7 @@ game_backgroundlist2 = []
 counter_meny = 0
 counter_shop = 0
 counter_game_background = 0
+highscore1 = 0
 
 for i in range(113):
     bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
@@ -99,7 +100,7 @@ class Button():
 start_button = Button(100,200,start_bilde, 1)
 shop_button = Button(700,200,shop_bilde, 1)
 exit_button = Button(400,500,exit_bilde, 1)
-back_button = Button(VINDU_BREDDE * (14.5/16), VINDU_HOYDE / 48, back_bilde, 0.75)
+back_button = Button(VINDU_BREDDE / 48, VINDU_HOYDE / 48, back_bilde, 0.75)
 
 class Bilder:
   def __init__(self, x, y, image, scale):
@@ -171,6 +172,9 @@ def nytt_spill():
     global pongs
     global klokke
     global mo
+    global highscore1
+    if highscore(klokke) > highscore1:
+      highscore1 = highscore(klokke)
     pongs = []
     plate.x = VINDU_BREDDE / 2 - plate.bredde / 2
     klokke = 0
@@ -272,12 +276,9 @@ def poeng(klokke):
   return str(poeng)
 
 def highscore(klokke):
-  highscore = int(klokke / 100)
-  if highscore1 < highscore:
-      highscore = highscore1
-  return str(highscore1)
+  highscore2 = int(klokke / 100)
+  return highscore2
 
-highscore1 = 0
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 48) 
@@ -334,12 +335,15 @@ def shop():
     counter_shop += 1
     if counter_shop == 313:
       counter_shop = 0
+      
     if back_button.draw():
         meny()
+        
     s = pg.Surface((VINDU_BREDDE * (6/8),VINDU_HOYDE * (14/16)))  # the size of your rect
     s.set_alpha(128)                # alpha level
     s.fill((255, 255, 255))           # this fills the entire surface
     vindu.blit(s, (VINDU_BREDDE * (1/8), VINDU_HOYDE * (1/16)))           # (0,0) are the top-left coordinates
+    
     bilde_shop = font.render('SHOP', True, (0, 0, 0))
     bilde_rect_shop = bilde_shop.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/9.6))
     vindu.blit(bilde_shop, (bilde_rect_shop))
@@ -359,12 +363,9 @@ def shop():
     clock.tick(30)
     pg.display.flip()
 
-high = str("Highscore: ")
-
 def meny():
   global counter_meny
   global highscore1
-  global high
   fortsett = True
   MusicChannelGame.fadeout(1500)
   SoundEffectChannel.fadeout(0)
@@ -396,11 +397,11 @@ def meny():
     if start_button.draw():
       game()
     
-    bilde_highscore = font.render((highscore(klokke)), True, (0, 0, 0))
+    bilde_highscore = font.render((f'Highscore: {str(highscore1)}'), True, (0, 0, 0))
     bilde_rect_highscore = bilde_highscore.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/15.8))
     vindu.blit(bilde_highscore, (bilde_rect_highscore))
     
-    bilde_highscore2 = font.render((highscore(klokke)), True, (255, 255, 255))
+    bilde_highscore2 = font.render((f'Highscore: {str(highscore1)}'), True, (255, 178, 100))
     bilde_rect_highscore2 = bilde_highscore2.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/16))
     vindu.blit(bilde_highscore2, (bilde_rect_highscore2))
     
