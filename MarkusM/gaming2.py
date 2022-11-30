@@ -5,10 +5,10 @@ import os
 from pygame.locals import *
 import math as math
 
-'''try:
+try:
     from PIL import Image, ImageDraw
 except:
-    sys.exit("PIL trengs for å kjøre spillet. pip (pip3 på mac) install pillow, eller pip -U install pillow --user")'''
+    sys.exit("PIL trengs for å kjøre spillet. pip (pip3 på mac) install pillow, eller pip -U install pillow --user")
 
 pg.init() #starter pygame
 
