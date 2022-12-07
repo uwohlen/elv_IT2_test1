@@ -2,7 +2,7 @@
 #### Forfatter: `Birk Oskar Aarvold Ihle`
 #### Opprettet: `16.11.2022`
 #### Oppdatert: `07.12.2022`
-#### Etiketter: `Python` `Pygame` `Pong`
+#### Etikketer: `Python` `Pygame` `Pong`
 
 ## Innhold
 
