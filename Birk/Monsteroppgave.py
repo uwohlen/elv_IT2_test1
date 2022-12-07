@@ -1,5 +1,4 @@
 import os, sys, time, random
-from turtle import clear
 
 def slow_type(t):
     typing_speed = 150 #wpm
