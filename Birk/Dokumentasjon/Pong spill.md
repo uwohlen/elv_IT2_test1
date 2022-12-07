@@ -1,6 +1,12 @@
+# Pong spill
+
+## Innhold
+
+* [Ball movement behaviour](https://vscode.dev/github/uwohlen/elv_IT2_uw/blob/935265a42fb0467633f73a30ea690623425e8b58/Birk/Dokumentasjon/Pong%20spill.md#ball-movement-behaviour)
+
 import pygame, sys, random
 
-# Ball movement behaviour
+### Ball movement behaviour
 def ball_animation():
     global ball_speed_x, ball_speed_y
     ball.x += ball_speed_x
@@ -15,7 +21,7 @@ def ball_animation():
     if ball.colliderect(player) or ball.colliderect(opponent):
         ball_speed_x *= -1
 
-# Player-pad movement
+### Player-pad movement
 def player_animation():
     player.y += player_speed
     
@@ -24,7 +30,7 @@ def player_animation():
     if player.bottom >= screen_heigth:
         player.bottom = screen_heigth
         
-# Opponent-pad movement
+### Opponent-pad movement
 def opponent_ai():
     if opponent.top < ball.y:
             opponent.top += opponent_speed
@@ -36,39 +42,39 @@ def opponent_ai():
     if opponent.bottom >= screen_heigth:
         opponent.bottom = screen_heigth
         
-# Ball starting position
+### Ball starting position
 def ball_restart():
     global ball_speed_x, ball_speed_y
     ball.center = (screen_width / 2, screen_heigth / 2)
     ball_speed_y *= random.choice((1, -1))
     ball_speed_x *= random.choice((1, -1))
 
-# General setup
+### General setup
 pygame.init()
 clock = pygame.time.Clock()
 
-# Setting up the main window
+### Setting up the main window
 screen_width = 1280 # 1366 (skole pc)
 screen_heigth = 720 # 768 (skole pc)
 screen = pygame.display.set_mode((screen_width, screen_heigth))
 pygame.display.set_caption('Pong')
 
-# Game rectangles
+### Game rectangles
 ball = pygame.Rect(screen_width / 2 - 15, screen_heigth / 2 - 15, 30, 30)
 player = pygame.Rect(screen_width - 20, screen_heigth / 2 - 70, 10, 140)
 opponent = pygame.Rect(10, screen_heigth / 2 - 70, 10, 140)
 
-# Colors
+### Colors
 bg_color = pygame.Color('grey12')
 light_grey = (200, 200, 200)
 
-# Speed
+### Speed
 ball_speed_x = 7 * random.choice((1, -1))
 ball_speed_y = 7 * random.choice((1, -1))
 player_speed = 0
 opponent_speed = 7
 
-# Game loop
+### Game loop
 while True:
     # Handling input
     for event in pygame.event.get():
