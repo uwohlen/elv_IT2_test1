@@ -25,7 +25,9 @@ _Filene under må hentes fra [github](https://github.com/uwohlen/elv_IT2_uw/tree
   * MADE TOMMY Regular_PERSONAL USE.otf
   * MADE TOMMY Regular_PERSONAL USE.otf
  
-___Filene må være organisert lik mappestrukturen ovenfor, eller vil ikke spillet kjøre___
+___Filene må være organisert lik mappestrukturen ovenfor, med en overordnet mappe som heter MarkusM, ellers vil ikke spillet kjøre___
+
+___Hvis hele repositoriet er hentet fra github, trenger man ikke å gjøre noe___
 
 # Beskrivelse av prosjektet
 Progammet er et spill, og inneholder tre spillmoduser. En der man skal stave et ord slik det er vist, et der man skal fullføre en "geometry dash" level og en (hard mode), der man skal klare begge på rad.
