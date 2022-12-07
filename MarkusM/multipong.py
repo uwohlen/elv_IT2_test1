@@ -158,9 +158,11 @@ class player():
         pg.draw.rect(window,self.color,self.rect)
 
         #teste hitbox
+        """
         pg.draw.rect(window,(0,255,0),self.safebox)
         pg.draw.rect(window,(0,255,0),self.ysafebox1)
         pg.draw.rect(window,(0,255,0),self.ysafebox2)
+        """
         
 
     def updateSafebox(self): #oppdatere hitbox
@@ -260,13 +262,14 @@ class gridElement:
         self.buy = False
 
         self.textureraw = pg.image.load("MarkusM/images/coinicon.png")
-        self.texture = pg.transform.scale(self.textureraw,(size-10,size-10))
+        #texture = pg.transform.scale(self.textureraw,(size-10,size-10))
+
         self.pretexture = pg.Surface((size-10,size-10)) #performance
-        self.pretexture.blit(self.texture,(self.rect.x,self.rect.y))
+        self.pretexture.blit(self.textureraw,self.rect)
 
     def render(self):
-        pg.draw.rect(window,black,self.padding)
-        pg.draw.rect(window,self.color,self.rect)
+        #pg.draw.rect(window,black,self.padding)
+        #pg.draw.rect(window,self.color,self.rect)
 
         #if self.buy == False:
         window.blit(self.pretexture,self.rect)
