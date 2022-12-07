@@ -5,6 +5,10 @@ import os
 from pygame.locals import *
 import math as math
 
+global spill
+spill = None
+
+#PIL trengs for å lage sirkel, så det trengs når man skal kjøre typegame()
 try:
     from PIL import Image, ImageDraw
 except:
@@ -12,27 +16,33 @@ except:
 
 pg.init() #starter pygame
 
-window_width = 1280
+#definerer vinduet:
+window_width = 1080
 window_height = 720
-#window = pg.display.set_mode([window_width,window_height],pg.RESIZABLE,DOUBLEBUF)
-window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
-window.set_alpha(None)
+
+#ulike moduser for å displaye pygame. For mac får man elendig ytelse uten FULLSCREEN
+window = pg.display.set_mode([window_width,window_height],DOUBLEBUF)
+#window = pg.display.set_mode([window_width,window_height],FULLSCREEN)
+window.set_alpha(None) #måte for å prøve å øke fps
 pg.display.set_caption('gaming')
+
+#initiere fonts:
 font = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 40)
 font2 = pg.font.Font("MarkusM/font_test/coolvetica rg.otf", 80)
 menyFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Black_PERSONAL USE.otf",80)
 timerFont = pg.font.Font("MarkusM/font_test/MADE TOMMY Regular_PERSONAL USE.otf",80)
 
 
-gifList = []
+
 keyIndex = 0
 
-#acceptedKeys = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-    
+#initierer hvilke keys som blir brukt i typegame()    
 keyInit = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","æ","ø","å"]
 
-for i in range(44):
-    gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
+#metode for å imortere video/gif i pygame:
+#gifList = []
+#for i in range(44):
+#    gifList.append(pg.image.load(f"MarkusM/gif_test/breaking-bad-money-{i}.png"))
 
 #farger
 black = (0,0,0)
@@ -47,11 +57,12 @@ triangleBlue = (1,28,116)
 #fps
 clock = pg.time.Clock() 
 
-#lyder
+#Lager ulike kanaler, for å spille av ulike sound effects samtidig
 SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
 MusicChannel = pg.mixer.Channel(3)
 
+#ikke brukt lenger, men kan hende skal brukes i fremtiden
 """
 currentFps = 0
 averageFps = 0
@@ -67,51 +78,68 @@ def fps():
 
 windowFPS = 60 #hvor mange frames pr sekund som blir rendera
 
-def typeGame():
-    answerTime = 6
-    typeMusic = pg.mixer.Sound(f"MarkusM/sounds/main_music.wav")
-    typeMusic.set_volume(0.5)
-    MusicChannel.play(typeMusic)
+def findCenter(): #finne senter av skjermen
+    return window_width/2,window_height/2
 
-    counter = 0
+#Spill der man skal skrive inn ordet som kommer opp før man går tom for tid
+def typeGame():
+    answerTime = 6 #tid i sekunder man får til å svare
+    typeMusic = pg.mixer.Sound(f"MarkusM/sounds/main_music.wav")
+    typeMusic.set_volume(0.5) #volumkontroll
+    MusicChannel.play(typeMusic) #spiller musikk (kahoot)
+
+    #initierer variabler spesifikt til hver gjennomkjøring av spillet
+    counter = 0 
     typetest = str()
-    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Superoptikjempefantafenomenalistisk","Pneumonoultramicroscopicsilicovolcanoconiosis", "   "]    
+
+    #oppgaver:
+    #task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Superoptikjempefantafenomenalistisk","Pneumonoultramicroscopicsilicovolcanoconiosis"]    
+    task = ["kul","hei"]
     tasknr = 0
     timerPlayed = False
     sec = 0
     timer = 0
 
-    while True:
+    run = True
+    while run: #looper til man taper
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            #events:
+            if event.type == pg.QUIT: 
                 sys.exit()
+    
+            #keypresses:
             if event.type == pg.KEYDOWN:
-                try:
+                try: 
                     keys = pg.key.get_pressed()
-                    if keys[K_LSHIFT]:
+                    if keys[K_LSHIFT]: #store bokstaver
                         i = keyInit.index(pg.key.name(event.key))
                         typetest += keyInit[i].upper()
 
                     else:
-                        i = keyInit.index(pg.key.name(event.key))
+                        i = keyInit.index(pg.key.name(event.key)) #små bokstaver
                         typetest += keyInit[i]
                         #print(typetest) #teste om stringen oppdaterer seg som den skal
 
                 except:
                     pass
-                if event.key == pg.K_RETURN:
+                if event.key == pg.K_RETURN: #submit svar
                     pg.mixer.Sound.stop
 
-                    if typetest == task[tasknr]:
+                    if typetest == task[tasknr]: #hvis det man har skrevet er riktig
                         tasknr +=1
                         typetest = str()
                         SoundEffectChannel.stop()
+                        #spill funny sound effect
                         win = pg.mixer.Sound(f"MarkusM/sounds/win_{r.randint(0,2)}.wav")
                         SoundEffectChannel.play(win)
+                        
+                        #resette tid
                         timerPlayed = False
                         sec = 0
                         timer = 0
-                        #spill funny sound effect
+                        if tasknr==len(task):
+                            run = False
+
                     else:
                         #spill funny sound effect
                         SoundEffectChannel.stop()
@@ -120,16 +148,17 @@ def typeGame():
                         pass
 
                 if event.key == pg.K_BACKSPACE:
-                    typetest = typetest[0:-1]
+                    typetest = typetest[0:-1] #sletter
 
-                    #hvis man holder i fler frames, sletter den fortere
-                if event.key == pg.K_SPACE:
+                    #hvis man holder i fler frames, sletter den fortere?
+                if event.key == pg.K_SPACE: #mellomrom
                     typetest = typetest + str(" ")
                 
-                if event.key ==pg.K_ESCAPE:
+                if event.key ==pg.K_ESCAPE: #avslutt med escape
                     sys.exit()
 
             #finne hvilken som er trykket
+            """gammel metode"""
 
         #if event.type == pg.KEYUP:
         #    pass
@@ -147,8 +176,6 @@ def typeGame():
 
     #if frames_counter == 44:
     #    frames_counter =0
-
-        window.fill((255,255,255))
     #window.blit(gifList[frames_counter],(0,0))
     
     #frames_counter +=1
@@ -165,31 +192,38 @@ def typeGame():
     #    window.blit(font.render(str(typetest[i]),True,(0,0,0)),(10*i,200))
 
     #typerender
-        taskRender = font.render(str(task[tasknr]),True,(0,0,0))
-        taskRect = taskRender.get_rect(center=((window_width/2),(window_height/2)-200))
-        window.blit(taskRender,taskRect)
+        print(run)
+        if run == True:
+            """ny metode"""
+            window.fill((255,255,255)) #fulle skjermen med en hvit bakgrunn
+        
+            #vise oppgavetekst
+            taskRender = font.render(str(task[tasknr]),True,(0,0,0))
+            taskRect = taskRender.get_rect(center=((window_width/2),(window_height/2)-200))
+            window.blit(taskRender,taskRect)
 
-        typeText = font.render(str(typetest),True,(0,0,0))
-        typeRect = typeText.get_rect(center=(window_width/2,window_height/2))
+            #lagre en boks for å sentrere teskten man har skrevet inn
+            typeText = font.render(str(typetest),True,(0,0,0))
+            typeRect = typeText.get_rect(center=(window_width/2,window_height/2))
 
 
-        for i in range(len(typetest)):
+            for i in range(len(typetest)): #displaye teksten man har skrevet inn, med grønn som riktig og rød som feil
 
-            textprev = font.render(str(typetest[0:i]),True,(0,0,0)) #finne lengde av teksten før
-            textPrevLength = textprev.get_width() #lagre lengden
-            charPosx, charPosy = typeRect.midleft #lagre koordiatene til rektangelet
+                textprev = font.render(str(typetest[0:i]),True,(0,0,0)) #finne lengde av teksten før
+                textPrevLength = textprev.get_width() #lagre lengden
+                charPosx, charPosy = typeRect.midleft #lagre koordiatene til rektangelet
 
-            try:
-                if not typetest[i] == task[tasknr][i]:
+                try: 
+                    if not typetest[i] == task[tasknr][i]: #hvis riktig
+                        charRender = font.render(str(typetest[i]),True,red)
+                        window.blit(charRender,((charPosx+textPrevLength,charPosy)))
+            
+                    else: #hvis feil
+                        charRender = font.render(str(typetest[i]),True,green)
+                        window.blit(charRender,((charPosx + textPrevLength),charPosy))
+                except:
                     charRender = font.render(str(typetest[i]),True,red)
                     window.blit(charRender,((charPosx+textPrevLength,charPosy)))
-            
-                else:
-                    charRender = font.render(str(typetest[i]),True,green)
-                    window.blit(charRender,((charPosx + textPrevLength),charPosy))
-            except:
-                charRender = font.render(str(typetest[i]),True,red)
-                window.blit(charRender,((charPosx+textPrevLength,charPosy)))
         
     
     #timerender
@@ -200,7 +234,7 @@ def typeGame():
             timerPlayed = True
 
         if timer <360: #tegne sirkel når man har tid igjen
-
+            #bruke PIL
             pil_size = 450
             pil_image = Image.new("RGBA",(pil_size,pil_size))
             pil_draw = ImageDraw.Draw(pil_image)
@@ -235,122 +269,192 @@ def typeGame():
             timerRender = timerFont.render(str(round((answerTime-sec),1)),True,red)
             timerRect = timerRender.get_rect(center=((window_width/2),(window_height/2)+200))
             window.blit(timerRender,timerRect) #tegne timer
-
-        clock.tick(windowFPS) #Oppdaterer skjermen og teller hvilken frame vi er på
+        #Oppdaterer skjermen og teller hvilken frame vi er på
+        clock.tick(windowFPS)
         pg.display.flip() 
 
+        #inkrimentere tellere
         counter +=1
         sec += 1/windowFPS
+
         #print(counter)
         #if counter == windowFPS:
         #    sec +=1
         #    counter = 0
+
+        #hvis tiden er ute
         if timer == 360 or timer > 360:
             gameFail()
             break
         timer += (360/windowFPS)/answerTime #for å kontrolerer tid
 
-def menu():
+class menublock:
+    def __init__(self,pos,text,color):
+        self.posx,posy = pos
+        self.rect = pg.Rect(0,0,window_width/3+window_width/8,window_height/6)
+        self.color = color
+        self.rect.center = pos
+        self.text = font2.render(str(text),True,black) #definere tekst
+        self.textBox = self.text.get_rect() #definere hvor stor teksten er
+        self.textBox.center = self.rect.center #sentrere teksten i boksen
 
+    def render(self):
+        #rendere boks
+        pg.draw.rect(window,self.color,self.rect)
+
+        #rendere tekst
+        window.blit(self.text,self.textBox) #render
+ 
+class settings: #lagre en mengde globale verdier
+    def __init__(self):
+        self.meny = 1
+settings = settings()
+centerx,centery = findCenter()
+startoffset = -window_height/6
+
+#definere menyelementer
+startbox = menublock((centerx-window_width/4,centery),"START",light_grey)
+quitbox = menublock((centerx+window_width/4,centery),"QUIT",light_grey)
+backbox = menublock((centerx,centery+window_height/4),"BACK",light_grey)
+hardbox = menublock((centerx,centery+window_height/6+startoffset+window_height/20),"HARD MODE",red)
+geobox = menublock((centerx+window_width/4,centery+startoffset),"BLOCK JUMP",light_grey)
+typbox = menublock((centerx-window_width/4,centery+startoffset),"TYPING",light_grey)
+continueBox = menublock((centerx,centery),"BACK",green)
+
+def menurender(): #rendre elementer i menyen
+    if settings.meny == 1: #avslutte eller gå videre
+        startbox.render()
+        quitbox.render()
+
+        #tittel
+        title = font2.render(str("GAMING"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
+
+    if settings.meny == 2: #for å velge spillmodus
+        backbox.render()
+        typbox.render()
+        geobox.render()
+        hardbox.render()
+
+        #tittel
+        title = font2.render(str("START"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
+
+def menuIntererract(mousepos): #finne om musen trykker på en boks
+    global spill
+    if settings.meny == 1: #i meny 1
+        if quitbox.rect.collidepoint(mousepos):
+            sys.exit()
+
+        if startbox.rect.collidepoint(mousepos):
+            settings.meny = 2
+
+    elif settings.meny == 2: #i meny 2
+        if backbox.rect.collidepoint(mousepos):
+            settings.meny = 1
+        
+        #starte spill
+        if typbox.rect.collidepoint(mousepos):
+            spill = True
+            typeGame()
+            if spill:
+                winScreen()
+
+                #prøve igjen hvis man taper
+        if geobox.rect.collidepoint(mousepos):
+            spill = True
+            gd()
+            if spill:
+                winScreen()
+
+                #prøve igjen hvis man taper
+        if hardbox.rect.collidepoint(mousepos):
+            spill = True
+            gd()
+            if spill:
+                typeGame()
+            if spill:
+                winScreen()
+                
+def menu(): #menyloop
+    global loop
     loop = True
+    
     while loop:
-        if MusicChannel.get_busy() == False:
+        if MusicChannel.get_busy() == False: #lyder
             menuMusic = pg.mixer.Sound(f"MarkusM/sounds/MenuMusic.mp3")
             menuMusic.set_volume(0.5)
             MusicChannel.play(menuMusic)
             
-        #quitButton = pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
-        for event in pg.event.get():
+        for event in pg.event.get(): #events
             if event.type == pg.QUIT:
                 sys.exit()
-            if event.type == MOUSEBUTTONDOWN:
+            if event.type == pg.MOUSEBUTTONDOWN:
                 left,middle,right = pg.mouse.get_pressed()
                 mousepos = pg.mouse.get_pos()
                 if left:
-                    if quitBox.collidepoint(mousepos):
-                        sys.exit()
-                    if startBox.collidepoint(mousepos):
-                        loop = False
-                
-
-                
-            if event.type == KEYDOWN:
+                    menuIntererract(mousepos)
+        
+            if event.type == pg.KEYDOWN:
                 if event.key ==pg.K_ESCAPE:
                     sys.exit()
         window.fill((255,255,255))
-
-        centerx,centery = findCenter() #finne senter av skjermen
-
-        quitBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
-        quitBox.center = (centerx+window_width/4,centery) #posisjonere rektangel
-        pg.draw.rect(window,light_grey,quitBox) #tegne rektangel
-        
-        quitText = menyFont.render(str("QUIT"),True,black) #definere tekst
-        quitTextBox = quitText.get_rect() #definere hvor stor teksten er
-        quitTextBox.center = quitBox.center #sentrere teksten i boksen
-        window.blit(quitText,quitTextBox) #render
-
-        startBox = pg.Rect(0,0,window_width/3,window_height/6) #definere rekangel
-        startBox.center = (centerx-window_width/4,centery) #posisjonere rektangel
-        pg.draw.rect(window,light_grey,startBox) #tegne rektangel
-
-        startText = font2.render(str("START"),True,black) #definere tekst
-        startTextBox = startText.get_rect() #definere hvor stor teksten er
-        startTextBox.center = startBox.center #sentrere teksten i boksen
-        window.blit(startText,startTextBox) #render
-
-        #tittel
-        title = font2.render(str("GAMING"),True,black) #definere tekst
-        titleBox = title.get_rect(center=(window_width/2,(window_height/2)-(window_height/4)))
-        window.blit(title,titleBox) #render
-
-
-        #window.blit(quitBox,(centerPosx-90,centerPosy))
-        #window.blit(quitButton, (0,0))
-
-        
-        
-
+        menurender()
 
         pg.display.flip()
 
-
-def findCenter():
-    return window_width/2,window_height/2
-
-def gjettHvor():
-    while True:
-        pg.display.flip()
-
-def introduction():
+def introduction(): #lages senere?
     pass
 
-class block:
+def winScreen():
+    show = True
+    while show: #vise at man har vunnet og går tilbake til meny
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                sys.exit()
+            if event.type == pg.MOUSEBUTTONDOWN:
+                left,middle,right = pg.mouse.get_pressed()
+                mousepos = pg.mouse.get_pos()
+                if left:
+                    if continueBox.rect.collidepoint(mousepos):
+                        show = False
+
+    
+        window.fill((255,255,255))
+        continueBox.render()
+
+        #tittel
+        title = font2.render(str("DU VANT!!!!"),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
+        
+        pg.display.flip()
+#geometry dash
+class block: #blokk
     def __init__(self,length,centerposx,centerposy):
         self.width = length
         self.height = length
         self.centerposx = centerposx
         self.centerposy = centerposy
         self.rect = pg.Rect(0,0,self.width,self.height)
-        texture = pg.image.load("MarkusM/images/gdBlock.png")
+        texture = pg.image.load("MarkusM/images/gdBlock.png") #load texture
 
-        self.preTexture = pg.Surface((self.width,self.height)) #performance
+        self.preTexture = pg.Surface((self.width,self.height)) #performance ved å prerendere texture
         self.preTexture.blit(texture,self.rect)
-
-
-
         
-    def safeCollision(self):
+    def safeCollision(self): #hoppekollision mellom spiller og blokk
         safeLine = pg.Rect(0,0,self.width,4)
         topCoords = self.rect.midtop
         safeLine.midtop = topCoords
 
         if pg.Rect.colliderect(player.rect,self.rect):
-            x,y = self.rect.midtop
+            x,y = self.rect.midtop #finner yposisjonen og spillerpoisjonen lik den. Dette er for å unngå at man kan sette seg fast inne i en blokk
             player.posy = y+1
             return True
 
-    def harmCollision(self):
+    def harmCollision(self): #for å finne hvor man dør når man treffer en blokk
         harmLine = pg.Rect(0,0,1,self.height/1.5)   
         lower_harmLime = pg.Rect(0,0,self.width,1)
         topCoords = self.rect.midleft
@@ -358,28 +462,29 @@ class block:
         harmLine.midleft = topCoords
         lower_harmLime.midbottom = lowCoords
 
+        #returnerer sant hvis man kolliderer
         if pg.Rect.colliderect(harmLine,player.rect) or pg.Rect.colliderect(lower_harmLime,player.rect):
             return True
-
-    def render(self,levelSpeed,counter):
+    
+    def render(self,levelSpeed,counter): #metode for å rendere blokken på skjermen
         self.rect.center = (self.centerposx-(levelSpeed*counter),self.centerposy)
         x,y = self.rect.center
 
         if x > -self.width and x < window_width+self.width: #ikke rendere utenfor skjermen
             window.blit(self.preTexture,self.rect)
 
-class triangle:
+class triangle: #lage trekant
     def __init__(self,size,centerposx,centerposy):
         self.size = size
         self.centerposx = centerposx
         self.centerposy = centerposy
         self.heightRatio = 1.4
 
-    def draw(self,speed,counter):
+    def draw(self,speed,counter): #tegner en trekant
         newCenterPosx = self.centerposx -(speed*counter)
         if newCenterPosx > -self.size and newCenterPosx < window_width+self.size: #ikke rendere utenfor skjermen
 
-
+            #finne alle punktene
             self.leftPoint = newCenterPosx-self.size,self.centerposy
             self.rightPoint = newCenterPosx+self.size,self.centerposy
             self.topPoint = newCenterPosx,self.centerposy-math.tan(math.radians(30))*(self.size*2*self.heightRatio)
@@ -394,7 +499,7 @@ class triangle:
         else:
             self.polygon = None
     
-    def harmCollision(self):
+    def harmCollision(self): #kollisjon som fører til tap av spillet
         if not self.polygon == None:
 
             collideRect = pg.Rect(0,0,self.size/2,1.4*self.size)
@@ -402,7 +507,7 @@ class triangle:
             if pg.Rect.colliderect(collideRect,player.rect): #bedre collision
                 return True
 
-class border:
+class border: #lage "gulv"
     def __init__(self,height,width):
         self.texture = pg.image.load("MarkusM/images/gdBorder3.png")
 
@@ -424,7 +529,7 @@ class border:
         self.rect2coords = self.rect2.bottomright
 
 
-    def render(self,speed):
+    def render(self,speed): #rendere gulvet
         global window_width
         global window_width
         #pg.draw.rect(window,gdred,self.rect)
@@ -432,6 +537,7 @@ class border:
         #må bevege seg, og rendre ny texture etter. Import counter og levelspeed
         #lage metode for å bare rendre texures som er i frame. 
 
+        #lager to "gulv", for å rendre dem separat
         x1,y1 = self.rect1coords
         x1 = x1-speed
         if x1 <=0:
@@ -449,7 +555,7 @@ class border:
         window.blit(self.preTexture,self.rect1)
         window.blit(self.preTexture,self.rect2)
 
-    def safeCollision(self):
+    def safeCollision(self): #hoppe
         #global window_width
         #global window_height
         #safeline = pg.Rect(0,0,self.width,1)
@@ -460,7 +566,7 @@ class border:
             player.posy = y+1
             return True
                 
-def harmcolissionCheck():
+def harmcolissionCheck(): #sjekker alle kollisjoner som gjør at man taper spiller
     for i in range(len(blockList)):
         if blockList[i].harmCollision():
             return True
@@ -468,7 +574,7 @@ def harmcolissionCheck():
         if triangleList[i].harmCollision():
             return True
 
-def safeColissionCheck():
+def safeColissionCheck(): #sjekker alle kollisjoner som gjør at man kan hoppe
     for i in range(len(blockList)):
         if blockList[i].safeCollision():
             return True
@@ -477,34 +583,35 @@ def safeColissionCheck():
     else:
         return False #ved collision problemer sjekk denne. Kan hende for-løkken ikke stopper etter return
     
-class Player:
+class Player: #definere spiller
     def __init__(self,length,borderHeight):
         global window_width
         global window_height
 
         self.momentum = 0
         self.length = length
-        self.posx = window_width/2
+        self.posx = window_width/2 #egentlig meningsløs siden vi bruker en konstant x-verdi
         self.posy = window_height-borderHeight
         #self.safeRect = pg.Rect(0,0,self.length,self.length)
         self.rect = 0
         self.rect = pg.Rect(0,0,self.length,self.length)
 
-        playerIconRaw = pg.image.load("MarkusM/images/gdPlayer.png")
+        #texture til spiller
+        playerIconRaw = pg.image.load("MarkusM/images/gdPlayer.png") 
         playerIcon = pg.transform.scale(playerIconRaw,(100,100))
         self.preTexture = pg.Surface((self.length,self.length)) #performance
         self.preTexture.blit(playerIcon,self.rect)
 
-
-    def jump(self):
+    
+    def jump(self): #hoppe
         self.momentum = 15
 
-    def render(self):
+    def render(self): #rendre spiller
         self.posy = self.posy-self.momentum
         self.rect.midbottom = (self.posx,self.posy)
         
 
-        if not safeColissionCheck():
+        if not safeColissionCheck(): #falle
             self.momentum -=0.6
         else:
             self.momentum = 0
@@ -515,18 +622,21 @@ class Player:
                 self.rect.midbottom = (self.posx,self.posy)
 
         window.blit(self.preTexture,self.rect)
-def gdGameOver():
+
+def gdGameOver(): #hvis man taper spillet
     SoundEffectChannel.stop()
     fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
     SoundEffectChannel.play(fail)
     MusicChannel.stop()
+    global spill
+    spill = False
 
-def gdWin():
+def gdWin(): #hvis man vinner
     pass
     #play gd win sound
     #proceed
 
-
+#initiere spiller og border
 borderHeight = 50
 player = Player(100,borderHeight) #bredde gd blokk
 lower_border = border(borderHeight,window_width)
@@ -544,21 +654,23 @@ lvl="""
            xxx^^        ^xxx    ^^^^^^^^^^^^          ^     ^^       x^^^         xxx^^x             xx     ^^^^^            ^^^^^^^^^^x  xxxxx^^xx^^^^xxx^^^^^^^^    ^^^^^^^^^          w 
 
 """
+
+#metode for å splitte opp en tekst string til en level
 win = 0
 lvl = lvl.split("\n")
 lvl.reverse()
-for line in lvl:
-    for char in line:
-        if char == "x":
+for line in lvl: #sjekker hver linje
+    for char in line: #sjekker hver karakter
+        if char == "x": #lage blokk
             blockList.append(block(100,x*100+2000,window_height-100*y+100))
-        elif char == "^":
+        elif char == "^": #lage trekant
             triangleList.append(triangle(50,x*100+2000,window_height-100*y+150))
-        elif char == "w":
+        elif char == "w": #lage win
             win = x*100+2000
         x +=1
     x,y = 0,y+1
 
-
+#testverdier/startverdier
 triangle2 = triangle(50,window_width+200+1080,window_height-borderHeight)
 block2 = block(100,window_width+1080,window_height-borderHeight-50)
 block3 = block(100,window_width+100+1080,window_height-borderHeight-50)
@@ -571,17 +683,21 @@ def gdWin():
     #animasjon?
     MusicChannel.stop()
 
-def gd():
+def gd():#definere hvordan spillet oppfører seg
     lower_border.rect1counter = 0
     lower_border.rect2counter = 0
     jumpBuffer = 0
+
+    #lyder
     gdMusic = pg.mixer.Sound(f"MarkusM/sounds/gdMusic.mp3")
     gdMusic.set_volume(0.5)
     MusicChannel.play(gdMusic)
+
     levelSpeed = 8 #ganges med 0,008/0,6 for å finne jump velocity
     counter = 0
     renderCounter = 0
 
+    #bakgrunnsbilde
     backgroundRect = pg.Rect(0,0,window_width,window_height)
     background = pg.image.load("MarkusM/images/gdBackground.png")
     backgrundRender = pg.Surface((window_width,window_height)) #performance
@@ -589,27 +705,27 @@ def gd():
     run = True
     while run:
         
-
+        #events
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
-            
+            #hopp
             if event.type == MOUSEBUTTONDOWN:
                 left,middle,right = pg.mouse.get_pressed()
                 if left:
-                    jumpBuffer = 15
+                    jumpBuffer = 15 #hvis man trykker, hopper karakteren med en gang den treffer gulvet. Gjør at hopping føles bedre og blir lettere
 
         if safeColissionCheck() and jumpBuffer > 0:
             player.jump()
         
         if jumpBuffer > 0:
-            jumpBuffer -=1
+            jumpBuffer -=1 #oppdatere buffer
         
         #window.fill((255,255,255))
 
         #render
 
-        if renderCounter == 0:
+        if renderCounter == 0: #rendere alt hver fjerde frame. Gjøres for å oppdatere fysikken oftere, men forsatt få god ytelse
             window.blit(backgrundRender,(0,0))
             for i in range(len(blockList)):
                 blockList[i].render(levelSpeed,counter)
@@ -622,160 +738,32 @@ def gd():
             if harmcolissionCheck():
                 gdGameOver()
                 run = False
+        #vinne
         if win <= levelSpeed*counter:
             gdWin()
             run = False
+        #oppdatere deller
         if renderCounter == 1:
             renderCounter = -1
         renderCounter +=1
 
-        clock.tick(windowFPS*4)
+        clock.tick(windowFPS*4) #fysikkhastigheten
         #clock.tick(60)
 
 
-def gameFail(): 
+def gameFail(): #fail
     SoundEffectChannel.stop()
     fail = pg.mixer.Sound(f"MarkusM/sounds/fail_{r.randint(0,2)}.wav")
     SoundEffectChannel.play(fail)
     MusicChannel.stop()
+    global spill
+    spill = False
 
-class card():
-    def __init__(self,cost,damage):
-        self.cost = cost
-        self.damage = damage
-        self.width = 200
-        self.height = 300
-        self.posx = window_width/2
-        self.posy = window_height/2
-        self.mouseOffset = (0,0)
-
-        self.rect = pg.Rect(0,0,self.width,self.height)
-        self.rect.center = (self.posx,self.posy)
-
-    def render(self):
-        self.rect.center = (self.posx,self.posy)
-        pg.draw.rect(window,grey,self.rect)
-
-    def move(self):
-        x,y = pg.mouse.get_pos()
-        ox,oy = self.mouseOffset
-        self.posx = x+ox
-        self.posy = y+oy
-        delta = 1.2
-
-        if ox>delta/2+1:
-            ox = ox/delta
-        elif ox<-(delta+1):
-            ox = ox/delta
-        else:
-            ox = 0
-        if oy>delta/2+1:
-            oy = oy/delta
-        elif oy<-(delta+1):
-            oy = oy/delta
-        else:
-            oy = 0
-        self.mouseOffset = (ox,oy)
-        #print(self.posx,self.posy)
-    
-    def moveFinished(self):
-        #finne posisjon kortet kan bevege seg til, og flytte det den hvis den er nærme nok. Eller fytte tilbake til hånd
-        pass
-    def mouseOffsetCheck(self):
-        x,y = pg.mouse.get_pos()
-        if self.rect.collidepoint((x,y)):
-            self.mouseOffset = (self.posx-x,self.posy-y)
-            print(self.mouseOffset)
-            global cardSelected
-            cardSelected = 1
-        else:
-            cardSelected = None
-        #definere differansen mellom posisjonen musen startet, og hvor den flyttet til. Ellers vil den hoppe til senter av musen.
-
-
-card1 = card(0,0)
-global cardSelected
-cardSelected = None
-
-#class player():
-##    def __init__(self,hp):
-#        self.hp = hp
- #       self.deck = []
-
-def cardInterract():
-    
-    #for elements in kortlist. Lagre verdi
-    card1.mouseOffsetCheck()
-
-def cardMove():
-    #beveger det listeelementet som ble beveg i cardInterract
-    if cardSelected == 1:
-        card1.move()
-
-def mouseHover():
-    #hvis mus ligger over kort, forstørre kortet. Både for hånd og for kort på bordet
-    #Hvis ett kort er higligha allerede, ikke higlight flere kort
-    pass
-
-class cardSlot:
-    def __init__(self,centerposx,centerposy):
-        self.centerposx = centerposx
-        self.centerposy = centerposy
-        self.vacant = None
-
-        self.rect = pg.Rect(0,0,card1.width,card1.height)
-        self.rect.center = (centerposx,centerposy)
-
-
-    def render(self):
-        #kun for testing. I spillet burde slottet være usynlig
-        pg.draw.rect(window,red,self.rect)
-
-    def dropCheck(self):
-        if self.vacant == None:
-            x,y = pg.mouse.get_pos()
-            if self.rect.collidepoint((x,y)):
-                card1.posx = self.centerposx
-                card1.posy = self.centerposy
-                #self.vacant = True
-
-cardslot1 = cardSlot(200,200)
-cardslot2 = cardSlot(800,200)
-
-def cardGame():
-    run = True
-    while run:
-        window.fill((255,255,255))
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                sys.exit()
-            if event.type == pg.KEYDOWN:
-                if event.key ==pg.K_ESCAPE:
-                    sys.exit()
-            if event.type == MOUSEBUTTONDOWN:
-                left,middle,right = pg.mouse.get_pressed()
-                if left:
-                    cardInterract()
-
-            if event.type == MOUSEBUTTONUP:
-                #Regne ut nærmeste sted kortet kan gå
-                cardslot1.dropCheck()
-                cardslot2.dropCheck()
-                pass
-
-        left,middle,right = pg.mouse.get_pressed()
-        if left:
-            cardMove()
-        
-
-        cardslot1.render()
-        cardslot2.render()
-        card1.render()
-        pg.display.flip()
-        clock.tick(windowFPS)
-while True: #
+while True: #game loop
     menu()
-    gd()
+    
+    #testing:
+    #gd()
     #introduction()
     #typeGame()
     #cardGame()
@@ -789,10 +777,9 @@ while True: #
 #Performance. Lage en løkke som sjekker om elementer er av skjermen, og velger å ikke blitte.
 #endre resolution til 1280x720 eller 1920x1080
 
-#kortspill? Kanskje lage noe som inscryption? Uten hele 3d verden greia.
-#drag and drop
-#2x4 spillefelt, med et felt hvor datamaskinen plasserer kort
-#ofre kort for å få blod
+#lage metode for å velge hvilket spill man vil spille
+
+#hard mode (man må få til begge for å vinne)
 
 #https://www.cleverpdf.com/gif-to-png
 #https://www.dafont.com/top.php
