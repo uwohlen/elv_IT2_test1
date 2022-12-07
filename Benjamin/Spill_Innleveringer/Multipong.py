@@ -35,10 +35,12 @@ shop_bakgrunnlist = []
 shop_bakgrunnlist2 = []
 game_backgroundlist = []
 game_backgroundlist2 = []
+icons = []
 counter_meny = 0
 counter_shop = 0
 counter_game_background = 0
 highscore1 = 0
+penger = 0
 
 for i in range(113):
     bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
@@ -62,6 +64,17 @@ shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
 exit_bilde = pg.image.load('Benjamin/pngs/multipong/Exit.png').convert_alpha()
 back_bilde = pg.image.load('Benjamin/pngs/multipong/Back.png').convert_alpha()
 
+icon1 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0.png').convert_alpha()
+icon1 = pg.transform.scale(icon1, (45, 45))
+icon2 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (1).png').convert_alpha()
+icon2 = pg.transform.scale(icon2, (45, 45))
+icon3 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (2).png').convert_alpha()
+icon3 = pg.transform.scale(icon3, (45, 45))
+icon4 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (3).png').convert_alpha()
+icon4 = pg.transform.scale(icon4, (45, 45))
+
+
+
 sakura_bilde = pg.image.load('Benjamin/pngs/multipong/Sakura1.jpg').convert_alpha()
 
 lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
@@ -74,6 +87,7 @@ class Button():
   def __init__(self, x, y, image, scale):
     width = image.get_width()
     height = image.get_height()
+    self.scale = scale
     self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
     self.rect = self.image.get_rect()
     self.rect.topleft = (x, y)
@@ -101,6 +115,42 @@ start_button = Button(100,200,start_bilde, 1)
 shop_button = Button(700,200,shop_bilde, 1)
 exit_button = Button(400,500,exit_bilde, 1)
 back_button = Button(VINDU_BREDDE / 48, VINDU_HOYDE / 48, back_bilde, 0.75)
+
+class Icon():
+  def __init__(self, x, y, image, scale, pris):
+    width = image.get_width()
+    height = image.get_height()
+    self.scale = scale
+    self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
+    self.rect = self.image.get_rect()
+    self.rect.topleft = (x, y)
+    self.clicked = False
+    self.pris = pris
+    self.prisx = x + 45
+    self.prisy = y + 50 * scale
+
+  def draw(self):
+    action = False
+    # Få posisjonen til musen
+    pos = pg.mouse.get_pos()
+
+    if self.rect.collidepoint(pos):
+      if pg.mouse.get_pressed()[0] == 1 and self.clicked == False:
+        self.clicked = True
+        action = True
+
+    if pg.mouse.get_pressed()[0] == 0:
+      self.clicked = False
+    
+    # tegne knappene
+    vindu.blit(self.image, (self.rect.x, self.rect.y))
+      
+    return action
+
+icon1_button = Icon(VINDU_BREDDE * 1/6,VINDU_HOYDE * 1/4.5, icon1, 2, 10)
+icon2_button = Icon(VINDU_BREDDE * 2.16/6,VINDU_HOYDE * 1/4.5, icon2, 2, 10)
+icon3_button = Icon(VINDU_BREDDE * 3.32/6,VINDU_HOYDE * 1/4.5, icon3, 2, 10)
+icon4_button = Icon(VINDU_BREDDE * 4.5/6,VINDU_HOYDE * 1/4.5, icon4, 2, 10)
 
 class Bilder:
   def __init__(self, x, y, image, scale):
@@ -155,8 +205,8 @@ base_icon = pg.transform.scale(base_icon, (45, 45))
 mo = 0
 def lage():
   global mo
-  k = random.randint(1,1500)
-  if k > 1499 or mo == 0:
+  k = random.randint(1,750)
+  if k > 749 or mo == 0:
     pongs.append(Pong(random.randint(560,720),random.randint(100,200),(choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10) * 2,(choice([i for i in range(4,8) if i not in [0]])/10) * 2,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),1, base_icon))
     mo = 1
 
@@ -173,6 +223,8 @@ def nytt_spill():
     global klokke
     global mo
     global highscore1
+    global penger
+    penger += highscore(klokke)
     if highscore(klokke) > highscore1:
       highscore1 = highscore(klokke)
     pongs = []
@@ -282,7 +334,7 @@ def highscore(klokke):
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 48) 
-
+font2 = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 20) 
 def game():
   global klokke
   global counter_game_background
@@ -319,7 +371,7 @@ def game():
     '''bounce()'''
     flytt()
     klokke += 1
-    clock.tick(1000)
+    clock.tick(150)
     pg.display.flip()
   # Oppdaterer alt innholdet i vinduet
     
@@ -327,6 +379,8 @@ def shop():
   global klokke
   global counter_shop
   sjappe = True
+  global base_icon
+  global penger
   while sjappe:
     for event in pg.event.get():
       if event.type == pg.QUIT:
@@ -352,13 +406,142 @@ def shop():
     bilde_rect_shop1 = bilde_shop1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/10))
     vindu.blit(bilde_shop1, (bilde_rect_shop1))
     
-    bilde_shop2 = font.render('OUT OF STOCK', True, (0, 0, 0))
+    ss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
+    ss.set_alpha(128)                # alpha level
+    ss.fill((255, 255, 255))           # this fills the entire surface
+    vindu.blit(ss, (VINDU_BREDDE * 1/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
+    
+    
+    sss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
+    sss.set_alpha(128)                # alpha level
+    sss.fill((255, 255, 255))           # this fills the entire surface
+    vindu.blit(sss, (VINDU_BREDDE * 2.16/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
+    
+    ssss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
+    ssss.set_alpha(128)                # alpha level
+    ssss.fill((255, 255, 255))           # this fills the entire surface
+    vindu.blit(ssss, (VINDU_BREDDE * 3.32/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
+    
+    sssss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
+    sssss.set_alpha(128)                # alpha level
+    sssss.fill((255, 255, 255))           # this fills the entire surface
+    vindu.blit(sssss, (VINDU_BREDDE * 4.5/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
+    
+    
+    if icon1_button.draw() and penger >= icon1_button.pris:
+        base_icon = icon1
+        penger -= icon1_button.pris
+        icon1_button.pris = 0
+        icons.append("icon1")
+          
+    if "icon1" not in icons:
+      pris1 = font2.render((f'{icon1_button.pris}$'), True, (0, 0, 0))
+      bilde_rect_pris1 = pris1.get_rect(center=(icon1_button.prisx + 2, icon1_button.prisy + 2))
+      vindu.blit(pris1, (bilde_rect_pris1))
+      
+      pris1_1 = font2.render((f'{icon1_button.pris}$'), True, (255, 255, 255))
+      bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon1_button.prisx, icon1_button.prisy))
+      vindu.blit(pris1_1, (bilde_rect_pris1_1))
+      
+    if "icon1" in icons:
+      pris1 = font2.render((f'Owned'), True, (0, 0, 0))
+      bilde_rect_pris1 = pris1.get_rect(center=(icon1_button.prisx + 2,icon1_button.prisy + 2))
+      vindu.blit(pris1, (bilde_rect_pris1))
+      
+      pris1_1 = font2.render((f'Owned'), True, (255, 255, 255))
+      bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon1_button.prisx,icon1_button.prisy))
+      vindu.blit(pris1_1, (bilde_rect_pris1_1))
+      
+    if icon2_button.draw() and penger >= icon2_button.pris:
+        base_icon = icon2
+        penger -= icon2_button.pris
+        icon2_button.pris = 0
+        icons.append("icon2")
+          
+    if "icon2" not in icons:
+      pris2 = font2.render((f'{icon2_button.pris}$'), True, (0, 0, 0))
+      bilde_rect_pris2 = pris2.get_rect(center=(icon2_button.prisx + 2,icon2_button.prisy + 2))
+      vindu.blit(pris2, (bilde_rect_pris2))
+      
+      pris2_1 = font2.render((f'{icon2_button.pris}$'), True, (255, 255, 255))
+      bilde_rect_pris2_1 = pris2_1.get_rect(center=(icon2_button.prisx, icon2_button.prisy))
+      vindu.blit(pris2_1, (bilde_rect_pris2_1))
+      
+    if "icon2" in icons:
+      pris2 = font2.render((f'Owned'), True, (0, 0, 0))
+      bilde_rect_pris2 = pris2.get_rect(center=(icon2_button.prisx + 2, icon2_button.prisy + 2))
+      vindu.blit(pris2, (bilde_rect_pris2))
+      
+      pris2_1 = font2.render((f'Owned'), True, (255, 255, 255))
+      bilde_rect_pris2_1 = pris2_1.get_rect(center=(icon2_button.prisx, icon2_button.prisy))
+      vindu.blit(pris2_1, (bilde_rect_pris2_1))
+    
+    
+    if icon3_button.draw() and penger >= icon3_button.pris:
+        base_icon = icon3
+        penger -= icon3_button.pris
+        icon3_button.pris = 0
+        icons.append("icon3")
+          
+    if "icon3" not in icons:
+      pris3 = font2.render((f'{icon3_button.pris}$'), True, (0, 0, 0))
+      bilde_rect_pris3 = pris3.get_rect(center=(icon3_button.prisx + 2,icon3_button.prisy + 2))
+      vindu.blit(pris3, (bilde_rect_pris3))
+      
+      pris3_1 = font2.render((f'{icon3_button.pris}$'), True, (255, 255, 255))
+      bilde_rect_pris3_1 = pris3_1.get_rect(center=(icon3_button.prisx, icon3_button.prisy))
+      vindu.blit(pris3_1, (bilde_rect_pris3_1))
+      
+    if "icon3" in icons:
+      pris3 = font2.render((f'Owned'), True, (0, 0, 0))
+      bilde_rect_pris3 = pris3.get_rect(center=(icon3_button.prisx + 2,icon3_button.prisy + 2))
+      vindu.blit(pris3, (bilde_rect_pris3))
+      
+      pris3_1 = font2.render((f'Owned'), True, (255, 255, 255))
+      bilde_rect_pris3_1 = pris3_1.get_rect(center=(icon3_button.prisx, icon3_button.prisy))
+      vindu.blit(pris3_1, (bilde_rect_pris3_1))
+      
+    
+    if icon4_button.draw() and penger >= icon4_button.pris:
+        base_icon = icon4
+        penger -= icon4_button.pris
+        icon4_button.pris = 0
+        icons.append("icon4")
+          
+    if "icon4" not in icons:
+      pris4 = font2.render((f'{icon4_button.pris}$'), True, (0, 0, 0))
+      bilde_rect_pris4 = pris4.get_rect(center=(icon4_button.prisx + 2,icon4_button.prisy + 2))
+      vindu.blit(pris4, (bilde_rect_pris4))
+      
+      pris4_1 = font2.render((f'{icon4_button.pris}$'), True, (255, 255, 255))
+      bilde_rect_pris4_1 = pris4_1.get_rect(center=(icon4_button.prisx, icon4_button.prisy))
+      vindu.blit(pris4_1, (bilde_rect_pris4_1))
+      
+    if "icon4" in icons:
+      pris4 = font2.render((f'Owned'), True, (0, 0, 0))
+      bilde_rect_pris4 = pris4.get_rect(center=(icon4_button.prisx + 2,icon4_button.prisy + 2))
+      vindu.blit(pris4, (bilde_rect_pris4))
+      
+      pris4_1 = font2.render((f'Owned'), True, (255, 255, 255))
+      bilde_rect_pris4_1 = pris4_1.get_rect(center=(icon4_button.prisx, icon4_button.prisy))
+      vindu.blit(pris4_1, (bilde_rect_pris4_1))
+      
+      
+    balanse = font.render((f'Balanse: {str(penger)}'), True, (0, 0, 0))
+    bilde_rect_balanse = balanse.get_rect(center=(VINDU_BREDDE/1.99, VINDU_HOYDE/1.14))
+    vindu.blit(balanse, (bilde_rect_balanse))
+    
+    balanse1 = font.render((f'Balanse: {str(penger)}'), True, (255, 255, 255))
+    bilde_rect_balanse1 = balanse1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/1.15))
+    vindu.blit(balanse1, (bilde_rect_balanse1))
+    
+    '''bilde_shop2 = font.render('OUT OF STOCK', True, (0, 0, 0))
     bilde_rect_shop2 = bilde_shop2.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/1.98))
     vindu.blit(bilde_shop2, (bilde_rect_shop2))
     
     bilde_shop3 = font.render('OUT OF STOCK', True, (255, 255, 255))
     bilde_rect_shop3 = bilde_shop3.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/2))
-    vindu.blit(bilde_shop3, (bilde_rect_shop3))
+    vindu.blit(bilde_shop3, (bilde_rect_shop3))'''
     
     clock.tick(30)
     pg.display.flip()
