@@ -246,7 +246,7 @@ def fight():
     # print info about the monster to the player
     print(f'The {monster.name} has {monster.hitpoints} HP, '
           f'and {monster.strength} strength')
-    print(f'You have {player.hitpoints} HP and {player.strength} strengthjexplore')
+    print(f'You have {player.hitpoints} HP and {player.strength} strength')
     print('The monster is fierce, a fight breaks out!')
 
     while True:

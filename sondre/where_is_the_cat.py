@@ -51,13 +51,13 @@ class Box:
 
     def __init__(self, id):
         self.id = id
-    contains_cat = False
+        contains_cat = False
 
 
 class StartButton(Button):
 
-    def __init__(self, x, y, width, height, first_time, buttonText, onclickFunction=None, onePress=False):
-        super().__init__(self, x, y, width, height, first_time, buttonText, onePress=False)
+    def __init__(self, x, y, width, height, first_time, buttonText):
+        super().__init__(x, y, width, height, first_time, buttonText)
 
 
 
@@ -76,10 +76,10 @@ accent_color = (130, 135, 156)
 first_time = True
 font = pygame.font.Font('freesansbold.ttf', 40)
 text = 'At your doorstep there are 5 boxes. \n' \
-       'One of the boxes contains the cat. \n' \
+        'One of the boxes contains the cat. \n' \
         'Every morning you guess which box the cat is in. \n' \
         'If you guess correctly, you win. \n' \
-        'If not, the cat moves one box to the side at night.'
+        'If not, the cat moves one box up or down at night.'
 
 
 start_button = StartButton(425, 270, 150, 100, first_time, 'Start')

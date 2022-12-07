@@ -4,3 +4,6 @@ Bente: 22
 jakob: 6
 jakob: 270
 lunch break mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmMMMMMMMMMMMMMMMMMMMMMMMMNMNMMM: 4
+Bob: 4
+Bob jr: 8
+Bob jr jr: 128
