@@ -57,8 +57,6 @@ pygame.display.set_caption('Pong')
 ball = pygame.Rect(screen_width / 2 - 15, screen_heigth / 2 - 15, 30, 30)
 player = pygame.Rect(screen_width - 20, screen_heigth / 2 - 70, 10, 140)
 opponent = pygame.Rect(10, screen_heigth / 2 - 70, 10, 140)
-"""player_score = pygame.Rect(screen_width / 2 - 20, screen_heigth / 2 - 20, 40, 40)"""
-"""opponent_score = pygame.Rect(screen_width / 2 - 60, screen_heigth / 2 - 20, 120, 40)"""
 
 # Colors
 bg_color = pygame.Color('grey12')
@@ -97,8 +95,6 @@ while True:
     screen.fill(bg_color)
     pygame.draw.rect(screen, light_grey, player)
     pygame.draw.rect(screen, light_grey, opponent)
-    """pygame.draw.rect(screen, light_grey, player_score)"""
-    """pygame.draw.rect(screen, light_grey, opponent_score)"""
     pygame.draw.ellipse(screen, light_grey, ball)
     pygame.draw.aaline(screen, light_grey, (screen_width / 2, 0), (screen_width / 2, screen_heigth))
             

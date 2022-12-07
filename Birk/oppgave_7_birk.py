@@ -11,48 +11,45 @@ class Vare:
         return f"{self.kategori} {self.underkategori} {self.pristype} {self.pris} {self.mengde}"
     
     def kjop(kategori, mengde):
-        return kategori.pris * mengde
+        return int(kategori.pris) * int(mengde)
     
-eple = Vare("Eple", "Pink", "Kilo", 20, 1)
+eple = Vare("eple", "Pink", "Kilo", 20, 1)
 appelsiner = Vare("appelsin", "Jaffa", "Kilo", 25, 1)
-ananas = Vare("Ananas", "Hel", "Stk", 15, 1)
+ananas = Vare("ananas", "Hel", "Stk", 15, 1)
 
 sum = 0
 handler = True
 
 while handler:
     print("Du kan kjøpe: eple, appelsiner, ananas")
-    print(input("Hva vil du kjøpe? "))
+    vare = input("Hva vil du kjøpe? ")
     
-    if input == "eple":
-        print(input("Hvor mange kilo vil du kjøpe? "))
-        print(eple.kjop(eple, input))
-        print("Du har kjøpt " + input + " kilo epler for " + eple.kjop(eple, input) + "kr")
-        sum += eple.kjop(eple, input)
-        print(input("Vil du kjøpe noe mer? (Ja/Nei)"))
-        if input == "Nei":
-            handler = False
-            print("Du har kjøpt for " + sum + "kr")
+    if vare == "eple":
+        mengde = input("Hvor mange kilo vil du kjøpe? ")
+        print(Vare.kjop(eple, mengde))
+        print("Du har kjøpt ", mengde," kilo epler for ", Vare.kjop(eple, mengde), "kr")
+        sum += Vare.kjop(eple, mengde)
+        fortsett = input("Vil du kjøpe noe mer? (Ja/Nei)")
+        if fortsett == "Nei":
+            break
         
-    elif input == "appelsiner":
-        print(input("Hvor mange kilo vil du kjøpe? "))
-        print(appelsiner.kjop(appelsiner, input))
-        print("Du har kjøpt " + input + " kilo appelsiner for " + appelsiner.kjop(appelsiner, input) + "kr")
-        sum += appelsiner.kjop(appelsiner, input)
-        print(input("Vil du kjøpe noe mer? (Ja/Nei)"))
-        if input == "Nei":
-            handler = False
-            print("Du har kjøpt for " + sum + "kr")
+    elif vare == "appelsiner":
+        mengde = input("Hvor mange kilo vil du kjøpe? ")
+        print(Vare.kjop(appelsiner, mengde))
+        print("Du har kjøpt ", mengde," kilo appelsiner for ", Vare.kjop(appelsiner, mengde), "kr")
+        sum += Vare.kjop(appelsiner, mengde)
+        fortsett = input("Vil du kjøpe noe mer? (Ja/Nei)")
+        if fortsett == "Nei":
+            break
         
-    elif input == "ananas":
-        print(input("Hvor mange kilo vil du kjøpe? "))
-        print(ananas.kjop(ananas, input))
-        print("Du har kjøpt " + input + " kilo ananas for " + ananas.kjop(ananas, input) + "kr")
-        sum += ananas.kjop(ananas, input)
-        print(input("Vil du kjøpe noe mer? (Ja/Nei)"))
-        if input == "Nei":
-            handler = False
-            print("Du har kjøpt for " + sum + "kr")
+    elif vare == "ananas":
+        mengde = input("Hvor mange kilo vil du kjøpe? ")
+        print(Vare.kjop(ananas, mengde))
+        print("Du har kjøpt ", mengde," kilo ananas for ", Vare.kjop(ananas, mengde), "kr")
+        sum += Vare.kjop(ananas, mengde)
+        fortsett = input("Vil du kjøpe noe mer? (Ja/Nei)")
+        if fortsett == "Nei":
+            break
         
     else:
         print("Du har ikke valgt en vare som er tilgjengelig")
