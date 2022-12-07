@@ -9,7 +9,7 @@
 * [Importerer relevante kodebiblioteker](#importerer-relevante-kodebiblioteker)
 * [Ball bevegelse oppførsel](#ball-bevegelse-oppførsel)
 * [Spiller-pad bevegelse](#spiller-pad-bevegelse)
-* [Motstander-pad bevelse](#motstander-pad-bevelse)
+* [Motstander-pad bevegelse](#motstander-pad-bevelse)
 * [Ball start posisjon](#ball-start-posisjon)
 * [Generell oppsett](#generell-oppsett)
 * [Hovedvindu oppsett](#hovedvindu-oppsett)
@@ -53,7 +53,7 @@ def player_animation():
         player.bottom = screen_heigth # spiller-pad stopper når den treffer bunnen
 ```
         
-## Motstander-pad bevelse
+## Motstander-pad bevegelse
 
 ```python	
 def opponent_ai():
