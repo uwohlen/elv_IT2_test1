@@ -93,8 +93,8 @@ def typeGame():
     typetest = str()
 
     #oppgaver:
-    #task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Superoptikjempefantafenomenalistisk","Pneumonoultramicroscopicsilicovolcanoconiosis"]    
-    task = ["kul","hei"]
+    task = ["Kul","Hei","Onomatepoetikon","Iridocyclitis","Diabolical","Superoptikjempefantafenomenalistisk","Pneumonoultramicroscopicsilicovolcanoconiosis"]    
+    #task = ["kul","hei"] #teste wincondition
     tasknr = 0
     timerPlayed = False
     sec = 0
