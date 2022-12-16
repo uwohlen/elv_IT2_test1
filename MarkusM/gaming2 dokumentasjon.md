@@ -1,7 +1,7 @@
 ## Dokumentasjon av gaming2.py
 
 ### Filer
-* gaming.py
+* gaming2.py
 
 _Filene under må hentes fra [github](https://github.com/uwohlen/elv_IT2_uw/tree/main/MarkusM/):_
 * images
