@@ -23,7 +23,7 @@ _Filene under må hentes fra [github](https://github.com/uwohlen/elv_IT2_uw/tree
 * font_test
   * MADE TOMMY Black_PERSONAL USE.otf
   * MADE TOMMY Regular_PERSONAL USE.otf
-  * MADE TOMMY Regular_PERSONAL USE.otf
+  * coolvetica rg.otf
  
 ___Filene må være organisert lik mappestrukturen ovenfor, med en overordnet mappe som heter MarkusM, ellers vil ikke spillet kjøre___
 
