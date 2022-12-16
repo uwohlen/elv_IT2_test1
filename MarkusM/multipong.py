@@ -27,7 +27,11 @@ SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
 MusicChannel = pg.mixer.Channel(3)
 
+global highScore
 highScore = 0
+
+global score
+score = 0
 
 clock = pg.time.Clock() 
 windowFPS = 60
@@ -44,11 +48,9 @@ run = True
 
 class settings:
     def __init__(self):
-        self.meny = 2
+        self.meny = 1
         self.coins = 10000
 settings = settings()
-
-
 
 global blockSize
 blockSize = 100
@@ -58,6 +60,7 @@ playerSize = (150,32)
 
 def findCenter(): #finne center av skjermen
     return window_width/2,window_height/2
+
 
 class block:
     def __init__(self,startpos):
@@ -76,6 +79,8 @@ class block:
 
     def posupdate(self): #oppdater posisjon til blokken
         global run
+        global score
+        global highScore
         x,y = self.momentum
         self.posx = self.posx - x
         self.posy = self.posy - y
@@ -86,6 +91,8 @@ class block:
             self.momentum = x,-y
         if self.posy>window_height-(blockSize/2):
             run = False
+            if score > highScore:
+                highScore = score
 
         #legge til random?
         
@@ -147,9 +154,6 @@ class player():
             self.rect.centerx = x
             
         
-
-        #sakke fart når man nærmer seg musen
-        
         #gammel metode:
         #self.rect.centerx = x
 
@@ -202,12 +206,16 @@ global counter
 counter = 0
 timediff = 5
 def main():
+    global score
     global counter
     global blocklist
     global run
+
+    counter = 0
     run = True
     blocklist = []
     addblock()
+    score = 0
 
     while run:
         window.fill((255,255,255)) #bakgrunn
@@ -221,12 +229,19 @@ def main():
         if counter > windowFPS*timediff: #legge til blokk etter en stund i sekunder
             addblock()
             counter = -1
+        
+        if (counter % windowFPS*timediff)==0:
+            score +=1
 
         #render:
         safecollision()
         player.render()
         counter+=1
         blockrender()
+
+        title = font2.render(str(score),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
 
         clock.tick(windowFPS) #holde frame rate til 60
         pg.display.flip() #oppdatere skjermen
@@ -345,10 +360,17 @@ def menurender():
         quitbox.render()
         shopbox.render()
 
+
         #tittel
         title = font2.render(str("MULTIPONG"),True,black) #definere tekst
         titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
         window.blit(title,titleBox) #render
+
+        #highscore
+        if highScore != 0:
+            score = shopfont.render(str(f"HIGHSCORE: {highScore}"),True,black) #definere tekst
+            scorebox = score.get_rect(center=(window_width/2,(window_height-window_height/7)))
+            window.blit(score,scorebox) #render
 
     if settings.meny == 2:
         backbox.render()
@@ -414,6 +436,8 @@ def menu():
         menurender()
 
         pg.display.flip()
+
+
 
 while True: #spillLoop
     menu()

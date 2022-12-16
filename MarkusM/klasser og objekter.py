@@ -1,16 +1,8 @@
-import sys,os
+import matplotlib.pyplot as plt
 
-#sys.path.append(os.path.join(os.path.dirname(os.path[0])))
+xverd = [0,1,2,3,4]
+yverd = [0,1,4,9,16]
 
-#from felles import funkbib as fbib
-
-l = [1,2,3,5]
-
-
-#print(fbib.leggSammenListe(l))
-
-import pygame
-pygame.init()
-
-print(pygame.font.get_fonts())
+plt.plot(xverd,yverd)
+plt.show
 
