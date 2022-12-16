@@ -35,7 +35,7 @@ shop_bakgrunnlist = []
 shop_bakgrunnlist2 = []
 game_backgroundlist = []
 game_backgroundlist2 = []
-icons = []
+owned_icons = []
 counter_meny = 0
 counter_shop = 0
 counter_game_background = 0
@@ -72,6 +72,13 @@ icon3 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (2).png').con
 icon3 = pg.transform.scale(icon3, (45, 45))
 icon4 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (3).png').convert_alpha()
 icon4 = pg.transform.scale(icon4, (45, 45))
+
+icons = []
+
+icons.append(icon1)
+icons.append(icon2)
+icons.append(icon3)
+icons.append(icon4)
 
 
 
@@ -117,7 +124,7 @@ exit_button = Button(400,500,exit_bilde, 1)
 back_button = Button(VINDU_BREDDE / 48, VINDU_HOYDE / 48, back_bilde, 0.75)
 
 class Icon():
-  def __init__(self, x, y, image, scale, pris):
+  def __init__(self, x, y, image, scale, pris, wx, wy):
     width = image.get_width()
     height = image.get_height()
     self.scale = scale
@@ -128,6 +135,8 @@ class Icon():
     self.pris = pris
     self.prisx = x + 45
     self.prisy = y + 50 * scale
+    self.wx = wx
+    self.wy = wy
 
   def draw(self):
     action = False
@@ -147,10 +156,17 @@ class Icon():
       
     return action
 
-icon1_button = Icon(VINDU_BREDDE * 1/6,VINDU_HOYDE * 1/4.5, icon1, 2, 10)
-icon2_button = Icon(VINDU_BREDDE * 2.16/6,VINDU_HOYDE * 1/4.5, icon2, 2, 10)
-icon3_button = Icon(VINDU_BREDDE * 3.32/6,VINDU_HOYDE * 1/4.5, icon3, 2, 10)
-icon4_button = Icon(VINDU_BREDDE * 4.5/6,VINDU_HOYDE * 1/4.5, icon4, 2, 10)
+icon1_button = Icon(VINDU_BREDDE * 1/6,VINDU_HOYDE * 1/4.5, icon1, 2, 10, 1, 1)
+icon2_button = Icon(VINDU_BREDDE * 2.16/6,VINDU_HOYDE * 1/4.5, icon2, 2, 10, 2.16, 1)
+icon3_button = Icon(VINDU_BREDDE * 3.32/6,VINDU_HOYDE * 1/4.5, icon3, 2, 10, 3.32, 1)
+icon4_button = Icon(VINDU_BREDDE * 4.5/6,VINDU_HOYDE * 1/4.5, icon4, 2, 10, 4.5, 1)
+
+icon_buttons = []
+
+icon_buttons.append(icon1_button)
+icon_buttons.append(icon2_button)
+icon_buttons.append(icon3_button)
+icon_buttons.append(icon4_button)
 
 class Bilder:
   def __init__(self, x, y, image, scale):
@@ -406,7 +422,7 @@ def shop():
     bilde_rect_shop1 = bilde_shop1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/10))
     vindu.blit(bilde_shop1, (bilde_rect_shop1))
     
-    ss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
+    '''ss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
     ss.set_alpha(128)                # alpha level
     ss.fill((255, 255, 255))           # this fills the entire surface
     vindu.blit(ss, (VINDU_BREDDE * 1/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
@@ -425,106 +441,36 @@ def shop():
     sssss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
     sssss.set_alpha(128)                # alpha level
     sssss.fill((255, 255, 255))           # this fills the entire surface
-    vindu.blit(sssss, (VINDU_BREDDE * 4.5/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
+    vindu.blit(sssss, (VINDU_BREDDE * 4.5/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates'''
     
-    
-    if icon1_button.draw() and penger >= icon1_button.pris:
-        base_icon = icon1
-        penger -= icon1_button.pris
-        icon1_button.pris = 0
-        icons.append("icon1")
-          
-    if "icon1" not in icons:
-      pris1 = font2.render((f'{icon1_button.pris}$'), True, (0, 0, 0))
-      bilde_rect_pris1 = pris1.get_rect(center=(icon1_button.prisx + 2, icon1_button.prisy + 2))
-      vindu.blit(pris1, (bilde_rect_pris1))
-      
-      pris1_1 = font2.render((f'{icon1_button.pris}$'), True, (255, 255, 255))
-      bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon1_button.prisx, icon1_button.prisy))
-      vindu.blit(pris1_1, (bilde_rect_pris1_1))
-      
-    if "icon1" in icons:
-      pris1 = font2.render((f'Owned'), True, (0, 0, 0))
-      bilde_rect_pris1 = pris1.get_rect(center=(icon1_button.prisx + 2,icon1_button.prisy + 2))
-      vindu.blit(pris1, (bilde_rect_pris1))
-      
-      pris1_1 = font2.render((f'Owned'), True, (255, 255, 255))
-      bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon1_button.prisx,icon1_button.prisy))
-      vindu.blit(pris1_1, (bilde_rect_pris1_1))
-      
-    if icon2_button.draw() and penger >= icon2_button.pris:
-        base_icon = icon2
-        penger -= icon2_button.pris
-        icon2_button.pris = 0
-        icons.append("icon2")
-          
-    if "icon2" not in icons:
-      pris2 = font2.render((f'{icon2_button.pris}$'), True, (0, 0, 0))
-      bilde_rect_pris2 = pris2.get_rect(center=(icon2_button.prisx + 2,icon2_button.prisy + 2))
-      vindu.blit(pris2, (bilde_rect_pris2))
-      
-      pris2_1 = font2.render((f'{icon2_button.pris}$'), True, (255, 255, 255))
-      bilde_rect_pris2_1 = pris2_1.get_rect(center=(icon2_button.prisx, icon2_button.prisy))
-      vindu.blit(pris2_1, (bilde_rect_pris2_1))
-      
-    if "icon2" in icons:
-      pris2 = font2.render((f'Owned'), True, (0, 0, 0))
-      bilde_rect_pris2 = pris2.get_rect(center=(icon2_button.prisx + 2, icon2_button.prisy + 2))
-      vindu.blit(pris2, (bilde_rect_pris2))
-      
-      pris2_1 = font2.render((f'Owned'), True, (255, 255, 255))
-      bilde_rect_pris2_1 = pris2_1.get_rect(center=(icon2_button.prisx, icon2_button.prisy))
-      vindu.blit(pris2_1, (bilde_rect_pris2_1))
-    
-    
-    if icon3_button.draw() and penger >= icon3_button.pris:
-        base_icon = icon3
-        penger -= icon3_button.pris
-        icon3_button.pris = 0
-        icons.append("icon3")
-          
-    if "icon3" not in icons:
-      pris3 = font2.render((f'{icon3_button.pris}$'), True, (0, 0, 0))
-      bilde_rect_pris3 = pris3.get_rect(center=(icon3_button.prisx + 2,icon3_button.prisy + 2))
-      vindu.blit(pris3, (bilde_rect_pris3))
-      
-      pris3_1 = font2.render((f'{icon3_button.pris}$'), True, (255, 255, 255))
-      bilde_rect_pris3_1 = pris3_1.get_rect(center=(icon3_button.prisx, icon3_button.prisy))
-      vindu.blit(pris3_1, (bilde_rect_pris3_1))
-      
-    if "icon3" in icons:
-      pris3 = font2.render((f'Owned'), True, (0, 0, 0))
-      bilde_rect_pris3 = pris3.get_rect(center=(icon3_button.prisx + 2,icon3_button.prisy + 2))
-      vindu.blit(pris3, (bilde_rect_pris3))
-      
-      pris3_1 = font2.render((f'Owned'), True, (255, 255, 255))
-      bilde_rect_pris3_1 = pris3_1.get_rect(center=(icon3_button.prisx, icon3_button.prisy))
-      vindu.blit(pris3_1, (bilde_rect_pris3_1))
-      
-    
-    if icon4_button.draw() and penger >= icon4_button.pris:
-        base_icon = icon4
-        penger -= icon4_button.pris
-        icon4_button.pris = 0
-        icons.append("icon4")
-          
-    if "icon4" not in icons:
-      pris4 = font2.render((f'{icon4_button.pris}$'), True, (0, 0, 0))
-      bilde_rect_pris4 = pris4.get_rect(center=(icon4_button.prisx + 2,icon4_button.prisy + 2))
-      vindu.blit(pris4, (bilde_rect_pris4))
-      
-      pris4_1 = font2.render((f'{icon4_button.pris}$'), True, (255, 255, 255))
-      bilde_rect_pris4_1 = pris4_1.get_rect(center=(icon4_button.prisx, icon4_button.prisy))
-      vindu.blit(pris4_1, (bilde_rect_pris4_1))
-      
-    if "icon4" in icons:
-      pris4 = font2.render((f'Owned'), True, (0, 0, 0))
-      bilde_rect_pris4 = pris4.get_rect(center=(icon4_button.prisx + 2,icon4_button.prisy + 2))
-      vindu.blit(pris4, (bilde_rect_pris4))
-      
-      pris4_1 = font2.render((f'Owned'), True, (255, 255, 255))
-      bilde_rect_pris4_1 = pris4_1.get_rect(center=(icon4_button.prisx, icon4_button.prisy))
-      vindu.blit(pris4_1, (bilde_rect_pris4_1))
+    for i in range(0,len(icons)):
+      ss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon_buttons[i].scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon_buttons[i].scale))  # the size of your rect
+      ss.set_alpha(128)                # alpha level
+      ss.fill((255, 255, 255))           # this fills the entire surface
+      vindu.blit(ss, (VINDU_BREDDE * icon_buttons[i].wx/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
+      if icon_buttons[i].draw() and penger >= icon_buttons[i].pris:
+          base_icon = icons[i]
+          penger -= icon_buttons[i].pris
+          icon_buttons[i].pris = 0
+          owned_icons.append(icons[i])
+            
+      if icons[i] not in owned_icons:
+        pris1 = font2.render((f'{icon_buttons[i].pris}$'), True, (0, 0, 0))
+        bilde_rect_pris1 = pris1.get_rect(center=(icon_buttons[i].prisx + 2, icon_buttons[i].prisy + 2))
+        vindu.blit(pris1, (bilde_rect_pris1))
+        
+        pris1_1 = font2.render((f'{icon_buttons[i].pris}$'), True, (255, 255, 255))
+        bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon_buttons[i].prisx, icon_buttons[i].prisy))
+        vindu.blit(pris1_1, (bilde_rect_pris1_1))
+        
+      if icons[i] in owned_icons:
+        pris1 = font2.render((f'Owned'), True, (0, 0, 0))
+        bilde_rect_pris1 = pris1.get_rect(center=(icon_buttons[i].prisx + 2,icon_buttons[i].prisy + 2))
+        vindu.blit(pris1, (bilde_rect_pris1))
+        
+        pris1_1 = font2.render((f'Owned'), True, (255, 255, 255))
+        bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon_buttons[i].prisx,icon_buttons[i].prisy))
+        vindu.blit(pris1_1, (bilde_rect_pris1_1))
       
       
     balanse = font.render((f'Balanse: {str(penger)}'), True, (0, 0, 0))
