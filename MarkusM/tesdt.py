@@ -69,8 +69,8 @@ class barbie():
     def updateA(self):
         self.f = (0,g)
 
-        self.f = self.f[0],math.sqrt(abs((lodd.f[0]**2)+(lodd.f[1]**2)))
-
+        self.f = self.f[0],self.f[1]-(math.cos(math.radians(lodd.vinkel)))
+        print(self.f)
         self.a = self.f[0],self.f[1]
 
     def render(self):
@@ -115,10 +115,14 @@ class lodd():
         bx = barb.pos[0]
         bx = bx-window_height/2
         v = math.sqrt(abs((lodd.v[0]**2)+(lodd.v[1]**2)))
+
         #v=v/self.m
-        totf = barb.f[1]-((v**2)/(stringLen-bx))
+        totf = barb.f[1]
         yf = math.sin(math.radians(self.vinkel))*totf
         xf = math.cos(math.radians(self.vinkel))*totf
+
+
+        #self.f = self.f[0]-xf,self.f[1]-yf
 
         if self.pos[0]>window_width/2:
             self.f = self.f[0]-xf,self.f[1]-yf
