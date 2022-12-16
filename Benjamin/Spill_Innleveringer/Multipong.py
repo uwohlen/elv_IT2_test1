@@ -351,6 +351,11 @@ def highscore(klokke):
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
 font = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 48) 
 font2 = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 20) 
+
+
+
+
+
 def game():
   global klokke
   global counter_game_background
@@ -390,6 +395,10 @@ def game():
     clock.tick(150)
     pg.display.flip()
   # Oppdaterer alt innholdet i vinduet
+
+
+
+
     
 def shop():
   global klokke
@@ -421,27 +430,6 @@ def shop():
     bilde_shop1 = font.render('SHOP', True, (255, 255, 255))
     bilde_rect_shop1 = bilde_shop1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/10))
     vindu.blit(bilde_shop1, (bilde_rect_shop1))
-    
-    '''ss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
-    ss.set_alpha(128)                # alpha level
-    ss.fill((255, 255, 255))           # this fills the entire surface
-    vindu.blit(ss, (VINDU_BREDDE * 1/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
-    
-    
-    sss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
-    sss.set_alpha(128)                # alpha level
-    sss.fill((255, 255, 255))           # this fills the entire surface
-    vindu.blit(sss, (VINDU_BREDDE * 2.16/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
-    
-    ssss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
-    ssss.set_alpha(128)                # alpha level
-    ssss.fill((255, 255, 255))           # this fills the entire surface
-    vindu.blit(ssss, (VINDU_BREDDE * 3.32/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
-    
-    sssss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon1_button.scale))  # the size of your rect
-    sssss.set_alpha(128)                # alpha level
-    sssss.fill((255, 255, 255))           # this fills the entire surface
-    vindu.blit(sssss, (VINDU_BREDDE * 4.5/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates'''
     
     for i in range(0,len(icons)):
       ss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon_buttons[i].scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon_buttons[i].scale))  # the size of your rect
@@ -481,16 +469,12 @@ def shop():
     bilde_rect_balanse1 = balanse1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/1.15))
     vindu.blit(balanse1, (bilde_rect_balanse1))
     
-    '''bilde_shop2 = font.render('OUT OF STOCK', True, (0, 0, 0))
-    bilde_rect_shop2 = bilde_shop2.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/1.98))
-    vindu.blit(bilde_shop2, (bilde_rect_shop2))
-    
-    bilde_shop3 = font.render('OUT OF STOCK', True, (255, 255, 255))
-    bilde_rect_shop3 = bilde_shop3.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/2))
-    vindu.blit(bilde_shop3, (bilde_rect_shop3))'''
-    
     clock.tick(30)
     pg.display.flip()
+
+
+
+
 
 def meny():
   global counter_meny
