@@ -37,32 +37,33 @@ Dette programmet har følgende Klasser, funksjoner, variabler, lister og bibliot
    * **Gif lister** Inkluderer bakgrunnslistene som det er fler av, disse listene legger til alle bildene til en gif, som senere blir kjørt gjennom via en for-løkke og variablene *Counter*
    *  **Pongs** En liste som inneholder alle kvadratene som blir laget, bruker liste siden kan da kjøre gjennom en while-løkke og bruke indexer for å behandle alle kvadratene samtidig.
 #### Biblioteker
- *import pygame as pg
-*from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT)
-*import random as random
-*import sys, time
-*import os
-*from pygame.locals import *
-*from random import choice
+* import pygame as pg
+* from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT)
+* import random as random
+* import sys, time
+* import os
+* from pygame.locals import *
+* from random import choice
 
 ### Bruk
 For å bruke spillet har det ikke noe å si hvor selve MultiPong.py filen ligger så lenge den er i samme repositorien som de andre filene, for dette trengs for at MultiPong.py skal kunne finne frem til de andre filene. MultiPong.py filen benytter paths for å finne frem til de andre filene, og dermed er dette noe som må tas hensyn til dersom filer skal flyttes.
 Programmet starter opp en meny hvor du kan velge videre hva du ønsker å gjøre: Å besøke butikken, spille selve spillet eller avslutte programmet. Butikken har som funksjon å la spilleren endre om på teksturer som blir brukt for kvadratene i spillet og platen som spilleren beveger, videre har den som funksjon å la spilleren kjøpe ny musikk, nye bilder og oppgraderinger som endrer spillets funksjonalitet eller gjør spillet lettere. Selve spillet er basert på klassikeren Multipong.
 Det er mye som kan endres på, bare å bruke fantasien, eksempler er hvordan selve spillet fungerer, layouts av meny og butikk, base-tekstur for kvadratene og platen, musikk, legge til power-ups etc
+
 #### For å bruke programmet brukes bibliotekene:
-*import pygame as pg
+* import pygame as pg
 
-*from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT)
+* from pygame.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT)
 
-*import random as random
+* import random as random
 
-*import sys, time
+* import sys, time
 
-*import os
+* import os
 
-*from pygame.locals import *
+* from pygame.locals import *
 
-*from random import choice
+* from random import choice
 
 
 # Slutten 
