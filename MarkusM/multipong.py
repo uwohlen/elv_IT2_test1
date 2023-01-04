@@ -95,7 +95,7 @@ class block:
                 highScore = score
 
         #legge til random?
-        
+
         self.rect.center = (self.posx,self.posy)
 
     def render(self): #rendre blokker
@@ -127,7 +127,7 @@ class player():
         self.rect = pg.Rect(0,0,self.width,self.height)
         self.color = (0,0,0)
         self.posy = window_height-window_height/4
-        self.posx = 0
+        self.posx = 0 
         self.rect.center = self.posx,self.posy
         self.updateSafebox()
         self.momentum = 5
