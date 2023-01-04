@@ -47,5 +47,5 @@ Dette programmet har følgende Klasser, funksjoner, variabler, lister og bibliot
 
 ### Bruk
 
+Spillet starter med å gi en kort introduksjon, og spør deretter om spilleren om regler til spillet, deretter får spilleren valg mellom flere karakterer å bruke i spillet, disse karakterene har attributer som f. eks flaks, IQ og liv som står beskrevet over. Deretter starter blackjack hvor spilleren blir først presentert for en meny med mulige sider spilleren kan besøke, eller hvor hvor mye spilleren vil bette i blackjack mot monsteret, altså dersom spilleren skriver inn et tall som er innen spillerens penger vil dette gå inn i en pot i blackjack, dersom det blir oppgitt en sum over det spilleren har vil konsollen be om en ny input, og til slutt hvis spilleren skriver inn en tilsvarende bokstav for en av sidene vil denne siden bli åpnet opp istedenfor å spille blackjack. Videre enten taper eller vinner du de pengene du la inn, og med penger kan du kjøpe gjenstander i butikken for å øke eller forbedre attributene til karakteren, og bruke disse til å slåss mot monsteret og drepe det. 
 
-#### For å bruke programmet brukes bibliotekene:
