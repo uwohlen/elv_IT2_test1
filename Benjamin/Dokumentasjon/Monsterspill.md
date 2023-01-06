@@ -1,10 +1,3 @@
-### Dokumentasjonen skal inneholde følgende overskrifter
-* Liste med filer
-* Beskrivelse
-* Bruk: Må filen ligge et bestemt sted, hva gjør programmet, hva kan du endre, hva må importeres/inkluderes av eksterne biblioteker?
-* Klasser, metoder, funksjoner, variabler: gi en forklaring av det du har produsert'
-
-
 ## Introduksjon
 Vi har i lengre tid jobbet med et prosjekt der vi har laget et tekstbasert spill i python. Her kommer dokumentasjonen av dette prosjektet
 
@@ -13,6 +6,10 @@ Vi har følgende filer som inneholder kode
 
 ### Monsterspill.py
 Dette programmet har følgende Klasser, funksjoner, variabler, lister og biblioteker.
+
+#### Klasser
+  * **Monster** Denne klassen er for å lage monstere.
+  * **Spiller** Denne klassen er for å lage karakterene spilleren kan velge mellom.
 
 #### Funksjoner
   * **Clear** denne funksjonen sletter tekst fra konsollen slik at den blir mer ryddig
@@ -33,19 +30,31 @@ Dette programmet har følgende Klasser, funksjoner, variabler, lister og bibliot
   * **Score** denne funksjonen viser spilleren hvor mange gange du har vunnet eller tapt.
   * **Game** denne funksjonen kjører hele løkken med spillet.
 
-#### Klasser
-  * **Monster** Denne klassen er for å lage monstere
-  * **Spiller** Denne klassen er for å lage karakterene man kan velge mellom
+#### Variabler
+  * **Vinn** holder telling på antall ganger spilleren har vunnet blackjack.
+  * **Tap** holder telling på antall ganger spilleren har tapt blackjack.
+  * **Penger** holder telling på hvor mye penger spilelren har.
+  * **Bonus** Enkelte gjenstander som spilleren kan kjøpe gir bonus, det vil si at spilleren vinner mer penger enn det som ble betta, dette funker ved at gevinsten vil plusses med seg selv ganget med bonusen, i starten vil bonusen være null, altså gevinst + gevinst * 0 = gevinst.
 
 #### Lister
+  * **Deck** holder bunken med kort.
+  * **Items** Holder alle gjenstander som blir kjøpt.
+  * **Våpen** Holder alle våpen som blir kjøpt.
+  * **Butikk** Holder både gjenstander og våpen før de blir kjøpt.
 
-  
 #### Biblioteker
 * import random
 * import os
 * import sys, time
 
 ### Bruk
-
 Spillet starter med å gi en kort introduksjon, og spør deretter om spilleren om regler til spillet, deretter får spilleren valg mellom flere karakterer å bruke i spillet, disse karakterene har attributer som f. eks flaks, IQ og liv som står beskrevet over. Deretter starter blackjack hvor spilleren blir først presentert for en meny med mulige sider spilleren kan besøke, eller hvor hvor mye spilleren vil bette i blackjack mot monsteret, altså dersom spilleren skriver inn et tall som er innen spillerens penger vil dette gå inn i en pot i blackjack, dersom det blir oppgitt en sum over det spilleren har vil konsollen be om en ny input, og til slutt hvis spilleren skriver inn en tilsvarende bokstav for en av sidene vil denne siden bli åpnet opp istedenfor å spille blackjack. Videre enten taper eller vinner du de pengene du la inn, og med penger kan du kjøpe gjenstander i butikken for å øke eller forbedre attributene til karakteren, og bruke disse til å slåss mot monsteret og drepe det. 
+
+#### For å bruke programmet brukes bibliotekene:
+* import random
+
+* import os
+
+* import sys, time
+
 
