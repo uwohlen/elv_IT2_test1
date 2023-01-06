@@ -1,11 +1,3 @@
-## Dokumentasjon av et prosjekt
-
-### Dokumentasjonen skal inneholde følgende overskrifter
-* Liste med filer
-* Beskrivelse
-* Bruk: Må filen ligge et bestemt sted, hva gjør programmet, hva kan du endre, hva må importeres/inkluderes av eksterne biblioteker?
-* Klasser, metoder, funksjoner, variabler: gi en forklaring av det du har produsert
-
 ## Introduksjon
 Vi har i lengre tid jobbet med et prosjekt der vi har brukt biblioteket PyGames til å lage vårt eget spill. Her kommer dokumentasjonen av dette prosjektet
 
