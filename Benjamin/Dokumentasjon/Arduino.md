@@ -1,32 +1,21 @@
-### Dokumentasjonen skal inneholde følgende overskrifter
-* Liste med filer
-* Beskrivelse
-* Bruk: Må filen ligge et bestemt sted, hva gjør programmet, hva kan du endre, hva må importeres/inkluderes av eksterne biblioteker?
-* Klasser, metoder, funksjoner, variabler: gi en forklaring av det du har produsert'
-
-
 ## Introduksjon
-Vi har i lengre tid jobbet med et prosjekt der vi har laget et tekstbasert spill i python. Her kommer dokumentasjonen av dette prosjektet
+Vi har i lengre tid jobbet med et prosjekt der vi har laget noe i Arduino, og i mitt tilfelle en bil med to hjul og en avstandssensor for å plukke opp om noe er forann, og den vil da endre kjøreretning. Her kommer dokumentasjonen av dette prosjektet
 
 Vi har følgende filer som inneholder kode
-* Monsterspill.py
+* avstand og motor.ino
 
-### Monsterspill.py
+### avstand og motor.ino
 Dette programmet har følgende Klasser, funksjoner, variabler, lister og biblioteker.
 
 #### Funksjoner
+  * **Setup** setter opp de forskjellige pin-ene og sier om de skal være inputs eller outputs, og hvilke innganger som blir brukt, altså hvor strømmen skal bli sendt
+  * **Loop** kjører hele programmet
 
-
-#### Klasser
-
-
-#### Lister
-
-  
-#### Biblioteker
-
+#### Variabler
+  * **Duration** variabel for negden av lydbølge avstanden
+  * **Distance** variabel for avstandsmålingen
 
 ### Bruk
+Programmet vil få bilen til å kjøre fremover og setter i gang avstandssensoren, dersom avstanden mellom sensoren og et hinder er mindre en 10cm vil bilen bytte kjøreretning.
 
-
-#### For å bruke programmet brukes bibliotekene:
+#### Slutt
