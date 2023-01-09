@@ -43,34 +43,34 @@ highscore1 = 0
 penger = 0
 
 for i in range(113):
-    bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
+    bakgrunnlist.append(pg.image.load(f"Benjamin/multipong/Pngs/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
 for i in range(0,112):
     bakgrunnlist2.append(pg.transform.scale(bakgrunnlist[i], (VINDU_BREDDE, VINDU_HOYDE)))
 
 for i in range(314):
-    shop_bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/shop_gif/images/pixel-sakura-{i}.png"))
+    shop_bakgrunnlist.append(pg.image.load(f"Benjamin/multipong/Pngs/shop_gif/images/pixel-sakura-{i}.png"))
 for i in range(0,313):
     shop_bakgrunnlist2.append(pg.transform.scale(shop_bakgrunnlist[i], (VINDU_BREDDE, VINDU_HOYDE)))
     
 gif_rate = 15
 for i in range(0, 32):
   for o in range(1, gif_rate + 1):
-    game_backgroundlist.append(pg.image.load(f"Benjamin/pngs/multipong/game_background_gif/images/tumblr_nr2569nqX01qze3hdo1_r2_500-{i}.png"))
+    game_backgroundlist.append(pg.image.load(f"Benjamin/multipong/Pngs/game_background_gif/images/tumblr_nr2569nqX01qze3hdo1_r2_500-{i}.png"))
 for i in range(0,31 * gif_rate):
     game_backgroundlist2.append(pg.transform.scale(game_backgroundlist[i], (VINDU_BREDDE / 2, VINDU_HOYDE)))
 
-start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
-shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
-exit_bilde = pg.image.load('Benjamin/pngs/multipong/Exit.png').convert_alpha()
-back_bilde = pg.image.load('Benjamin/pngs/multipong/Back.png').convert_alpha()
+start_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Start.png').convert_alpha()
+shop_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Shop.png').convert_alpha()
+exit_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Exit.png').convert_alpha()
+back_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Back.png').convert_alpha()
 
-icon1 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0.png').convert_alpha()
+icon1 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0.png').convert_alpha()
 icon1 = pg.transform.scale(icon1, (45, 45))
-icon2 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (1).png').convert_alpha()
+icon2 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0 (1).png').convert_alpha()
 icon2 = pg.transform.scale(icon2, (45, 45))
-icon3 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (2).png').convert_alpha()
+icon3 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0 (2).png').convert_alpha()
 icon3 = pg.transform.scale(icon3, (45, 45))
-icon4 = pg.image.load('Benjamin/pngs/multipong/icons/pixil-frame-0 (3).png').convert_alpha()
+icon4 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0 (3).png').convert_alpha()
 icon4 = pg.transform.scale(icon4, (45, 45))
 
 icons = []
@@ -82,12 +82,12 @@ icons.append(icon4)
 
 
 
-sakura_bilde = pg.image.load('Benjamin/pngs/multipong/Sakura1.jpg').convert_alpha()
+sakura_bilde = pg.image.load('Benjamin/multipong/Pngs/Bakgrunner/Sakura1.jpg').convert_alpha()
 
-lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
+lyd_effekt1 = pg.mixer.Sound("Benjamin/Multipong/Lyd/Explosion meme - Sound Effect.mp3")
 lyd_effekt1.set_volume(0.1)
 
-game_musikk = pg.mixer.Sound("Benjamin/Lyd/DJ Striden - Level One.mp3")
+game_musikk = pg.mixer.Sound("Benjamin/Multipong/Lyd/DJ Striden - Level One.mp3")
 game_musikk.set_volume(0.2)
 
 class Button():
@@ -215,7 +215,7 @@ class Pong:
     rect = image.get_rect()
     rect.center = (x, y)
 
-base_icon = pg.image.load(f"Benjamin/pngs/multipong/base_icon.png").convert()
+base_icon = pg.image.load(f"Benjamin/multipong/Pngs/icons/base_icon.png").convert()
 base_icon = pg.transform.scale(base_icon, (45, 45))
 
 mo = 0
@@ -276,7 +276,7 @@ def flytt():
           pongs[i].farty = -pongs[i].farty
         elif ((pongs[i].y + pongs[i].høyde) >= arena.høyde):
           if SoundEffectChannel3.get_busy() == False:
-            lyd_effekt3 = pg.mixer.Sound("Benjamin/Lyd/Shart Sound Effect.mp3")
+            lyd_effekt3 = pg.mixer.Sound("Benjamin/Multipong/Lyd/Shart Sound Effect.mp3")
             lyd_effekt3.set_volume(2)
             SoundEffectChannel3.play(lyd_effekt3)
           nytt_spill()
@@ -349,8 +349,8 @@ def highscore(klokke):
 
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
-font = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 48) 
-font2 = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 20) 
+font = pg.font.Font("Benjamin/Multipong/Fonts/pixel-font.ttf", 48) 
+font2 = pg.font.Font("Benjamin/Multipong/Fonts/pixel-font.ttf", 20) 
 
 
 
@@ -485,7 +485,7 @@ def meny():
   SoundEffectChannel2.fadeout(0)
   while fortsett:
     if MusicChannel.get_busy() == False:
-            meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Daft Punk - Veridis Quo.mp3")
+            meny_musikk = pg.mixer.Sound("Benjamin/Multipong/Lyd/Daft Punk - Veridis Quo.mp3")
             meny_musikk.set_volume(0.5)
             MusicChannel.play(meny_musikk)
             
