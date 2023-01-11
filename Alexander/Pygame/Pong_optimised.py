@@ -14,3 +14,6 @@ while True:
         balls[x].move_ip(Vballs[x][0], Vballs[x][1]), pg.draw.circle(wind, (255, 0, 0), (balls[x].x, balls[x].y), 10)
     counter, _ = counter + 1, (wind.blit(pg.font.SysFont("Arial", 16).render(str(score), True, 0), (470, 20)), pg.draw.rect(wind, 0, box), pg.display.flip(), clock.tick(60), wind.fill((255, 255, 255)))  
     if counter % 360 == 0: balls.append(pg.Rect(rnd.randint(10, 490), rnd.randint(10, 250), 10, 10)), Vballs.append([rnd.choice([1, -1]) * 2.5, 3.2])
+    
+    
+    
