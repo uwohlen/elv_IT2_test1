@@ -22,8 +22,9 @@ print(type(vindu))
 
 SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
-MusicChannel = pg.mixer.Channel(3)
-MusicChannelGame = pg.mixer.Channel(4)
+SoundEffectChannel3 = pg.mixer.Channel(3)
+MusicChannel = pg.mixer.Channel(4)
+MusicChannelGame = pg.mixer.Channel(5)
 
 klokke = 0
 clock = pg.time.Clock()
@@ -34,38 +35,66 @@ shop_bakgrunnlist = []
 shop_bakgrunnlist2 = []
 game_backgroundlist = []
 game_backgroundlist2 = []
+owned_icons = []
 counter_meny = 0
 counter_shop = 0
 counter_game_background = 0
+highscore1 = 0
+penger = 0
 
 for i in range(113):
-    bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
+    bakgrunnlist.append(pg.image.load(f"Benjamin/multipong/Pngs/bakgrunn_gif/images/waneella-pixel-art-{i}.png"))
 for i in range(0,112):
     bakgrunnlist2.append(pg.transform.scale(bakgrunnlist[i], (VINDU_BREDDE, VINDU_HOYDE)))
 
 for i in range(314):
-    shop_bakgrunnlist.append(pg.image.load(f"Benjamin/pngs/multipong/shop_gif/images/pixel-sakura-{i}.png"))
+    shop_bakgrunnlist.append(pg.image.load(f"Benjamin/multipong/Pngs/shop_gif/images/pixel-sakura-{i}.png"))
 for i in range(0,313):
     shop_bakgrunnlist2.append(pg.transform.scale(shop_bakgrunnlist[i], (VINDU_BREDDE, VINDU_HOYDE)))
     
 gif_rate = 15
 for i in range(0, 32):
   for o in range(1, gif_rate + 1):
-    game_backgroundlist.append(pg.image.load(f"Benjamin/pngs/multipong/game_background_gif/images/tumblr_nr2569nqX01qze3hdo1_r2_500-{i}.png"))
+    game_backgroundlist.append(pg.image.load(f"Benjamin/multipong/Pngs/game_background_gif/images/tumblr_nr2569nqX01qze3hdo1_r2_500-{i}.png"))
 for i in range(0,31 * gif_rate):
     game_backgroundlist2.append(pg.transform.scale(game_backgroundlist[i], (VINDU_BREDDE / 2, VINDU_HOYDE)))
 
-start_bilde = pg.image.load('Benjamin/pngs/multipong/Start.png').convert_alpha()
-shop_bilde = pg.image.load('Benjamin/pngs/multipong/Shop.png').convert_alpha()
-exit_bilde = pg.image.load('Benjamin/pngs/multipong/Exit.png').convert_alpha()
-back_bilde = pg.image.load('Benjamin/pngs/multipong/Back.png').convert_alpha()
+start_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Start.png').convert_alpha()
+shop_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Shop.png').convert_alpha()
+exit_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Exit.png').convert_alpha()
+back_bilde = pg.image.load('Benjamin/multipong/Pngs/Buttons/Back.png').convert_alpha()
 
-sakura_bilde = pg.image.load('Benjamin/pngs/multipong/Sakura1.jpg').convert_alpha()
+icon1 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0.png').convert_alpha()
+icon1 = pg.transform.scale(icon1, (45, 45))
+icon2 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0 (1).png').convert_alpha()
+icon2 = pg.transform.scale(icon2, (45, 45))
+icon3 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0 (2).png').convert_alpha()
+icon3 = pg.transform.scale(icon3, (45, 45))
+icon4 = pg.image.load('Benjamin/multipong/Pngs/icons/pixil-frame-0 (3).png').convert_alpha()
+icon4 = pg.transform.scale(icon4, (45, 45))
+
+icons = []
+
+icons.append(icon1)
+icons.append(icon2)
+icons.append(icon3)
+icons.append(icon4)
+
+
+
+sakura_bilde = pg.image.load('Benjamin/multipong/Pngs/Bakgrunner/Sakura1.jpg').convert_alpha()
+
+lyd_effekt1 = pg.mixer.Sound("Benjamin/Multipong/Lyd/Explosion meme - Sound Effect.mp3")
+lyd_effekt1.set_volume(0.1)
+
+game_musikk = pg.mixer.Sound("Benjamin/Multipong/Lyd/DJ Striden - Level One.mp3")
+game_musikk.set_volume(0.2)
 
 class Button():
   def __init__(self, x, y, image, scale):
     width = image.get_width()
     height = image.get_height()
+    self.scale = scale
     self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
     self.rect = self.image.get_rect()
     self.rect.topleft = (x, y)
@@ -92,7 +121,52 @@ class Button():
 start_button = Button(100,200,start_bilde, 1)
 shop_button = Button(700,200,shop_bilde, 1)
 exit_button = Button(400,500,exit_bilde, 1)
-back_button = Button(VINDU_BREDDE * (14.5/16), VINDU_HOYDE / 48, back_bilde, 0.75)
+back_button = Button(VINDU_BREDDE / 48, VINDU_HOYDE / 48, back_bilde, 0.75)
+
+class Icon():
+  def __init__(self, x, y, image, scale, pris, wx, wy):
+    width = image.get_width()
+    height = image.get_height()
+    self.scale = scale
+    self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
+    self.rect = self.image.get_rect()
+    self.rect.topleft = (x, y)
+    self.clicked = False
+    self.pris = pris
+    self.prisx = x + 45
+    self.prisy = y + 50 * scale
+    self.wx = wx
+    self.wy = wy
+
+  def draw(self):
+    action = False
+    # Få posisjonen til musen
+    pos = pg.mouse.get_pos()
+
+    if self.rect.collidepoint(pos):
+      if pg.mouse.get_pressed()[0] == 1 and self.clicked == False:
+        self.clicked = True
+        action = True
+
+    if pg.mouse.get_pressed()[0] == 0:
+      self.clicked = False
+    
+    # tegne knappene
+    vindu.blit(self.image, (self.rect.x, self.rect.y))
+      
+    return action
+
+icon1_button = Icon(VINDU_BREDDE * 1/6,VINDU_HOYDE * 1/4.5, icon1, 2, 10, 1, 1)
+icon2_button = Icon(VINDU_BREDDE * 2.16/6,VINDU_HOYDE * 1/4.5, icon2, 2, 10, 2.16, 1)
+icon3_button = Icon(VINDU_BREDDE * 3.32/6,VINDU_HOYDE * 1/4.5, icon3, 2, 10, 3.32, 1)
+icon4_button = Icon(VINDU_BREDDE * 4.5/6,VINDU_HOYDE * 1/4.5, icon4, 2, 10, 4.5, 1)
+
+icon_buttons = []
+
+icon_buttons.append(icon1_button)
+icon_buttons.append(icon2_button)
+icon_buttons.append(icon3_button)
+icon_buttons.append(icon4_button)
 
 class Bilder:
   def __init__(self, x, y, image, scale):
@@ -141,12 +215,16 @@ class Pong:
     rect = image.get_rect()
     rect.center = (x, y)
 
-base_icon = pg.image.load(f"Benjamin/pngs/multipong/base_icon.png").convert()
+base_icon = pg.image.load(f"Benjamin/multipong/Pngs/icons/base_icon.png").convert()
 base_icon = pg.transform.scale(base_icon, (45, 45))
 
+mo = 0
 def lage():
-    if klokke % 3000 == 0:
-      pongs.append(Pong(random.randint(560,720),random.randint(100,200),(choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10) * 2,(choice([i for i in range(4,8) if i not in [0]])/10) * 2,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),0, base_icon))
+  global mo
+  k = random.randint(1,750)
+  if k > 749 or mo == 0:
+    pongs.append(Pong(random.randint(560,720),random.randint(100,200),(choice([i for i in range(-8,8) if i not in [-3,-2,-1,0,1,2,3]])/10) * 2,(choice([i for i in range(4,8) if i not in [0]])/10) * 2,45,45,vindu, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),1, base_icon))
+    mo = 1
 
 
 def tegn():
@@ -159,9 +237,16 @@ def tegn():
 def nytt_spill():
     global pongs
     global klokke
+    global mo
+    global highscore1
+    global penger
+    penger += highscore(klokke)
+    if highscore(klokke) > highscore1:
+      highscore1 = highscore(klokke)
     pongs = []
     plate.x = VINDU_BREDDE / 2 - plate.bredde / 2
     klokke = 0
+    mo = 0
 
 class Plate:
   def __init__(self, x, y, fartx, farty, bredde, høyde, vindusobjekt, farge):
@@ -190,6 +275,10 @@ def flytt():
           pongs[i].passes +=1
           pongs[i].farty = -pongs[i].farty
         elif ((pongs[i].y + pongs[i].høyde) >= arena.høyde):
+          if SoundEffectChannel3.get_busy() == False:
+            lyd_effekt3 = pg.mixer.Sound("Benjamin/Multipong/Lyd/Shart Sound Effect.mp3")
+            lyd_effekt3.set_volume(2)
+            SoundEffectChannel3.play(lyd_effekt3)
           nytt_spill()
           spill = False
           meny()
@@ -205,12 +294,8 @@ def flytt():
             pongs[i].fartx = -0.6 * hastighet
           pongs[i].passes += 1
           if SoundEffectChannel.get_busy() == False:
-            lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
-            lyd_effekt1.set_volume(0.5)
             SoundEffectChannel.play(lyd_effekt1)
           if SoundEffectChannel.get_busy() == True:
-            lyd_effekt1 = pg.mixer.Sound("Benjamin/Lyd/Explosion meme - Sound Effect.mp3")
-            lyd_effekt1.set_volume(0.5)
             SoundEffectChannel2.play(lyd_effekt1)
         elif (pongs[i].y -3) < (plate.y + (plate.høyde / 2)) < (pongs[i].y + pongs[i].høyde + 3) and (pongs[i].x + pongs[i].bredde - 3) < plate.x < (pongs[i].x + pongs[i].bredde + 3):
           pongs[i].fartx = -plate.fartx - (0.1 * hastighet)
@@ -258,9 +343,18 @@ def poeng(klokke):
   poeng = int(klokke / 100)
   return str(poeng)
 
+def highscore(klokke):
+  highscore2 = int(klokke / 100)
+  return highscore2
+
 
 # Angir hvilken skrifttype og tekststørrelse vi vil bruke på tekst
-font = pg.font.Font("Benjamin/Fonts/pixel-font.ttf", 48) 
+font = pg.font.Font("Benjamin/Multipong/Fonts/pixel-font.ttf", 48) 
+font2 = pg.font.Font("Benjamin/Multipong/Fonts/pixel-font.ttf", 20) 
+
+
+
+
 
 def game():
   global klokke
@@ -273,8 +367,6 @@ def game():
       if event.type == pg.QUIT:
         sys.exit()
     if MusicChannelGame.get_busy() == False:
-            game_musikk = pg.mixer.Sound("Benjamin/Lyd/DJ Striden - Level One.mp3")
-            game_musikk.set_volume(0.5)
             MusicChannelGame.play(game_musikk)
     plate_bevegelse()
     vindu.fill((120, 120, 120))
@@ -287,7 +379,7 @@ def game():
       counter_game_background = 0
     s = pg.Surface((VINDU_BREDDE / 2,VINDU_HOYDE))  # the size of your rect
     s.set_alpha(64)                # alpha level
-    s.fill((255, 255, 255))           # this fills the entire surface
+    s.fill((255, 150, 150))           # this fills the entire surface
     vindu.blit(s, (VINDU_BREDDE / 4, 0))           # (0,0) are the top-left coordinates
     bilde1 = font.render(poeng(klokke), True, (100, 100, 100))
     bilde_rect1 = bilde1.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/7.85))
@@ -300,14 +392,20 @@ def game():
     '''bounce()'''
     flytt()
     klokke += 1
-    clock.tick(1000)
+    clock.tick(150)
     pg.display.flip()
   # Oppdaterer alt innholdet i vinduet
+
+
+
+
     
 def shop():
   global klokke
   global counter_shop
   sjappe = True
+  global base_icon
+  global penger
   while sjappe:
     for event in pg.event.get():
       if event.type == pg.QUIT:
@@ -316,12 +414,15 @@ def shop():
     counter_shop += 1
     if counter_shop == 313:
       counter_shop = 0
+      
     if back_button.draw():
         meny()
+        
     s = pg.Surface((VINDU_BREDDE * (6/8),VINDU_HOYDE * (14/16)))  # the size of your rect
     s.set_alpha(128)                # alpha level
     s.fill((255, 255, 255))           # this fills the entire surface
     vindu.blit(s, (VINDU_BREDDE * (1/8), VINDU_HOYDE * (1/16)))           # (0,0) are the top-left coordinates
+    
     bilde_shop = font.render('SHOP', True, (0, 0, 0))
     bilde_rect_shop = bilde_shop.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/9.6))
     vindu.blit(bilde_shop, (bilde_rect_shop))
@@ -330,26 +431,61 @@ def shop():
     bilde_rect_shop1 = bilde_shop1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/10))
     vindu.blit(bilde_shop1, (bilde_rect_shop1))
     
-    bilde_shop2 = font.render('OUT OF STOCK', True, (0, 0, 0))
-    bilde_rect_shop2 = bilde_shop2.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/1.98))
-    vindu.blit(bilde_shop2, (bilde_rect_shop2))
+    for i in range(0,len(icons)):
+      ss = pg.Surface((2 * VINDU_BREDDE * 1/40 + 45 * icon_buttons[i].scale, 2 * VINDU_BREDDE * 1/40 + 45 * icon_buttons[i].scale))  # the size of your rect
+      ss.set_alpha(128)                # alpha level
+      ss.fill((255, 255, 255))           # this fills the entire surface
+      vindu.blit(ss, (VINDU_BREDDE * icon_buttons[i].wx/6 - VINDU_BREDDE * 1/40, VINDU_HOYDE * 1/4.5 -VINDU_BREDDE * 1/40))           # (0,0) are the top-left coordinates
+      if icon_buttons[i].draw() and penger >= icon_buttons[i].pris:
+          base_icon = icons[i]
+          penger -= icon_buttons[i].pris
+          icon_buttons[i].pris = 0
+          owned_icons.append(icons[i])
+            
+      if icons[i] not in owned_icons:
+        pris1 = font2.render((f'{icon_buttons[i].pris}$'), True, (0, 0, 0))
+        bilde_rect_pris1 = pris1.get_rect(center=(icon_buttons[i].prisx + 2, icon_buttons[i].prisy + 2))
+        vindu.blit(pris1, (bilde_rect_pris1))
+        
+        pris1_1 = font2.render((f'{icon_buttons[i].pris}$'), True, (255, 255, 255))
+        bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon_buttons[i].prisx, icon_buttons[i].prisy))
+        vindu.blit(pris1_1, (bilde_rect_pris1_1))
+        
+      if icons[i] in owned_icons:
+        pris1 = font2.render((f'Owned'), True, (0, 0, 0))
+        bilde_rect_pris1 = pris1.get_rect(center=(icon_buttons[i].prisx + 2,icon_buttons[i].prisy + 2))
+        vindu.blit(pris1, (bilde_rect_pris1))
+        
+        pris1_1 = font2.render((f'Owned'), True, (255, 255, 255))
+        bilde_rect_pris1_1 = pris1_1.get_rect(center=(icon_buttons[i].prisx,icon_buttons[i].prisy))
+        vindu.blit(pris1_1, (bilde_rect_pris1_1))
+      
+      
+    balanse = font.render((f'Balanse: {str(penger)}'), True, (0, 0, 0))
+    bilde_rect_balanse = balanse.get_rect(center=(VINDU_BREDDE/1.99, VINDU_HOYDE/1.14))
+    vindu.blit(balanse, (bilde_rect_balanse))
     
-    bilde_shop3 = font.render('OUT OF STOCK', True, (255, 255, 255))
-    bilde_rect_shop3 = bilde_shop3.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/2))
-    vindu.blit(bilde_shop3, (bilde_rect_shop3))
+    balanse1 = font.render((f'Balanse: {str(penger)}'), True, (255, 255, 255))
+    bilde_rect_balanse1 = balanse1.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/1.15))
+    vindu.blit(balanse1, (bilde_rect_balanse1))
     
     clock.tick(30)
     pg.display.flip()
 
 
+
+
+
 def meny():
   global counter_meny
+  global highscore1
   fortsett = True
   MusicChannelGame.fadeout(1500)
-  SoundEffectChannel.fadeout(100)
+  SoundEffectChannel.fadeout(0)
+  SoundEffectChannel2.fadeout(0)
   while fortsett:
     if MusicChannel.get_busy() == False:
-            meny_musikk = pg.mixer.Sound("Benjamin/Lyd/Daft Punk - Veridis Quo.mp3")
+            meny_musikk = pg.mixer.Sound("Benjamin/Multipong/Lyd/Daft Punk - Veridis Quo.mp3")
             meny_musikk.set_volume(0.5)
             MusicChannel.play(meny_musikk)
             
@@ -358,8 +494,6 @@ def meny():
     for event in pg.event.get():
       if event.type == pg.QUIT:
         sys.exit()
-    
-    
 
     clock.tick(30)
     vindu.blit(bakgrunnlist2[counter_meny],(0, 0))
@@ -376,13 +510,21 @@ def meny():
     if start_button.draw():
       game()
     
+    bilde_highscore = font.render((f'Highscore: {str(highscore1)}'), True, (255, 255, 255))
+    bilde_rect_highscore = bilde_highscore.get_rect(center=(VINDU_BREDDE/1.98, VINDU_HOYDE/15))
+    vindu.blit(bilde_highscore, (bilde_rect_highscore))
+    
+    bilde_highscore2 = font.render((f'Highscore: {str(highscore1)}'), True, (255, 128, 0))
+    bilde_rect_highscore2 = bilde_highscore2.get_rect(center=(VINDU_BREDDE/2, VINDU_HOYDE/16))
+    vindu.blit(bilde_highscore2, (bilde_rect_highscore2))
+    
     pg.display.flip()
 
 while True:
   meny()
 
 # Avslutter pygame
-pg.quit()
+
 
 #https://www.veed.io/convert/mp3-to-wav?utm_campaign=YouTube+Description+Tim&utm_medium=How+to+Convert+MP3+to+WAV+Free+Online+Video+Converter&utm_source=YouTube
 #https://yt2mp3.info/?l=en

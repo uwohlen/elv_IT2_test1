@@ -24,6 +24,7 @@ tak = False
 x = 0
 y = 0
 while fortsett:
+    pg.time.Clock().tick(120)
     for event in pg.event.get():
         if event.type == pg.QUIT:
             fortsett = False
@@ -31,7 +32,7 @@ while fortsett:
     # Farger bakgrunnen hvit
     window.fill((255, 255, 255))
 
-    sirkel(50)
+    sirkel(100)
 
     # Tegner et rektangel
     pg.draw.rect(window, (0, 255, 0), (200, 250, 70, 90))
@@ -47,22 +48,24 @@ while fortsett:
     bilde = font.render("GAMER!", True, (15, 15, 15))
     window.blit(bilde, (400, 20))
 
+    
     pg.display.flip()
+    
     if vegg == False:
-        x += 0.2
+        x += 1
         if x > WINDOW_WIDTH-90:
             vegg = True
     else:
-        x -= 0.2
+        x -= 1
         if x < 0:
             vegg = False
     
     if tak == False:
-        y += 0.4
+        y += 2
         if y > WINDOW_LENGTH-50:
             tak = True
     else:
-        y -= 0.4
+        y -= 2
         if y < 0:
             tak = False
     

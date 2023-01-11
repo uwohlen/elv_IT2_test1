@@ -47,33 +47,6 @@ arne = Spiller("Arne",140,1,100,5,5)
 per = Spiller("Per",90,3,100,5,5)
 greven = Monster("Greven",100,1,250,25)
 
-slow_type(f'Du har blitt sugd inn i en annen verden, og den eneste måten å komme deg hjem igjen er å spille BlackJack\n')
-slow_type(f'Desverre for deg er du nødt til å bekjempe en rekke monstere for å seire og returnere hjem trygt\n')
-print('\n')
-
-slow_type('Hvilken karakter vil du bruke i ditt eventyr?\n')
-print(f'[1]Karakter: {arne.navn}    IQ: {arne.iq}      Flaks: Middels')
-print(f'[2]Karakter: {per.navn}     IQ: {per.iq}      Flaks: Høy')
-print(f'[I]Info om egenskaper\n')
-
-karakter = 0
-while True:
-    karakter = input('Skriv inn tilsvarende symbol: ').lower()
-    if karakter == "1":
-        slow_type('Du valgte Arne, han er min favoritt :)                       \n')
-        break
-    elif karakter == "2":
-        slow_type('Du valgte Per, han er en flink gutt :)                       \n')
-        break
-    elif karakter == "i":
-        slow_type(f'IQ: Øker sjanse for å tape mindre penger\n')
-        slow_type(f'Flaks: Øker sjanse for å vinne mer penger\n')
-    else:
-        slow_type("Bruh, du hadde 1 oppgave :/\n")
-
-clear()
-slow_type(f'Ditt første hinder er selveste Greven som er kjent i BlackJack verdenen for å knuse nybegynnere som deg!\n')
-slow_type(f'Det sies at Monster-BlackJack er litt annerledes enn vanlig BlackJack, fordi man vinner kun når man har tatt livet til motstanderen sin\n')
 
 
 def regler():
@@ -628,6 +601,37 @@ def score(dealer_hand, player_hand): #Definerer funksjonen for å printe ut ende
         vinn += 1
         flaks()
         slow_type(f'Din nye balanse er: {penger}$\n')
+
+        
+
+slow_type(f'Du har blitt sugd inn i en annen verden, og den eneste måten å komme deg hjem igjen er å spille BlackJack\n')
+slow_type(f'Desverre for deg er du nødt til å bekjempe en rekke monstere for å seire og returnere hjem trygt\n')
+print('\n')
+
+slow_type('Hvilken karakter vil du bruke i ditt eventyr?\n')
+print(f'[1]Karakter: {arne.navn}    IQ: {arne.iq}      Flaks: Middels')
+print(f'[2]Karakter: {per.navn}     IQ: {per.iq}      Flaks: Høy')
+print(f'[I]Info om egenskaper\n')
+
+karakter = 0
+while True:
+    karakter = input('Skriv inn tilsvarende symbol: ').lower()
+    if karakter == "1":
+        slow_type('Du valgte Arne, han er min favoritt :)                       \n')
+        break
+    elif karakter == "2":
+        slow_type('Du valgte Per, han er en flink gutt :)                       \n')
+        break
+    elif karakter == "i":
+        slow_type(f'IQ: Øker sjanse for å tape mindre penger\n')
+        slow_type(f'Flaks: Øker sjanse for å vinne mer penger\n')
+    else:
+        slow_type("Bruh, du hadde 1 oppgave :/\n")
+
+clear()
+
+slow_type(f'Ditt første hinder er selveste Greven som er kjent i BlackJack verdenen for å knuse nybegynnere som deg!\n')
+slow_type(f'Det sies at Monster-BlackJack er litt annerledes enn vanlig BlackJack, fordi man vinner kun når man har tatt livet til motstanderen sin\n')
     
 
 while True:

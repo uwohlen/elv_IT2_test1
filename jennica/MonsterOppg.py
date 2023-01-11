@@ -3,13 +3,14 @@ import os
 import random
 import pickle
 
+#definerer vaapen som en konstant
 vaapen = {"krystallsverd":40}
 
-class Spiller: #klasse for spiller
+class Spiller: #klasse for spiller, med ulike konstruktører
     def __init__(self, navn):
         self.navn = navn
         self.maxHP = 100
-        self.HP = self.maxHP
+        self.HP = self.maxHP1
         self.base_attack = 10
         self.gull = 40
         self.pots = 0
@@ -28,7 +29,7 @@ class Spiller: #klasse for spiller
         return attack
 
 
-class Monster: #klasse for monster
+class Monster: #klasse for monster, med ulike konstruktører
     def __init__(self, navn):
         self.navn = navn
         self.maxHP = 50
@@ -37,7 +38,7 @@ class Monster: #klasse for monster
         self.goldgain = 10
 MonsterIG = Monster("Monster")
 
-class Zombie: #klasse for zombie, (kan evt gjøres om til sub-klasse under monsterklassen
+class Zombie: #klasse for zombie, med ulike konstruktører (kan evt gjøres om til sub-klasse under monsterklassen
     def __init__(self, navn):
         self.navn = navn
         self.maxHP = 70
@@ -46,10 +47,11 @@ class Zombie: #klasse for zombie, (kan evt gjøres om til sub-klasse under monst
         self.goldgain = 15
 ZombieIG = Zombie("Zombie")
 
+# 
 def main():
     os.system('clear')
     print("Velkommen til jennis eventyrspill!\n")
-    print("I dette spillet kommer du i møte med farer ogtrusler som du strategisk må håndtere")
+    print("I dette spillet kommer du i møte med farer og trusler som du strategisk må håndtere")
     print("Lykke til å eventyret!!")
     print("1.) Start")
     print("2.) Lagre")
@@ -256,7 +258,7 @@ def butikk():
     print("Velkommen til butikken!")
     print("\nHva vil du kjøpe?\n")
     print("1.) krystallsverd")
-    print("tilbake")
+    print("2.) tilbake")
     print(" ")
     option = input(' ')
 

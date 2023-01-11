@@ -45,6 +45,7 @@ triangleBlue = (1,28,116)
 
 class card():
     def __init__(self,cost,damage):
+        self.prepos = 0
         self.cost = cost
         self.damage = damage
         self.width,self.height = cardSize

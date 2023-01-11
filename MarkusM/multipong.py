@@ -27,7 +27,11 @@ SoundEffectChannel = pg.mixer.Channel(1)
 SoundEffectChannel2 = pg.mixer.Channel(2)
 MusicChannel = pg.mixer.Channel(3)
 
+global highScore
 highScore = 0
+
+global score
+score = 0
 
 clock = pg.time.Clock() 
 windowFPS = 60
@@ -44,11 +48,9 @@ run = True
 
 class settings:
     def __init__(self):
-        self.meny = 2
+        self.meny = 1
         self.coins = 10000
 settings = settings()
-
-
 
 global blockSize
 blockSize = 100
@@ -58,6 +60,7 @@ playerSize = (150,32)
 
 def findCenter(): #finne center av skjermen
     return window_width/2,window_height/2
+
 
 class block:
     def __init__(self,startpos):
@@ -76,6 +79,8 @@ class block:
 
     def posupdate(self): #oppdater posisjon til blokken
         global run
+        global score
+        global highScore
         x,y = self.momentum
         self.posx = self.posx - x
         self.posy = self.posy - y
@@ -86,9 +91,11 @@ class block:
             self.momentum = x,-y
         if self.posy>window_height-(blockSize/2):
             run = False
+            if score > highScore:
+                highScore = score
 
         #legge til random?
-        
+
         self.rect.center = (self.posx,self.posy)
 
     def render(self): #rendre blokker
@@ -120,7 +127,7 @@ class player():
         self.rect = pg.Rect(0,0,self.width,self.height)
         self.color = (0,0,0)
         self.posy = window_height-window_height/4
-        self.posx = 0
+        self.posx = 0 
         self.rect.center = self.posx,self.posy
         self.updateSafebox()
         self.momentum = 5
@@ -147,9 +154,6 @@ class player():
             self.rect.centerx = x
             
         
-
-        #sakke fart når man nærmer seg musen
-        
         #gammel metode:
         #self.rect.centerx = x
 
@@ -158,9 +162,11 @@ class player():
         pg.draw.rect(window,self.color,self.rect)
 
         #teste hitbox
+        """
         pg.draw.rect(window,(0,255,0),self.safebox)
         pg.draw.rect(window,(0,255,0),self.ysafebox1)
         pg.draw.rect(window,(0,255,0),self.ysafebox2)
+        """
         
 
     def updateSafebox(self): #oppdatere hitbox
@@ -200,12 +206,16 @@ global counter
 counter = 0
 timediff = 5
 def main():
+    global score
     global counter
     global blocklist
     global run
+
+    counter = 0
     run = True
     blocklist = []
     addblock()
+    score = 0
 
     while run:
         window.fill((255,255,255)) #bakgrunn
@@ -219,12 +229,19 @@ def main():
         if counter > windowFPS*timediff: #legge til blokk etter en stund i sekunder
             addblock()
             counter = -1
+        
+        if (counter % windowFPS*timediff)==0:
+            score +=1
 
         #render:
         safecollision()
         player.render()
         counter+=1
         blockrender()
+
+        title = font2.render(str(score),True,black) #definere tekst
+        titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
+        window.blit(title,titleBox) #render
 
         clock.tick(windowFPS) #holde frame rate til 60
         pg.display.flip() #oppdatere skjermen
@@ -260,13 +277,14 @@ class gridElement:
         self.buy = False
 
         self.textureraw = pg.image.load("MarkusM/images/coinicon.png")
-        self.texture = pg.transform.scale(self.textureraw,(size-10,size-10))
+        #texture = pg.transform.scale(self.textureraw,(size-10,size-10))
+
         self.pretexture = pg.Surface((size-10,size-10)) #performance
-        self.pretexture.blit(self.texture,(self.rect.x,self.rect.y))
+        self.pretexture.blit(self.textureraw,self.rect)
 
     def render(self):
-        pg.draw.rect(window,black,self.padding)
-        pg.draw.rect(window,self.color,self.rect)
+        #pg.draw.rect(window,black,self.padding)
+        #pg.draw.rect(window,self.color,self.rect)
 
         #if self.buy == False:
         window.blit(self.pretexture,self.rect)
@@ -342,10 +360,17 @@ def menurender():
         quitbox.render()
         shopbox.render()
 
+
         #tittel
         title = font2.render(str("MULTIPONG"),True,black) #definere tekst
         titleBox = title.get_rect(center=(window_width/2,(window_height/8)))
         window.blit(title,titleBox) #render
+
+        #highscore
+        if highScore != 0:
+            score = shopfont.render(str(f"HIGHSCORE: {highScore}"),True,black) #definere tekst
+            scorebox = score.get_rect(center=(window_width/2,(window_height-window_height/7)))
+            window.blit(score,scorebox) #render
 
     if settings.meny == 2:
         backbox.render()
@@ -411,6 +436,8 @@ def menu():
         menurender()
 
         pg.display.flip()
+
+
 
 while True: #spillLoop
     menu()
