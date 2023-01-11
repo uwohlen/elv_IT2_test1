@@ -411,10 +411,11 @@ def flaks():
             gevinst()
     if karakter == "2":
         n = random.randint(1,int(per.flaks))
+    
         if n > 2:
             o = (1.1 + (int(per.flaks)/10)) * gamble
             penger += o
-            slow_type(f'Du vant: {0}$\n')
+            slow_type(f'Du vant: {o}$\n')
         else:
             gevinst()
 
