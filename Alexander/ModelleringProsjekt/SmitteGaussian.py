@@ -24,6 +24,8 @@ def f(t, a, b, c):
     # must use pylab functions as they are compatible with the curve_fir function
     return a * math.e ** (-(t-b)**2/(2*c**2))
 
+def f_gj(t, a1, b1, c1):
+    return a1 * math.e ** (-(t-b1)**2/(2*c1**2))
 
 
 [a, b, c] = curve_fit(f, [x - start for x in tid], smitte, (25000, 250, 400))[0]
@@ -35,6 +37,32 @@ print('c: ', round(c, 3))
 t = np.linspace(0, slutt - start, (slutt - start) * 100)
 plt.plot(t + start, f(t, a, b, c), "r")
 plt.show()
+
+gj_smitte = smitte.copy()
+
+def average(lst, index):
+    summ = 0
+    for x in range(-3, 4):
+        summ += lst[index + x]
+    return summ / 7
+
+for i in range(3, len(gj_smitte) - 3):
+    gj_smitte[i] = average(gj_smitte, i)
+    
+
+[a1, b1, c1] = curve_fit(f_gj, [x - start for x in tid], gj_smitte, (25000, 250, 400))[0]
+print('\nGjennomsnitts verdier:\na: ', round(a1, 2))
+print('b:', round(b1, 2))
+print('c: ', round(c1, 3))
+
+
+t = np.linspace(0, slutt - start, (slutt - start) * 100)
+plt.plot(tid, gj_smitte, '.')
+plt.plot(t + start, f_gj(t, a1, b1, c1), "r")
+plt.show()
+
+
+
 
 
 x = list(tid.copy())
@@ -61,3 +89,5 @@ for i in range(0, len(x)):
 plt.plot(x, y, '-',label='Gaussian')
 plt.plot(x, regress, '-', label='regresjon')
 plt.show()
+
+
