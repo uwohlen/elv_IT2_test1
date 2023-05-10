@@ -1,4 +1,0 @@
-- Mange nivåer med spennende varisajsoner i monstre
-- Kunne få spille til ha ha litt hre tempo
-- Det er ingen "game-breaking" bugs
-
