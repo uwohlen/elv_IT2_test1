@@ -58,6 +58,12 @@ def antall_funk(x):
     return antall
 
 # lager en funksjon som finner antall apper i en sjanger
+def antall_sjanger_funk(x):
+    antall = 0
+    for i in range(0,len(sjangere)):
+        if sjangere[i] == x:
+            antall += 1
+    return antall
 
 # lager en funksjon som finner antall apper i en kategori som er gratis
 def antall_gratis_funk(x):
@@ -162,3 +168,68 @@ plt.axis('equal')
 plt.show()
 '''
 
+'''
+# lager et søylediagramm som viser antall apper i hver kategori
+antall = []
+for i in range(0,len(kategorier)):
+    antall.append(antall_funk(kategorier[i]))
+plt.barh(kategorier[-11:], antall[-11:])
+plt.title("Antall apper i hver kategori")
+plt.xlabel("Antall apper")
+plt.ylabel("Kategori")
+plt.grid()
+plt.show()
+'''
+
+'''
+# lager et kakediagram som viser antall apper i hver sjanger
+antall = []
+for i in range(0,len(sjangere)):
+    antall.append(antall_funk(sjangere[i]))
+plt.pie(antall[-11:], labels=sjangere[-11:], autopct=lambda p : '{:.2f}%  ({:,.0f})'.format(p, p * sum(antall[-11:])/100), shadow=False, startangle=90, rotatelabels=False, labeldistance=1.1, textprops={'fontsize': 8})
+plt.title("Antall apper i hver sjanger")
+plt.axis('equal')
+plt.show()
+'''
+
+'''
+# lager et histogram som viser apper etter hvor mye de koster i kategorien "ART_AND_DESIGN"
+pris = []
+for i in range(0,len(category)):
+    if category[i] == "ART_AND_DESIGN":
+        pris.append(float(price[i]))
+plt.hist(pris, bins=100)
+plt.title("Pris på apper i kategorien 'ART_AND_DESIGN'")
+plt.xlabel("Pris i dollar")
+plt.ylabel("Antall apper")
+plt.grid()
+plt.show()
+'''
+
+'''
+# lager et punktdiagram som viser apper etter hvor mye de koster i kategorien "ART_AND_DESIGN"
+pris = []
+for i in range(0,len(category)):
+    if category[i] == "ART_AND_DESIGN":
+        pris.append(float(price[i]))
+plt.plot(apper, pris, 'o')
+plt.title("Pris på apper i kategorien 'ART_AND_DESIGN'")
+plt.xlabel("App")
+plt.ylabel("Pris i dollar")
+plt.grid()
+plt.show()
+'''
+
+'''
+# lager et linjeplott som viser apper etter hvor mye de koster i kategorien "ART_AND_DESIGN"
+pris = []
+for i in range(0,len(category)):
+    if category[i] == "ART_AND_DESIGN":
+        pris.append(float(price[i]))
+plt.plot(apper, pris)
+plt.title("Pris på apper i kategorien 'ART_AND_DESIGN'")
+plt.xlabel("App")
+plt.ylabel("Pris i dollar")
+plt.grid()
+plt.show()
+'''

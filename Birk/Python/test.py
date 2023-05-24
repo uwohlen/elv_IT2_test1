@@ -1,5 +1,5 @@
-import pygame
-import random
+# Importer pygame og random
+import pygame, random
 
 # Definer spillebrettets størrelse
 BOARD_WIDTH = 800
@@ -9,6 +9,7 @@ BOARD_HEIGHT = 600
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
+# Definer spilleren
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -38,13 +39,14 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom > BOARD_HEIGHT:
             self.rect.bottom = BOARD_HEIGHT
 
+# Definer ressursen
 class Resource(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((20, 20))
-        self.image.fill(RED)
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(0, BOARD_WIDTH), random.randint(0, BOARD_HEIGHT))
+        self.image = pygame.Surface((20, 20)) # Lag en overflate
+        self.image.fill(RED) 
+        self.rect = self.image.get_rect() # Hent rektangelet til ressursen
+        self.rect.center = (random.randint(0, BOARD_WIDTH), random.randint(0, BOARD_HEIGHT)) # Plasser ressursen tilfeldig på spillebrettet
 
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, speed_x, speed_y):
@@ -66,6 +68,7 @@ class Projectile(pygame.sprite.Sprite):
         if self.rect.left > BOARD_WIDTH or self.rect.right < 0 or self.rect.top > BOARD_HEIGHT or self.rect.bottom < 0:
             self.kill()
 
+# Definer spillet
 class Game:
     def __init__(self):
         pygame.init()
@@ -90,6 +93,7 @@ class Game:
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
 
+            # Lag nye ressurser og prosjektiler hvis det ikke er noen igjen
             if len(self.resources) == 0:
                 self.score += 1
                 self.projectile_speed += 1
@@ -115,11 +119,13 @@ class Game:
 
         print("Spillet er over. Du klarte å plukke opp", self.score, "ressurser.")
 
+    # Lag en ny ressurs
     def create_resource(self):
         resource = Resource()
         self.resources.add(resource)
         self.all_sprites.add(resource)
 
+    # Lag nye prosjektiler
     def create_projectiles(self):
         for _ in range(self.score):
             speed_x = random.choice([-self.projectile_speed, self.projectile_speed])
@@ -128,6 +134,7 @@ class Game:
             self.projectiles.add(projectile)
             self.all_sprites.add(projectile)
 
+    # Oppdater prosjektiler
     def update_projectiles(self):
         for projectile in self.projectiles:
             projectile.update()
