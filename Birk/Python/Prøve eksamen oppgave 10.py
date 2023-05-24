@@ -73,23 +73,23 @@ def projectile_animation():
         if side == "top":
             projectile.x = random.randint(0, screen_width - 30)
             projectile.y = 0
-            projectile_speed_x = 0
+            projectile_speed_x = random.randint(-1, 1) * poeng
             projectile_speed_y = (poeng*1.1)
         elif side == "bottom":
             projectile.x = random.randint(0, screen_width - 30)
             projectile.y = screen_heigth - 6
-            projectile_speed_x = 0
+            projectile_speed_x = random.randint(-1, 1) * poeng
             projectile_speed_y = -(poeng*1.1)
         elif side == "left":
             projectile.x = 0
             projectile.y = random.randint(0, screen_heigth - 30)
             projectile_speed_x = (poeng*1.1)
-            projectile_speed_y = 0
+            projectile_speed_y = random.randint(-1, 1) * poeng
         elif side == "right":
             projectile.x = screen_width - 37
             projectile.y = random.randint(0, screen_heigth - 30)
             projectile_speed_x = -(poeng*1.1)
-            projectile_speed_y = 0
+            projectile_speed_y = random.randint(-1, 1) * poeng
     
     if projectile.colliderect(player):
         pygame.quit()
@@ -151,14 +151,15 @@ while True:
     # Spill funksjoner
     player_animation()
     item_collision()
-    if poeng >= 1:
-        projectile_animation()
     
     # Visuelle elementer
     screen.fill(bg_color) # fyller vinduet med bakgrunnsfargen
     pygame.draw.rect(screen, light_grey, player) # tegner spiller-pad
     pygame.draw.ellipse(screen, yellow, item) # tegner item
-    pygame.draw.ellipse(screen, red, projectile) # tegner projectile
+    if poeng >= 1:
+        projectile_animation()
+        for i in range(poeng):
+            pygame.draw.ellipse(screen, red, projectile)
     
     # Oppdaterer vinduet
     pygame.display.update()
